@@ -15,7 +15,6 @@ export const Menu = () => {
   const [battleOptions, setBattleOptions] = useState(false);
   const [user, setUser] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [isActive] = useState();
   const battleClick = () => {
     setBattleOptions(true);
   };
