@@ -1,6 +1,8 @@
 const query = require("../config/mysql.conf");
 const bcrypt = require("bcrypt");
+const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken")
+
 
 async function register(res, username, password) {
   try {
@@ -19,6 +21,9 @@ async function register(res, username, password) {
     }
     //! Hash the plain text password
     const hashed = await bcrypt.hash(password, 10);
+
+    const uuid = uuidv4();
+
     //! Add the new user to the table
     await query(
       "INSERT INTO users (username, password, uuid) VALUES (?,?,?)",
@@ -70,12 +75,10 @@ async function login(res, username, password) {
         httpOnly: true,
       })
       .send({
-      data: {
-        username: user.username,
-      },
-      success: true,
-      error: null,
-    });
+        data: {username: user.username},
+          success: true,
+          error: null
+      })
   } catch (err) {
     //! Handle errors in catch block
     return res.send({
@@ -85,5 +88,6 @@ async function login(res, username, password) {
     });
   }
 }
+
 
 module.exports = {register, login};
