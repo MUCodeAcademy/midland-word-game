@@ -27,7 +27,7 @@ function App({user, setUser}) {
   useEffect(() => {
     const verifyUser = async () => {
       const res = await verify();
-        if(res.data.success){
+        if(res.success){
           setUser(res.data.username)
         } 
     }; verifyUser()
