@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import { Alert, AlertTitle } from "@mui/material/Alert";
+import { Alert, AlertTitle } from "@mui/material";
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
