@@ -11,7 +11,7 @@ const INITIAL_STATE = {
     wordsGuessed: [],
     lettersGuessed: [],
     currentWord: "",
-    guessNumber: null,
+    guessNumber: 0,
   },
 };
 
