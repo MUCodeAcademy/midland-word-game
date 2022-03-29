@@ -2,13 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { login, register } = require("../models/user.models")
 
-router.post("/login", (req, res) => {
+router.post("/login", validate, (req, res) => {
     const { username, password } = req.body;
     login(res, username, password);
 });
 
-router.put("/register", (req, res) => {
-    console.log(req.body, "Console log for Register Route! Things are all good here!")
+router.put("/register", validate, (req, res) => {
     register(res, req.body.username, req.body.password);
 });
 
@@ -21,7 +20,7 @@ router.get("/logout", (req, res) => {
     });
 });
 
-router.get("/verify", (req, res) => {
+router.get("/verify", validate, (req, res) => {
     return res.send({
         data: { username: req.user.username },
         success: true,
