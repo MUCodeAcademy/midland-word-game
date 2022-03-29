@@ -21,8 +21,8 @@ async function register(res, username, password) {
     const hashed = await bcrypt.hash(password, 10);
     //! Add the new user to the table
     await query(
-      "INSERT INTO users (username, password) VALUES (?,?)",
-      [username, hashed]
+      "INSERT INTO users (username, password, uuid) VALUES (?,?,?)",
+      [username, hashed, uuid]
     );
     return res.send({
       data: "Successfully Registered!",
