@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { TextField, Button } from "@mui/material";
 import useAPI from "../shared/hooks/useAPI";
 import { useNavigate } from "react-router-dom";
+import "./loginPage.css";
 
 function RegisterPage() {
   const [usernameInput, setUsernameInput] = useState("");
