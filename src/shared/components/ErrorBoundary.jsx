@@ -9,7 +9,7 @@ export default class ErrorBoundary extends Component {
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true };
+    this.setState({ hasError: true });
   }
 
   render() {
@@ -19,7 +19,7 @@ export default class ErrorBoundary extends Component {
           <Alert severity="error">
             <AlertTitle>
               Your request could not be processed at this time. Click{" "}
-              <Navlink to="home">here</Navlink> to go back home.
+              <NavLink to="home">here</NavLink> to go back home.
             </AlertTitle>
           </Alert>
         </div>
