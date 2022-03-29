@@ -8,12 +8,11 @@ router.post("/login", (req, res) => {
 });
 
 router.put("/register", (req, res) => {
-    console.log(req.body, "Console log for Register Routes! Things are all good here!")
+    console.log(req.body, "Console log for Register Route! Things are all good here!")
     register(res, req.body.username, req.body.password);
 });
 
 router.get("/logout", (req, res) => {
-    //! May need to adjust "access_token"
     res.clearCookie("access_token");
     return res.send({
         data: null,
