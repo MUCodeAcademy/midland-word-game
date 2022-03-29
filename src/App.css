@@ -42,4 +42,11 @@
 }
 .link {
   text-decoration: none;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  padding: 15px;
+  width: 20%;
+  min-height: 30px;
 }
