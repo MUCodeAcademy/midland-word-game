@@ -3,14 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Provider } from "redux"
+import { Provider } from "react-redux"
 import ErrorBoundary from "./shared/components/ErrorBoundary";
 ReactDOM.render(
   <ErrorBoundary>
     <Provider store={store}>
       <App />
     </Provider>
-</ErrorBoundary>,
+  </ErrorBoundary>,
   document.getElementById("root")
 );
 
