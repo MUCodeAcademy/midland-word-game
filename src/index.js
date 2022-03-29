@@ -4,14 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from "redux"
-
+import ErrorBoundary from "./shared/components/ErrorBoundary";
 ReactDOM.render(
-  <React.StrictMode>
+  <ErrorBoundary>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
+</ErrorBoundary>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
