@@ -1,7 +1,30 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
+import { Alert, AlertTitle } from "@mui/material/Alert";
 
 export default class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
   render() {
-    return <div>ErrorBoundary</div>;
+    if (this.state.hasError) {
+      return (
+        <div>
+          <Alert severity="error">
+            <AlertTitle>
+              Your request could not be processed at this time. Click{" "}
+              <Navlink to="home">here</Navlink> to go back home.
+            </AlertTitle>
+          </Alert>
+        </div>
+      );
+    }
+    return this.props.children;
   }
 }
