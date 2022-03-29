@@ -1,6 +1,6 @@
 const query = require("../config/mysql.conf");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken")
 
 async function register(res, username, password) {
   try {
@@ -64,7 +64,12 @@ async function login(res, username, password) {
       });
     }
     //! Otherwise send back the "sanitized" user
-    return res.send({
+    const token = jwt.sign({ uuid: user.uuid }, process.env.SECRET_KEY);
+    return res
+      .cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .send({
       data: {
         username: user.username,
       },
