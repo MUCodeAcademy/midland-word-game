@@ -44,9 +44,9 @@ function RegisterPage() {
   }, [confirmPassword]);
 
   const register = useCallback(async () => {
-    const res = await apiRegister(username, password);
+    const res = await apiRegister(usernameInput, passwordInput);
     if (!res.success) {
-      setApiError(error);
+      setApiError(res.error);
     } else if (usernameError || passwordError || passMatchError) {
       setShowError(true);
     } else {
