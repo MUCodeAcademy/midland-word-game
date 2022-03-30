@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { TextField, Button } from "@mui/material";
 import useAPI from "../shared/hooks/useAPI";
 import { useNavigate } from "react-router-dom";
-import "./loginPage.css";
 
 function RegisterPage() {
   const [usernameInput, setUsernameInput] = useState("");
@@ -45,9 +44,9 @@ function RegisterPage() {
   }, [confirmPassword]);
 
   const register = useCallback(async () => {
-    const res = await apiRegister(username, password);
+    const res = await apiRegister(usernameInput, passwordInput);
     if (!res.success) {
-      setApiError(error);
+      setApiError(res.error);
     } else if (usernameError || passwordError || passMatchError) {
       setShowError(true);
     } else {

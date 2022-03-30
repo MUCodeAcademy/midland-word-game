@@ -19,7 +19,7 @@ export default function wordgameReducer(state = initialState, action) {
         case ADD_WORD_GUESS:
             return { ...state, wordsGuessed: [...state.wordsGuessed, action.guessInput] }
         case ADD_LETTERS_GUESS:
-            return { ...state, lettersGuessed: [...state.lettersGuessed, splitGuessInput] }
+            return { ...state, lettersGuessed: [...state.lettersGuessed, action.splitGuessInput] }
         case CLEAR_GUESS_NUMBER:
             return { ...state, guessNumber: initialState }
         case CLEAR_WORD_GUESS:

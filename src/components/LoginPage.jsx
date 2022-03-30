@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import useAPI from "../shared/hooks/useAPI";
 import "./LoginPage.css";
+import { setUser } from "../redux/actions";
 
 export const LoginPage = ({ setUser }) => {
   const { login: apiLogin } = useAPI();
