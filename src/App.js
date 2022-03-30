@@ -84,7 +84,13 @@ function App({user, setUser}) {
     </Router>)
 }
 
-const mapStateToProps = (state) => {};
-const mapDispatchToProps = (setUser) => {};
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  };
+};
+const mapDispatchToProps = {
+  setUser
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

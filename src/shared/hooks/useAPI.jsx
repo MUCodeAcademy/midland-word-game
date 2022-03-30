@@ -47,7 +47,6 @@ const useAPI = () => {
       method: "get",
     });
   }, [makeAPICall]);
-
   return { login, logout, register, verify };
 };
 
