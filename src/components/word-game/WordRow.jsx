@@ -1,9 +1,11 @@
 import { Grid, Item } from "@mui/material";
 import React, { useState } from "react";
+import { ADD_WORD_GUESS } from "../../redux/actions/wordgame.actions";
 
-function WordRow({ guess, currentWord }) {
+function WordRow({ roundWord, runningRound, playerWonRound }) {
+  const [guess, setGuess] = useState("");
   const guessArr = guess.split("");
-  const currWordArr = currentWord.split("");
+  const currWordArr = roundWord.split("");
 
   const [l1Correct, setl1Correct] = useState(false);
   const [l1Included, setL1Included] = useState(false);
@@ -19,6 +21,12 @@ function WordRow({ guess, currentWord }) {
 
   const [l5Correct, setl5Correct] = useState(false);
   const [l5Included, setL5Included] = useState(false);
+
+  function handleClick(word) {
+    setGuess(word);
+    submitWord(word);
+    ADD_WORD_GUESS(word);
+  }
 
   if (guessArr[0] === currWordArr[0]) {
     setl1Correct(true);
@@ -114,6 +122,21 @@ function WordRow({ guess, currentWord }) {
           </Item>
         </Grid>
       </Grid>
+      <div>
+        <input
+          id="input"
+          type="text"
+          ref={guessInput}
+          placeholder="type your guess here"
+        />
+        <button
+          onClick={() => {
+            handleClick(guessInput.current.value);
+          }}
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 }
