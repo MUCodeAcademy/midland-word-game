@@ -2,11 +2,53 @@ import { Grid, Item } from "@mui/material";
 import React, { useState } from "react";
 
 function WordRow({ guess, currentWord }) {
-  const [correct, setCorrect] = useState(false);
-  const [letterIncluded, setLetterIncluded] = useState(false);
-
   const guessArr = guess.split("");
   const currWordArr = currentWord.split("");
+
+  const [l1Correct, setl1Correct] = useState(false);
+  const [l1Included, setL1Included] = useState(false);
+
+  const [l2Correct, setl2Correct] = useState(false);
+  const [l2Included, setL2Included] = useState(false);
+
+  const [l3Correct, setl3Correct] = useState(false);
+  const [l3Included, setL3Included] = useState(false);
+
+  const [l4Correct, setl4Correct] = useState(false);
+  const [l4Included, setL4Included] = useState(false);
+
+  const [l5Correct, setl5Correct] = useState(false);
+  const [l5Included, setL5Included] = useState(false);
+
+  if (guessArr[0] === currWordArr[0]) {
+    setl1Correct(true);
+  } else if (currWordArr.includes(guessArr[0])) {
+    setL1Included(true);
+  } else return;
+
+  if (guessArr[1] === currWordArr[1]) {
+    setl2Correct(true);
+  } else if (currWordArr.includes(guessArr[1])) {
+    setL2Included(true);
+  } else return;
+
+  if (guessArr[2] === currWordArr[2]) {
+    setl3Correct(true);
+  } else if (currWordArr.includes(guessArr[2])) {
+    setL3Included(true);
+  } else return;
+
+  if (guessArr[3] === currWordArr[3]) {
+    setl4Correct(true);
+  } else if (currWordArr.includes(guessArr[3])) {
+    setL4Included(true);
+  } else return;
+
+  if (guessArr[4] === currWordArr[4]) {
+    setl5Correct(true);
+  } else if (currWordArr.includes(guessArr[4])) {
+    setL5Included(true);
+  } else return;
 
   return (
     <div>
@@ -16,7 +58,7 @@ function WordRow({ guess, currentWord }) {
             <div
               id="letter1"
               className={`${
-                correct ? "correct" : letterIncluded ? "included" : "incorrect"
+                l1Correct ? "correct" : l1Included ? "included" : "incorrect"
               }`}
             >
               {guess[0]}
@@ -28,7 +70,7 @@ function WordRow({ guess, currentWord }) {
             <div
               id="letter2"
               className={`${
-                correct ? "correct" : letterIncluded ? "included" : "incorrect"
+                l2Correct ? "correct" : l2Included ? "included" : "incorrect"
               }`}
             >
               {guess[1]}
@@ -40,7 +82,7 @@ function WordRow({ guess, currentWord }) {
             <div
               id="letter3"
               className={`${
-                correct ? "correct" : letterIncluded ? "included" : "incorrect"
+                l3Correct ? "correct" : l3Included ? "included" : "incorrect"
               }`}
             >
               {guess[2]}
@@ -52,7 +94,7 @@ function WordRow({ guess, currentWord }) {
             <div
               id="letter4"
               className={`${
-                correct ? "correct" : letterIncluded ? "included" : "incorrect"
+                l4Correct ? "correct" : l4Included ? "included" : "incorrect"
               }`}
             >
               {guess[3]}
@@ -64,7 +106,7 @@ function WordRow({ guess, currentWord }) {
             <div
               id="letter5"
               className={`${
-                correct ? "correct" : letterIncluded ? "included" : "incorrect"
+                l5Correct ? "correct" : l5Included ? "included" : "incorrect"
               }`}
             >
               {guess[4]}
