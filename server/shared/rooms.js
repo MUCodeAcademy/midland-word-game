@@ -1,5 +1,9 @@
 import query from "../config/mysql.conf";
-let roomID = (Math.random() + 1).toString(36).substring(7); //! turn to function
+const roomID = () => {
+    const newRoom = (Math.random() + 1).toString(36).substring(7);
+    return newRoom;
+  };
+  
 const rooms = [
     {
         roomId: "123abc",
@@ -30,7 +34,7 @@ const createRoom = (roomID) => {
     if (!room.roomId || !room.players || !room.isFull || !isRunning || !room.currentWord) {
         return false
     }
-    return roomId;
+    return room.roomId;
 };
 
 //X getUsername(uuid) return username / null
@@ -48,93 +52,91 @@ const getUsername = async (uuid) => {
 }
 
 //X getUser(roomId, username) return user object in player arr
-const getPlayer = (roomId, user) => {
-    const players = rooms.filter(e => e.players);
+const getPlayer = (roomId, username) => {
+		let room = rooms.filter(e=> e.roomId).find(roomId);
+    const players = room.filter(e => e.players);
     const usernames = players.username;
-    const player = usernames.filter(user);
+    let player = usernames.find(username);
     if (!player) {
         return false
     }
     return player;
 };
-// shouldnt we just bind roomId to the function at the top? idk if that would work
-// Like in the array?
-// I think it would need to be separate ? but i am not 100% on that
-//Okay, sounds good, I just figured having it separated would make it more reusable, but let me know what he says (:
-// Ill ask russ
-// My new moto is //! "Thank god for Russell"
-// fr what would we do without him
-// Crash and burn im sure... at least for me lol
-// nah hes carrying this class rn
-// Most definitely!!! If he doesn't get hired as a lead dev I am going to quit this field
-// we riot if he isnt making $100k out the gate
-// Yes, I will grab my pitchfork
-// its 2022 and you still have a pitchfork
-// Only for the big foods that I cant fit on my normal fork
-// what a lame joke that was
-// yes the biggest noodles
-// big spaghett
-// pool noodle sized ramen
-// im patenting that
-// dont steal it
-//I am sure if it is written in code comments then it is legally binding, you're covered
-// you know theres a chat menu
-//in vs code???
-// yea with liveshare
-// oh man, good thing you warned me. I'm sure there is an interview question abou that
-// I think it is funny that you're still using comments even though you just found that out
-// ok i only just found out about it like a minute ago so chilllll
-// okay i dont know how to bring it back up but i know it exists
-// LOLLL
-// the frick u just do 
-//WHAT AM I DOING!!
-// im following your cursor around the page scroll up. thats wild
-// technology man... crazy 🤓
-// terrifying
-// we need to get tom in here
-// YES!
-// Okay, do you need to commit what we have so far?
-//I would probably cry if this got deleted :,,(
-// Because if so we should prob delete these comments lol
-// nah let mike see it when we pull, he'd get a kick out of it. //! 21st century note passing
-// okay let me make one edit
-// mr. hill stop lurkin
-// tf, he left. rude ass
-// 
 
-
-//TODO addPlayer(roomId, username) return boolean about success
-//  *      will give host to the first player to join room
-//  *      add player into rooms player arr
-//  *      if round is game is running set them to isKnockedOut: true
+//X addPlayer(roomId, username) return boolean about success
+//* will give host to the first player to join room
+//* add player into rooms player arr
+//* if round is game is running set them to isKnockedOut: true
 
 const addPlayer = (roomId, username) => {
+	let room = rooms.filter(e=> e.roomId).find(roomId);
+	let players = room.players;
+	let numPlayers = players.length;
+	if (numPlayers < 10){
+		players.push(username);
+		let player = players.filter(e=> e.username).find(username);
+		if (numPlayers === 1) {
+			player.isHost === true;
+		}
+		if (room.isRunning === true) {
+			player.isKnockedOut === true;
+		}
+		return true;
+	}
+	else {
+		return false;
+	}	
+  };
 
-};
 
+//X removePlayer(roomId, username) return true / false
+	//* will need to transfer host to different player if host leaves
+	//* will need to delete room if all players leave
+	//* remove player from rooms player arr
 
-// * functions
-
-
-//? use array method to add player object to the array we set up above
-//? if statement for first player
-
-//TODO removePlayer(roomId, username) return true / false
-//  *      will need to transfer host if host leaves
-//  *      will need to delete room if all players leave
-//? use array method for removing player
-//? if statment for host and room conditionals
-//TODO startGame(roomId, currentWord) return true / false
-//  *      will need to reset all user info like guesses and lastGuess
-//? This might be one of the tricker ones
-const startGame = async (roomId, currentWord) => {
-
+const removePlayer = (roomId, username) => {
+	let room = rooms.filter(e=> e.roomId).find(roomId);
+	let players = room.players;
+	let player = players.filter(e=> e.username).find(username);
+	let numPlayers = players.length;
+	if (player.isHost === true){
+		player.isHost === false;
+		let newHost = players.at(0);
+		newHost.isHost === true;
+	}
+	players.filter(e => e !== player);
+	if (numPlayers === 0){
+		rooms.filter(e=> e !== room);
+	} 
+	return true;
 }
 
 
+//TODO startGame(roomId, currentWord) return true / false
+//* will need to reset all user info like guesses and lastGuess
+//* will need to reset user info guesses, lastGuess, isKnockedOut, wonRound
+//* will change the rooms isRunningGame to true
+const startGame = async (roomId, currentWord) => {
+	let room = rooms.filter(e => e.roomId).find(roomId);
+	if (room.isRunning === false){
+		room.isRunning === true;
+		room.players.guesses === 5;
+		room.players.lastGuess === "";
+		room.players.isKnockedOut === false;
+		room.players.wonRound === false;
+		return true
+	}
+	return false
+}
+
 //TODO isRoomFull(roomId) return true / false
 //? checking length of players array and then changing boolean based off that
+// hey its syd, so I think to get the room by its ID, youd need to get all the objects off the rooms array by their room id keys
+// then you can find the roomid in the new array of room ids.
+// at least that is what I did. 
+
 const isRoomFull = async (roomId) => {
+    let room = room.find(room = room.roomId => `${roomId}`) 
     if (rooms.players.length === 10) {
         return { isFull: true }
     }
@@ -161,10 +163,10 @@ const getAllPlayers = async (roomId) => {
     if (rooms.room.players.length === 0) {
         return <h2>No players in current room</h2>
     }
-    rooms.players.slice(0, 10)
+    rooms.players.slice(0, 9)
 }
 
-module.exports = { getUsername, createRoom, getPlayer }
+module.exports = { getUsername, createRoom, getPlayer, addPlayer, removePlayer, }
 
 
 /** better commented version (From Russell)
@@ -172,13 +174,8 @@ module.exports = { getUsername, createRoom, getPlayer }
  
  
  
- * removePlayer(roomId: string, username: string) return boolean about success
- *      will need to transfer host to different player if host leaves
- *      will need to delete room if all players leave
- *      remove player from rooms player arr
- * startGame(roomId: string, currentWord: string) return boolean about success
- *      will need to reset user info guesses, lastGuess, isKnockedOut, wonRound
- *      will change the rooms isRunningGame to true
+
+ 
  * isRoomFull(roomId: string) return boolean
  *      will return true or false based on if the room has 10 people in it
  * isGameRunning(roomId: string) return boolean
