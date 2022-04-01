@@ -26,11 +26,7 @@ export const GamePage = () => {
     playerWonRound,
     isHost,
   } = useSocket(state.socket ? state.socket : null);
-  const [timer, setTimer] = useState(120);
-
-  useEffect(() => {
-    setTimer(timer - 1);
-  }, [roomTimer]);
+  const [timer, setTimer] = useState("");
 
   useEffect(() => {
     joinRoom(roomId);
@@ -47,14 +43,18 @@ export const GamePage = () => {
   //    also more about how we want the layout of this to be
   //the error || roomMessage will need to separate them or have a timeout / clear method
 
-  let timerDisplay = function (timer) {
-    let m = Math.floor(timer / 60);
-    let s = Math.floor(timer % 60);
+  function timerDisplay(seconds) {
+    let m = Math.floor(seconds / 60);
+    let s = Math.floor(seconds % 60);
     let mDisplay =
       m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
     let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
-    return mDisplay + sDisplay;
-  };
+    setTimer(mDisplay + sDisplay);
+  }
+
+  useEffect(() => {
+    timerDisplay(roomTimer);
+  }, [roomTimer]);
 
   return (
     <div>
@@ -79,7 +79,7 @@ export const GamePage = () => {
           )}
         </div>
         <div>
-          <h3>{timerDisplay}</h3>
+          <h3>{timer}</h3>
           <WordBoard
             submitWord={submitWord}
             guesses={guesses}
