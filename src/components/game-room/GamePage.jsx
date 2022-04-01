@@ -43,14 +43,17 @@ export const GamePage = () => {
   //    also more about how we want the layout of this to be
   //the error || roomMessage will need to separate them or have a timeout / clear method
 
-  function timerDisplay(seconds) {
-    let m = Math.floor(seconds / 60);
-    let s = Math.floor(seconds % 60);
-    let mDisplay =
-      m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
-    let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
-    setTimer(mDisplay + sDisplay);
-  }
+  const timerDisplay = useCallback(
+    (seconds) => {
+      let m = Math.floor(seconds / 60);
+      let s = Math.floor(seconds % 60);
+      let mDisplay =
+        m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
+      let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
+      setTimer(mDisplay + sDisplay);
+    },
+    [setTimer]
+  );
 
   useEffect(() => {
     timerDisplay(roomTimer);
@@ -65,7 +68,7 @@ export const GamePage = () => {
         <div>
           <div>
             <span>{roomId}</span>
-            <button onClick={() => copyRoomId}></button>
+            <button onClick={() => copyRoomId}>Copy</button>
           </div>
           {isHost && (
             <>
