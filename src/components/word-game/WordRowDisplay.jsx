@@ -50,7 +50,7 @@ function WordRowDisplay({ roundWordArr, userGuess }) {
   } else return;
 
   return (
-    <div>
+    <div className="center text-white">
       <Grid container spacing={1} columns={10}>
         <Grid item xs={2}>
           <Item>
