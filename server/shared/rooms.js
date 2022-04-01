@@ -100,37 +100,32 @@ const addPlayer = (roomId, username) => {
 };
 
 const removePlayer = (roomId, username) => {
-  try {
-    let room = rooms.find((e) => e.roomId === roomId);
-    let player = room.players.find((e) => e.username === username);
+  let room = rooms.find((e) => e.roomId === roomId);
+  let player = room.players.find((e) => e.username === username);
+  if (player) {
     let numPlayers = room.players.length;
     if (player.isHost === true) {
       player.isHost = false;
     }
-    room.players = room.players.filter((e) => e !== player);
+    room.players = room.players.filter((e) => e.username !== player.username);
     let newHost = room.players.at(0);
     newHost.isHost = true;
     if (numPlayers === 0) {
-      rooms.filter((e) => e.roomId === room.roomId);
-    } else if (numPlayers > 10) {
+      rooms = rooms.filter((e) => e.roomId !== room.roomId);
+    } else if (numPlayers < 10) {
       room.isFull = false;
     }
     return true;
-  } catch (err) {
-    return false;
   }
+  return false;
 };
 
 const startGame = (roomId) => {
   let room = rooms.find((e) => e.roomId === roomId);
   if (room.isGameRunning === false) {
     room.isGameRunning = true;
-    room.players.forEach(
-      (e) => (e.guesses = 0),
-      (e.lastGuess = ""),
-      (e.isKnockedOut = false),
-      (e.wonRound = false)
-    );
+    forEach(
+      (e) => ({ ...e, guesses: 0, lastGuess: "", isKnockedOut: false, wonRound: false }));
     return true;
   }
   return false;
@@ -140,7 +135,7 @@ const startRound = (roomId, currentWord) => {
   let room = rooms.find((e) => e.roomId === roomId);
   if (!room.isRunningRound) {
     room.isRunningRound = true;
-    room.players.forEach((e) => (e.guesses = 0), (e.lastGuess = ""));
+    room.players.forEach((e) => ({ ...e, guesses: 0, lastGuess: 0 }));
     room.currentWord = currentWord;
   }
   return true;
