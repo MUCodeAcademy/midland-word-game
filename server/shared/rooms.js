@@ -1,6 +1,6 @@
 import query from "../config/mysql.conf";
 
-const roomID = () => {
+const getRoomId = () => {
   const newRoom = (Math.random() + 1).toString(36).substring(7);
   return newRoom;
 };
@@ -10,9 +10,9 @@ const rooms = [
     roomId: "",
     players: [
       {
-        username: "username",
+        username: "",
         guesses: 0,
-        lastGuess: "words",
+        lastGuess: "",
         isKnockedOut: false,
         wonRound: false,
         isHost: true,
@@ -21,7 +21,7 @@ const rooms = [
     isFull: false,
     isRunningGame: false,
     isRunningRound: false,
-    currentWord: "shortking🤴",
+    currentWord: "",
   },
 ];
 
@@ -32,7 +32,7 @@ const createRoom = () => {
     isFull: false,
     isRunningGame: false,
     isRunningRound: false,
-    currentWord: "shortking🤴",
+    currentWord: "",
   };
   if (
     !room.roomId ||
@@ -71,17 +71,16 @@ const getPlayer = (roomId, username) => {
   return player;
 };
 
-//?
 const addPlayer = (roomId, username) => {
   let room = rooms.find((e) => e.roomId === roomId);
   let numPlayers = room.players.length;
   const newPlayer = {
     username: username,
     guesses: 0,
-    lastGuess: "words",
+    lastGuess: "",
     isKnockedOut: false,
     wonRound: false,
-    isHost: true,
+    isHost: false,
   };
   if (numPlayers < 10) {
     room.players.push(newPlayer);
@@ -100,7 +99,6 @@ const addPlayer = (roomId, username) => {
   }
 };
 
-//?
 const removePlayer = (roomId, username) => {
   try {
     let room = rooms.find((e) => e.roomId === roomId);
@@ -108,10 +106,10 @@ const removePlayer = (roomId, username) => {
     let numPlayers = room.players.length;
     if (player.isHost === true) {
       player.isHost = false;
-      let newHost = room.players.at(0);
-      newHost.isHost = true;
     }
-    room.players.filter((e) => e.username === player.username);
+    room.players = room.players.filter((e) => e !== player);
+    let newHost = room.players.at(0);
+    newHost.isHost = true;
     if (numPlayers === 0) {
       rooms.filter((e) => e.roomId === room.roomId);
     } else if (numPlayers > 10) {
@@ -138,7 +136,6 @@ const startGame = (roomId) => {
   return false;
 };
 
-//?
 const startRound = (roomId, currentWord) => {
   let room = rooms.find((e) => e.roomId === roomId);
   if (!room.isRunningRound) {
@@ -165,7 +162,6 @@ const isValidRoom = (roomId) => {
   return false;
 };
 
-//?
 const submitWord = (roomId, username, word) => {
   let room = rooms.find((e) => e.roomId === roomId);
   let player = room.players.find((e) => e.username === username);
@@ -174,19 +170,17 @@ const submitWord = (roomId, username, word) => {
     if (player.lastGuess === room.currentWord) {
       player.wonRound = true;
     }
-    let correctGuessers = room.players.filter((e) => e.wonRound === true);
-    let currentPlayers = room.players.filter(
-      (e) => e.wonRound === true && e.isKnockedOut === false
-    );
-    if (correctGuessers.length <= currentPlayers) {
-      winners.push(player);
-    } else {
-      player.isKnockedOut = true;
-      room.isRunningRound = false;
+    let correctGuessers = room.players.filter((e) => e.wonRound === true && !e.isKnockedOut);
+    let currentPlayers = room.players.filter((e) => !e.wonRound === true && !e.isKnockedOut);
+    if (correctGuessers.length > 0) {
+      if (currentPlayers.length === 1) {
+        room.isRunningRound = false;
+        currentPlayers.forEach(e => e.isKnockedOut = true);
+      }
+      return true;
     }
-    return true;
+    return false;
   }
-  return false;
 };
 
 const isHost = (roomId, username) => {
@@ -223,7 +217,6 @@ const endGame = (roomId) => {
   return false;
 };
 
-//?
 const isRoomFull = async (roomId) => {
   const room = rooms.find((e) => e.roomId === roomId);
   if (room.players.length >= 10) {
@@ -232,13 +225,11 @@ const isRoomFull = async (roomId) => {
   return false;
 };
 
-//?
 const getAllPlayers = async (roomId) => {
   let room = rooms.find((e) => e.roomId === roomId);
   return room.players;
 };
 
-//?
 const hasWon = async (roomId, username) => {
   let room = rooms.find((e) => e.roomId === roomId);
   let player = room.players.find((e) => e.username === username);
@@ -267,9 +258,5 @@ module.exports = {
   getAllPlayers,
   isRoomFull,
   submitWord,
+  getRoomId
 };
-
-//! Register page "CONFIRM PASSWORD" needs to be passed as a password type
-//! Feedback for successful register
-//! Remove Login and Register button from Menu once logged in
-//! Fix Register button routing from Login page
