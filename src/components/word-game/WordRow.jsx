@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
 function WordRow({ roundWord, runningRound, playerWonRound, guesses }) {
-  const [guess, setGuess] = useState("");
   const roundWordArr = roundWord.split("");
+  const guessInput = useRef(null);
 
   handleClick((word) => {
-    setGuess(word);
     submitWord(word);
   });
 
@@ -35,7 +34,7 @@ function WordRow({ roundWord, runningRound, playerWonRound, guesses }) {
             placeholder="type your guess here"
           />
           <button
-            onClick={(e) => {
+            onClick={() => {
               handleClick(guessInput.current.value);
             }}
           >
