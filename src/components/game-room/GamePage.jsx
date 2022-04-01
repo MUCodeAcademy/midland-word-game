@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
@@ -26,6 +26,7 @@ export const GamePage = () => {
     playerWonRound,
     isHost,
   } = useSocket(state.socket ? state.socket : null);
+  const [timer, setTimer] = useState("");
 
   useEffect(() => {
     joinRoom(roomId);
@@ -36,29 +37,52 @@ export const GamePage = () => {
 
   const copyRoomId = useCallback(() => {
     navigator.clipboard.writeText(roomId); //i think this works but test it
-  }, [roomId])
+  }, [roomId]);
   //talk need to happen about how to display other players
   //    if that will be in score or a new component
   //    also more about how we want the layout of this to be
   //the error || roomMessage will need to separate them or have a timeout / clear method
+
+  const timerDisplay = useCallback(
+    (seconds) => {
+      let m = Math.floor(seconds / 60);
+      let s = Math.floor(seconds % 60);
+      let mDisplay =
+        m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
+      let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
+      setTimer(mDisplay + sDisplay);
+    },
+    [setTimer]
+  );
+
+  useEffect(() => {
+    timerDisplay(roomTimer);
+  }, [roomTimer]);
+
   return (
     <div>
-      <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>
+      <div>
+        {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
+      </div>
       <div>
         <div>
           <div>
             <span>{roomId}</span>
-            <button onClick={() => copyRoomId}></button>
+            <button onClick={() => copyRoomId}>Copy</button>
           </div>
           {isHost && (
             <>
-              {!runningGame && <button onClick={() => startGame()}>Start Game</button>}
-              {!runningRound && <button onClick={() => startRound()}>Start Round</button>}
+              {!runningGame && (
+                <button onClick={() => startGame()}>Start Game</button>
+              )}
+              {!runningRound && (
+                <button onClick={() => startRound()}>Start Round</button>
+              )}
             </>
           )}
         </div>
         <div>
-          <span>{roomTimer}</span>
+          <h3>{timer}</h3>
           <WordBoard
             submitWord={submitWord}
             guesses={guesses}
@@ -69,7 +93,7 @@ export const GamePage = () => {
           />
         </div>
         <div>
-          <Score players={players} player={player}/>
+          <Score players={players} player={player} />
         </div>
       </div>
     </div>
