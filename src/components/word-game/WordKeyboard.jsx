@@ -1,6 +1,6 @@
 import React from "react";
 
-function WordKeyboard() {
+function WordKeyboard({ guesses, roundWord }) {
   return <div>WordKeyboard</div>;
 }
 

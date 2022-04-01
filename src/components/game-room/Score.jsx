@@ -1,6 +1,6 @@
 import React from "react";
 
-function Score() {
+function Score({players, player}) {
   return <div>Score</div>;
 }
 
