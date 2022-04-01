@@ -63,8 +63,8 @@ const getUsername = async (uuid) => {
 };
 
 const getPlayer = (roomId, username) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
-  const [player] = room.players.filter((e) => e.username === username);
+  let room = rooms.find((e) => e.roomId === roomId);
+  const player = room.players.find((e) => e.username === username);
   if (!player) {
     return false;
   }
@@ -73,7 +73,7 @@ const getPlayer = (roomId, username) => {
 
 //?
 const addPlayer = (roomId, username) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   let numPlayers = room.players.length;
   const newPlayer = {
     username: username,
@@ -85,7 +85,7 @@ const addPlayer = (roomId, username) => {
   };
   if (numPlayers < 10) {
     room.players.push(newPlayer);
-    let [player] = room.players.filter((e) => e.username === username);
+    let player = room.players.find((e) => e.username === username);
     if (room.isRunning === true) {
       player.isKnockedOut = true;
     }
@@ -103,8 +103,8 @@ const addPlayer = (roomId, username) => {
 //?
 const removePlayer = (roomId, username) => {
   try {
-    let [room] = rooms.filter((e) => e.roomId === roomId);
-    let [player] = room.players.filter((e) => e.username === username);
+    let room = rooms.find((e) => e.roomId === roomId);
+    let player = room.players.find((e) => e.username === username);
     let numPlayers = room.players.length;
     if (player.isHost === true) {
       player.isHost = false;
@@ -124,7 +124,7 @@ const removePlayer = (roomId, username) => {
 };
 
 const startGame = (roomId) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   if (room.isGameRunning === false) {
     room.isGameRunning = true;
     room.players.forEach(
@@ -138,10 +138,9 @@ const startGame = (roomId) => {
   return false;
 };
 
-// need to reset players keys
-//X should be alright but probably double check
+//?
 const startRound = (roomId, currentWord) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   if (!room.isRunningRound) {
     room.isRunningRound = true;
     room.players.forEach((e) => (e.guesses = 0), (e.lastGuess = ""));
@@ -151,7 +150,7 @@ const startRound = (roomId, currentWord) => {
 };
 
 const isGameRunning = async (roomId) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   if (room.isRunningGame) {
     return true;
   }
@@ -159,7 +158,7 @@ const isGameRunning = async (roomId) => {
 };
 
 const isValidRoom = (roomId) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   if (room) {
     return true;
   }
@@ -168,8 +167,8 @@ const isValidRoom = (roomId) => {
 
 //?
 const submitWord = (roomId, username, word) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
-  let [player] = room.players.filter((e) => e.username === username);
+  let room = rooms.find((e) => e.roomId === roomId);
+  let player = room.players.find((e) => e.username === username);
   if (word) {
     player.lastGuess = word;
     if (player.lastGuess === room.currentWord) {
@@ -191,23 +190,23 @@ const submitWord = (roomId, username, word) => {
 };
 
 const isHost = (roomId, username) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
-  let [player] = room.players.filter((e) => e.username === username);
+  let room = rooms.find((e) => e.roomId === roomId);
+  let player = room.players.find((e) => e.username === username);
   return player.isHost;
 };
 
 const isRoundRunning = (roomId) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   return room.isRoundRunning;
 };
 
 const getRoundWord = (roomId) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   return room.currentWord;
 };
 
 const endRound = (roomId) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   if (room.isRunningRound) {
     room.isRunningRound = false;
     return true;
@@ -216,7 +215,7 @@ const endRound = (roomId) => {
 };
 
 const endGame = (roomId) => {
-  let [room] = rooms.filter((e) => e.roomId === roomId);
+  let room = rooms.find((e) => e.roomId === roomId);
   if (room.isRunningGame) {
     room.isRunningRound = false;
     return true;
@@ -224,10 +223,7 @@ const endGame = (roomId) => {
   return false;
 };
 
-//* Quick note on this one:
-//Should be good to go once getting the room correctly!
-//TODO isRoomFull(roomId) return true / false
-//? checking length of players array and then changing boolean based off that
+//?
 const isRoomFull = async (roomId) => {
   const room = rooms.find((e) => e.roomId === roomId);
   if (room.players.length >= 10) {
@@ -235,32 +231,23 @@ const isRoomFull = async (roomId) => {
   }
   return false;
 };
-//! ^ Done
 
-//* Some notes on this function:
-// Okay Brett, so for this one, I don't think we need to check if the room is empty
-// We remove the room if there are no players in the room
-// I think one way to do this would be replacing the lines after let [room] with
-// just a return line of room.players (I think that should do the trick)
-
-//TODO getAllPlayers(roomId: string) return the room players arr
+//?
 const getAllPlayers = async (roomId) => {
-  let room = rooms.filter((e) => e.players);
+  let room = rooms.find((e) => e.roomId === roomId);
   return room.players;
 };
-//!  ^ Done
 
-//TODO hasWon(roomId: string, username: string) return boolean
-// will return the individual players wonRound key
+//?
 const hasWon = async (roomId, username) => {
-  let room = rooms.find((e) => e.roomId);
-  let player = room.players.find((e) => e.username);
+  let room = rooms.find((e) => e.roomId === roomId);
+  let player = room.players.find((e) => e.username === username);
   if (player.lastGuess === room.currentWord) {
     return true;
   }
   return false;
 };
-//! ^ Done
+
 module.exports = {
   getUsername,
   createRoom,
