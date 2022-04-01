@@ -5,29 +5,32 @@ const roomID = () => {
   };
   
 const rooms = [
-    {
-        roomId: "123abc",
-        players: [{
-            username: "username",
-            guesses: 5,
-            lastGuess: "words",
-            isKnockedOut: false,
-            wonRound: false,
-            isHost: true
-        }],
-        isFull: false,
-        isRunningGame: false,
-				isRunningRound: false,
-        currentWord: "shortking🤴"
-    },
+  {
+    roomId: "",
+    players: [{
+      username: "username",
+      guesses: 0,
+      lastGuess: "words",
+      isKnockedOut: false,
+      wonRound: false,
+      isHost: true
+    }],
+    isFull: false,
+    isRunningGame: false,
+    isRunningRound: false,
+    currentWord: "shortking🤴"
+  },
 ];
+
+//! This is actually how we will find the roomId 
+//* let [room] = rooms.filter(e=> e.roomId === roomId);
 
 
 //X createRoom(roomId) return boolean about success
 //* will need to create a new room obj in the room arr
-const createRoom = (roomID) => {
+const createRoom = () => {
     const room = {
-        roomId: roomID,
+        roomId: (Math.random() + 1).toString(36).substring(7),
         players: [],
         isFull: false,
         isRunningGame: false,
@@ -37,11 +40,11 @@ const createRoom = (roomID) => {
     if (!room.roomId || !room.players || !room.isFull || !room.isRunningGame || !room.isRunningRound || !room.currentWord) {
         return false
     }
+    rooms.push(room);
     return room.roomId;
 };
 
-//X getUsername(uuid) return username / null
-//* will need to query the database to get username based off uuid input
+//X feel confident about this one
 const getUsername = async (uuid) => {
     try {
         const [user] = await query("SELECT * FROM users WHERE users.uuid = ?", [uuid]);
@@ -54,35 +57,28 @@ const getUsername = async (uuid) => {
     }
 }
 
-//X getUser(roomId, username) return user object in player arr
+//X feel confident about this one
 const getPlayer = (roomId, username) => {
-		let room = rooms.filter(e=> e.roomId).find(roomId);
-    const players = room.filter(e => e.players);
-    const usernames = players.username;
-    let player = usernames.find(username);
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+    const [player] = room.players.filter(e => e.username === username);
     if (!player) {
         return false
     }
     return player;
 };
 
-//X addPlayer(roomId, username) return boolean about success
-//* will give host to the first player to join room
-//* add player into rooms player arr
-//* if round is game is running set them to isKnockedOut: true
-
+//X should be alright but probably double check
 const addPlayer = (roomId, username) => {
-	let room = rooms.filter(e=> e.roomId).find(roomId);
-	let players = room.players;
-	let numPlayers = players.length;
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+	let numPlayers = room.players.length;
 	if (numPlayers < 10){
-		players.push(username);
-		let player = players.filter(e=> e.username).find(username);
-		if (numPlayers === 1) {
-			player.isHost = true;
-		}
+		room.players.push(username);
+		let [player] = room.players.filter(e=> e.username === username);
 		if (room.isRunning === true) {
 			player.isKnockedOut = true;
+		}
+		if (numPlayers === 1) {
+			player.isHost = true;
 		}
 		return true;
 	}
@@ -92,52 +88,47 @@ const addPlayer = (roomId, username) => {
   };
 
 
-//X removePlayer(roomId, username) return true / false
-	//* will need to transfer host to different player if host leaves
-	//* will need to delete room if all players leave
-	//* remove player from rooms player arr
-
+// X Does this work w try/catch or is there a better way to return false if it doesnt work?
 const removePlayer = (roomId, username) => {
-	let room = rooms.filter(e=> e.roomId).find(roomId);
-	let players = room.players;
-	let player = players.filter(e=> e.username).find(username);
-	let numPlayers = players.length;
-	if (player.isHost === true){
-		player.isHost = false;
-		let newHost = players.at(0);
-		newHost.isHost = true;
+	try {
+		let [room] = rooms.filter(e=> e.roomId === roomId);
+		let [player] = room.players.filter(e=> e.username === username);
+		let numPlayers = room.players.length;
+		if (player.isHost === true){
+			player.isHost = false;
+			let newHost = room.players.at(0);
+			newHost.isHost = true;
+		}
+		room.players.filter(e => e !== player);
+		if (numPlayers === 0){
+			rooms.filter(e=> e !== room);
+		} 
+		return true;
+	}catch (err){
+		return false
 	}
-	players.filter(e => e !== player);
-	if (numPlayers === 0){
-		rooms.filter(e=> e !== room);
-	} 
-	return true;
 }
 
 
-//X startGame(roomId, currentWord) return true / false
-//* will need to reset all user info like guesses and lastGuess
-//* will need to reset user info guesses, lastGuess, isKnockedOut, wonRound
-//* will change the rooms isRunningGame to true
+//X should be alright but probably double check
 const startGame = (roomId) => {
-	let room = rooms.filter(e => e.roomId).find(roomId);
+	let [room] = rooms.filter(e=> e.roomId === roomId);
 	if (room.isGameRunning === false){
 		room.isGameRunning = true;
 		room.players.forEach(e=>
-			e.guesses = 5,
+			e.guesses = 0,
 			e.lastGuess="",
 			e.isKnockedOut= false,
 			e.wonRound = false,
 		);
-		return true
+		return true;
 	}
-	return false
+	return false;
 }
 
-//X startRound(roomId: string) return boolean about success
-//* will set rooms isRunningRound to true
+//X should be alright but probably double check
 const startRound = (roomId, currentWord)=> {
-	let room = rooms.filter(e => e.roomId).find(roomId);
+	let [room] = rooms.filter(e=> e.roomId === roomId);
 	if(!room.isRunningRound){
 		room.isRunningRound = true;
 		room.currentWord = currentWord;
@@ -145,80 +136,114 @@ const startRound = (roomId, currentWord)=> {
 	return true;
 }
 
-//X isGameRunning(roomId) return true / false
-//* will return the rooms isRunningGame boolean
+//X should be alright but probably double check
 const isGameRunning = async (roomId) => {
-	let room = rooms.filter(e => e.roomId).find(roomId);
-	if(room.isRunningGame === true){
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+	if(room.isRunningGame){
 		return true;
 	}	
 	return false;
 }
 
-//X isValidRoom(roomId) return true / false
-//* will return true or false based on if the room exists or not
+//X feel confident about this one
 const isValidRoom =(roomId)=> {
-	let room = rooms.filter(e => e.roomId).find(roomId);
-	if(!room){
-		return false;
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+	if(room){
+		return true;
 	}
-	return true;
+	return false;
 }
 
 
-//TODO submitWord(roomId, username, word) return true / false
-//* will need to set isRunningRound to false when all but one finish
-//* will set everyone without wonRound to isKnockedOut true
+//? Not sure if this was the best way to do this or if I missed the point here.
 const submitWord = (roomId, username, word)=> {
-	let room = rooms.filter(e => e.roomId).find(roomId);
-	//still working on the logic here
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+  let [player] = room.players.filter(e => e.username === username);
+	let winners = room.players.filter(e => e.lastGuess === room.currentWord);
+  player.lastGuess = word;
+  if(player.lastGuess === room.currentWord){
+    if(winners.length <= 9){
+      player.wonRound = true;
+      winners.push(player);
+    } else {
+      player.isKnockedOut = true;
+      room.isRunningRound = false;
+    }
+    return true;
+  }
+  return false;
 }
-//X isHost(roomId: string, username: string) return boolean
-//* will return the individual players isHost key
+
+//? I am hoping I did this right but not super confident
 const isHost = (roomId, username) => {
-	let room = rooms.filter(e=> e.roomId).find(roomId);
-	let player = room.players.username.find(username);
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+	let [player] = room.players.filter(e => e.username === username);
 	let {isHost} = player;
-	if(!isHost){
-		return false;
+	if(isHost){
+		return true;
 	}
-	return true;
+	return false;
 }
 
-//X isRoundRunning(roomId: string) return boolean
-//* will return the rooms isRoundRunning key
+//? I am hoping I did this right but not super confident
 const isRoundRunning = (roomId) => {
-	let room = rooms.filter(e=> e.roomId).find(roomId);
-	if(!room.isRunningRound){
-		return false;
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+	let {isRunningRound} = room;
+	if(isRunningRound){
+		return true;
 	}
-	return true;
+	return false;
 }
 
-// TODO getRoundWord(roomId) return string / null
-//* will return the currentWord key from the room object
+//? I am hoping I did this right but not super confident
 const getRoundWord = (roomId) => {
-	let room = rooms.filter(e=> e.roomId).find(roomId);
-	if(room.isRunningGame === true && room.isRunningRound === true){
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+	if(room.isRunningGame && room.isRunningRound){
 		return room.currentWord
 	}
 	return null
 }
 
+//should be alright but probably double check
+const endRound = (roomId) => {
+	let [room] = rooms.filter(e=> e.roomId === roomId);
+  if(room.isRunningRound){
+    room.isRunningRound = false;
+    return true;
+  }
+  return false;
+}
 
+//should be alright but probably double check
+const endGame = (roomId) => {
+  let [room] = rooms.filter(e=> e.roomId === roomId);
+  if(room.isRunningGame){
+    room.isRunningRound = false;
+    return true;
+  }
+  return false;
+}
+
+
+//* Quick note on this one:
+//Should be good to go once getting the room correctly!
 //TODO isRoomFull(roomId) return true / false
 //? checking length of players array and then changing boolean based off that 
-
 const isRoomFull = async (roomId) => {
-    let room = (rooms.map(e => e.roomId))
-	if(room.players.length === 10)
-		{ return true;}
-		 return false;
+	let room = (rooms.map(e => e.roomId))
+	if(room.players.length === 10){ 
+		return true;
 	}
-//TODO getAllPlayers(roomId) return players arr
-//? return player array
+		return false;
+	}
 
+//* Some notes on this function:
+// Okay Brett, so for this one, I don't think we need to check if the room is empty
+// We remove the room if there are no players in the room
+// I think one way to do this would be replacing the lines after let [room] with
+// just a return line of room.players (I think that should do the trick)
 
+//TODO getAllPlayers(roomId: string) return the room players arr
 const getAllPlayers = async (roomId) => {
 	let room = rooms.filter(e=> e.players)
 	if (room.players.length === 0) {
@@ -226,9 +251,14 @@ const getAllPlayers = async (roomId) => {
     rooms.players.slice(0, 9)
 }
 
-// hasWon(roomId: string, username: string) return boolean
-// will return the individual players wonRound key
+//* Some notes on this function:
+// I talked w Russell about this and we don't want to return an object, just the 
+// boolean itself
+// and then we also will grab the player in the same way we grab the room--
+// I sent you a message about how to fix that in slack
 
+//TODO hasWon(roomId: string, username: string) return boolean
+// will return the individual players wonRound key
 const hasWon = async (roomId, username) => {
 	let room = rooms.filter(e=> e.roomId);
 	let player = room.players.username.find(username);
@@ -237,38 +267,11 @@ const hasWon = async (roomId, username) => {
 	}
 		return player.wonRound = false
 }
- // endRound(roomId) return boolean about success
-//  will set the rooms isRunningRound key to false
-const endRound = async (roomId) => {
-	let room = rooms.filter(e=> e.roomId);
-	if(room.IsRunningRound = true){
-		return {IsRunningRound = false}
-	}
-		return IsRunningRound = true
-}
-
-module.exports = { getUsername, createRoom, getPlayer, addPlayer, removePlayer, startGame, startRound, isGameRunning, isValidRoom, isHost, isRoundRunning, getRoundWord, endRound, hasWon, getAllPlayers, isRoomFull  }
 
 
-/** better commented version (From Russell)
- * functions:
- *
- * isRoomFull(roomId: string) return boolean
- *      will return true or false based on if the room has 10 people in it
+module.exports = { getUsername, createRoom, getPlayer, addPlayer, removePlayer, startGame, startRound, isGameRunning, isValidRoom, isHost, isRoundRunning, getRoundWord, endRound, endGame, hasWon, getAllPlayers, isRoomFull, submitWord }
 
- 
- * hasWon(roomId: string, username: string) return boolean
- *      will return the individual players wonRound key
 
- 
- 
- 
- * endRound(roomId) return boolean about success
- *      will set the rooms isRunningRound key to false
- * endGame(roomId) return boolean about success
- *      will set the rooms isRunningGAme key to false
- * 
- * 
  //! Register page "CONFIRM PASSWORD" needs to be passed as a password type
  //! Feedback for successful register
  //! Remove Login and Register button from Menu once logged in
