@@ -17,6 +17,8 @@ import { setUser } from "./redux/actions/user.actions";
 import { verify } from "./shared/hooks/useAPI";
 import useAPI from "./shared/hooks/useAPI";
 import { useEffect } from "react";
+//WordKeyboard for testing
+import WordKeyboard from "./components/word-game/WordKeyboard";
 
 
 
@@ -78,7 +80,17 @@ function App({user, setUser}) {
         />
         <Route 
           path="*"
-          element={<Navigate to="/login" />} />
+          element={<Navigate to="/login" />} 
+          />
+                  <Route 
+          path="/wordkeyboard"
+          element={
+            <ProtectedRoute isPrivate={false}>
+              <WordKeyboard />
+            </ProtectedRoute>
+          }
+        />
+
            
       </Routes>
     </Router>)
