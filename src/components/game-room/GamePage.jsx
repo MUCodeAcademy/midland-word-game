@@ -7,7 +7,8 @@ import Score from "./Score";
 
 export const GamePage = () => {
   const { roomId } = useParams();
-  const { state } = useLocation();
+  //const { state } = useLocation();
+  //console.log(state)
   const {
     joinRoom,
     leaveRoom,
@@ -25,13 +26,12 @@ export const GamePage = () => {
     runningRound,
     playerWonRound,
     isHost,
-  } = useSocket(state.socket ? state.socket : null);
+  } = useSocket();
   const [timer, setTimer] = useState("");
-
   useEffect(() => {
     joinRoom(roomId);
     return () => {
-      leaveRoom();
+      //leaveRoom();
     };
   }, []);
 

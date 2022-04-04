@@ -4,8 +4,7 @@ import WordKeyboard from "./WordKeyboard";
 import WordRow from "./WordRow";
 
 export const WordBoard = ({ submitWord, guesses, roundWord, runningGame, runningRound, playerWonRound }) => {
-  return;
-  <div>
+  return <div>
     <WordRow
       submitWord={submitWord}
       guesses={guesses}
