@@ -89,6 +89,7 @@ function RegisterPage() {
               style={{ width: "100%" }}
               error={showError && !!passMatchError}
               label="Confirm password"
+              type="password"
               value={confirmPassword}
               helperText={showError ? passMatchError : ""}
               onChange={(e) => setConfirmPassword(e.target.value)}
