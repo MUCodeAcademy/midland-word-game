@@ -7,6 +7,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import InfoIcon from "@mui/icons-material/Info";
 import {
+  AppBar,
+  Toolbar,
+  Button,
   Box,
   Drawer,
   IconButton,
@@ -15,27 +18,36 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  ButtonGroup,
 } from "@mui/material";
 
 export const Menu = ({ user }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-
   return (
     <>
       {!user && (
         <>
-          <NavLink
-            to="register"
-            className={({ isActive }) => (isActive ? "activeLink" : "link")}
-          >
-            Register
-          </NavLink>
-          <NavLink
-            to="login"
-            className={({ isActive }) => (isActive ? "activeLink" : "link")}
-          >
-            Login
-          </NavLink>
+          <AppBar position="static">
+            <Toolbar>
+              <ButtonGroup>
+                <Button>
+                  <NavLink to="register" className="noTextDecor">
+                    REGISTER
+                  </NavLink>
+                </Button>
+                <Button>
+                  <NavLink to="login" className="noTextDecor">
+                    LOGIN
+                  </NavLink>
+                </Button>
+                <Button>
+                  <NavLink to="about" className="noTextDecor">
+                    ABOUT
+                  </NavLink>
+                </Button>
+              </ButtonGroup>
+            </Toolbar>
+          </AppBar>
         </>
       )}
       {user && (
@@ -50,47 +62,39 @@ export const Menu = ({ user }) => {
           >
             <Box width=" 250px">
               <List>
-                <ListItem button>
-                  <ListItemIcon>
-                    <PersonIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <NavLink to="classic" className="noTextDecor">
-                      CLASSIC
-                    </NavLink>
-                  </ListItemText>
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                    <PeopleAltIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <NavLink to="play" className="noTextDecor">
-                      BATTLE
-                    </NavLink>
-                  </ListItemText>
-                </ListItem>
-                <ListItem button>
-                  <ListItemIcon>
-                    <InfoIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <NavLink to="about" className="noTextDecor">
-                      ABOUT
-                    </NavLink>
-                  </ListItemText>
-                </ListItem>
+                <NavLink to="classic" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PersonIcon />
+                    </ListItemIcon>
+                    <ListItemText>CLASSIC</ListItemText>
+                  </ListItem>
+                </NavLink>
+                <NavLink to="play" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PeopleAltIcon />
+                    </ListItemIcon>
+                    <ListItemText>BATTLE</ListItemText>
+                  </ListItem>
+                </NavLink>
+                <NavLink to="about" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <InfoIcon />
+                    </ListItemIcon>
+                    <ListItemText>ABOUT</ListItemText>
+                  </ListItem>
+                </NavLink>
                 <Divider />
-                <ListItem button>
-                  <ListItemIcon>
-                    <LogoutIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <NavLink to="login" className="noTextDecor">
-                      LOGOUT
-                    </NavLink>
-                  </ListItemText>
-                </ListItem>
+                <NavLink to="login" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText>LOGOUT</ListItemText>
+                  </ListItem>
+                </NavLink>
               </List>
             </Box>
           </Drawer>
