@@ -86,7 +86,7 @@ function App({user, setUser}) {
           path="/wordkeyboard"
           element={
             <ProtectedRoute isPrivate={false}>
-              <WordKeyboard />
+    <WordKeyboard guesses={["guest"]} roundWord="horse" />
             </ProtectedRoute>
           }
         />

@@ -10,8 +10,8 @@ const firstRow = letters.slice(0,7);
 const secondRow = letters.slice(7,14);
 const thirdRow = letters.slice(14,21);
 const fourthRow = letters.slice(21)
-
-export default function WordKeyBoard(guesses, roundWord) {
+//! how can I help?
+export default function WordKeyBoard({guesses, roundWord}) {
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#687c8c',
   ...theme.typography.body2,
@@ -40,33 +40,31 @@ const getLetterKeyClassName = (letter)=>{
   }
   return className;
 }
-
-const guessesArr = guesses.split("")
+// console.log(guesses)
+// const guessesArr = guesses.split()
+console.log(roundWord)
 const roundWordArr = roundWord.split("")
 const newGuessesArr = guesses[guesses.length -1].split("")
 
+
 useEffect(() => {
   
-guessesArr.map((letter) => {
 
-  if (roundWordArr.includes(letter)) {setPartCorrect((partCorrect) => [...partCorrect, "letter"])}
-  else {setIncorrect((incorrect) => [...incorrect, "letter"])}
+newGuessesArr.map((letter) => {
 
-if (newGuessesArr[0] === roundWordArr[0]) {
-  setCorrect((Correct) => [...Correct, "letter"])
-}
-if (newGuessesArr[1] === roundWordArr[1]) {
-  setCorrect((Correct) => [...Correct, "letter"])
-}
-if (newGuessesArr[2] === roundWordArr[2]) {
-  setCorrect((Correct) => [...Correct, "letter"])
-}
-if (newGuessesArr[3] === roundWordArr[3]) {
-  setCorrect((Correct) => [...Correct, "letter"])
-}
-if (newGuessesArr[4] === roundWordArr[4]) {
-  setCorrect((Correct) => [...Correct, "letter"])
-}
+  if (roundWordArr.includes(letter)) {
+    setPartCorrect((partCorrect) => [...partCorrect, "letter"])
+  } else {
+    setIncorrect((incorrect) => [...incorrect, "letter"])
+  }
+
+  for (let i = 0; i < 5; i++) {
+    if (newGuessesArr[i] === roundWordArr[i]) {
+      setCorrect((correct) => [...correct, "letter"]);
+      break;
+    }
+  }
+});
 }, [guesses]);
 
   return (
