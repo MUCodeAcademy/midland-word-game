@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
 function WordRow({
@@ -9,20 +9,23 @@ function WordRow({
   submitWord,
 }) {
   const roundWordArr = roundWord.split("");
+
   const guessInput = useRef(null);
 
-  handleClick((word) => {
+  const handleClick = useCallback((word) => {
     submitWord(word);
-  });
+  }, [submitWord]);
 
   useEffect(() => {
-    guessInput.current.value = "";
+    if(guessInput.current){
+      guessInput.current.value = "";
+    }
   }, [guesses]);
 
   return (
     <div>
       <div>
-        {guesses.map((val) => (
+        {guesses && guesses.map((val) => (
           <WordRowDisplay
             key={val}
             roundWordArr={roundWordArr}

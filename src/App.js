@@ -1,4 +1,5 @@
 import "./App.css";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,6 +17,7 @@ import { connect } from "react-redux";
 import { setUser } from "./redux/actions/user.actions";
 import { verify } from "./shared/hooks/useAPI";
 import useAPI from "./shared/hooks/useAPI";
+
 import { useEffect, useState } from "react";
 
 function App({ user, setUser }) {
@@ -26,6 +28,7 @@ function App({ user, setUser }) {
   useEffect(() => {
     const verifyUser = async () => {
       const res = await verify();
+
       setLoading(false);
       if (res.success) {
         setUser(res.data.username);
@@ -35,13 +38,14 @@ function App({ user, setUser }) {
   }, []);
 
   return (
+
     <>
       {!loading && (
         <Router>
           <Menu />
           <Routes>
             <Route
-              path="/Play"
+              path="/play"
               element={
                 <ProtectedRoute isPrivate={true}>
                   <PlayPage />
@@ -80,6 +84,14 @@ function App({ user, setUser }) {
                 </ProtectedRoute>
               }
             />
+        <Route
+          path="/room/:roomId"
+          element={
+            <ProtectedRoute isPrivate={true}>
+              <GamePage />
+            </ProtectedRoute>
+          }
+        />
             <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </Router>

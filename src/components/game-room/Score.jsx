@@ -20,10 +20,12 @@ function Score({ players, player }) {
   }, []);
 
   useEffect(() => {
-    setRoundWinners(sorter(players.filter((player) => player.wonRound && !player.isKnockedOut)));
-    setKnockedOutWinners(sorter(players.filter((player) => player.isKnockedOut && player.wonRound)));
-    setFilteredPlayers(sorter(players.filter((player) => !player.isKnockedOut && !player.wonRound)));
-    setFilteredKnockedOuts(sorter(players.filter((player) => player.isKnockedOut && !player.wonRound)));
+    if (players) {
+      setRoundWinners(sorter(players.filter((player) => player.wonRound && !player.isKnockedOut)));
+      setKnockedOutWinners(sorter(players.filter((player) => player.isKnockedOut && player.wonRound)));
+      setFilteredPlayers(sorter(players.filter((player) => !player.isKnockedOut && !player.wonRound)));
+      setFilteredKnockedOuts(sorter(players.filter((player) => player.isKnockedOut && !player.wonRound)));
+    }
   }, [players, setFilteredPlayers, setFilteredKnockedOuts, setRoundWinners, sorter]);
 
   return (
@@ -31,37 +33,64 @@ function Score({ players, player }) {
       <div className="players-container">
         <span className="players-container-title">Round Winners</span>
         {roundWinners &&
+          player &&
           roundWinners.map((playerSingle, i) => {
             return (
-              <PlayerDisplay key={player.username + i} player={playerSingle} i={i} isHost={playerSingle.isHost} isYou={playerSingle.username === player.username} />
+              <PlayerDisplay
+                key={playerSingle.username + i}
+                player={playerSingle}
+                i={i}
+                isHost={playerSingle.isHost}
+                isYou={playerSingle.username === player.username}
+              />
             );
           })}
       </div>
       <div className="players-container">
         <span className="players-container-title">Players Still in</span>
         {filteredPlayers &&
+          player &&
           filteredPlayers.map((playerSingle, i) => {
-            console.log(playerSingle.username === player.username)
             return (
-              <PlayerDisplay key={player.username + i} player={playerSingle} i={i} isHost={playerSingle.isHost} isYou={playerSingle.username === player.username} />
+              <PlayerDisplay
+                key={playerSingle.username + i}
+                player={playerSingle}
+                i={i}
+                isHost={playerSingle.isHost}
+                isYou={playerSingle.username === player.username}
+              />
             );
           })}
       </div>
       <div className="players-container">
         <span className="players-container-title">Knocked Out Round Winners</span>
         {knockedOutWinners &&
+          player &&
           knockedOutWinners.map((playerSingle, i) => {
             return (
-              <PlayerDisplay key={player.username + i} player={playerSingle} i={i} isHost={playerSingle.isHost} isYou={playerSingle.username === player.username} />
+              <PlayerDisplay
+                key={playerSingle.username + i}
+                player={playerSingle}
+                i={i}
+                isHost={playerSingle.isHost}
+                isYou={playerSingle.username === player.username}
+              />
             );
           })}
       </div>
       <div className="players-container">
         <span className="players-container-title">Knocked Out Players</span>
         {filteredKnockedOuts &&
+          player &&
           filteredKnockedOuts.map((playerSingle, i) => {
             return (
-              <PlayerDisplay key={player.username + i} player={playerSingle} i={i} isHost={playerSingle.isHost} isYou={playerSingle.username === player.username} />
+              <PlayerDisplay
+                key={playerSingle.username + i}
+                player={playerSingle}
+                i={i}
+                isHost={playerSingle.isHost}
+                isYou={playerSingle.username === player.username}
+              />
             );
           })}
       </div>
