@@ -11,7 +11,8 @@ export const PlayPage = ({}) => {
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
   const {
-    createRoom
+    createRoom,
+    createRoomSolo,
   } = useSocket();
 
   useEffect(() => {
@@ -48,9 +49,16 @@ export const PlayPage = ({}) => {
         </Button>
       </div>
       <div className="right-container">
+        <div className="play-page-button">
         <Button variant="contained" onClick={() => createRoom()}>
           Create Room
         </Button>
+        </div>
+        <div className="play-page-button">
+        <Button className="play-page-button" variant="contained" onClick={() => createRoomSolo()}>
+          Play Solo
+        </Button>
+        </div>
       </div>
     </div>
   );

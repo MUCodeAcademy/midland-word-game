@@ -100,4 +100,9 @@
   padding-left: 15px;
   padding-right: 15px;
   height: 41vh;
+  flex-direction: column;
+}
+.play-page-button {
+  margin-bottom: 10px;
+
 }

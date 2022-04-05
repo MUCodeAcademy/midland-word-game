@@ -54,6 +54,10 @@ const useSocket = (socketParam = null) => {
       //setTransferring(true); //this could be a problem of unmounting component before finishing state change
       navigate(`/room/${data.roomId}`);
     });
+    socket.current.on("room created solo", (data) => {
+      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
+      navigate(`/classic`, { state: {id: data.roomId} });
+    });
     socket.current.on("player data", (data) => {
       //this means successful join
       setPlayers(data.players);
@@ -96,6 +100,9 @@ const useSocket = (socketParam = null) => {
 
   //error events
   useEffect(() => {
+    socket.current.on("guess limit", () => {
+      setError("You can not submit any more guesses")
+    })
     socket.current.on("not authenticated", () => {
       setError("Not authenticated"); //this is where we could hit the logout api endpoint
     });
@@ -212,6 +219,10 @@ const useSocket = (socketParam = null) => {
     socket.current.emit("create room");
   }, [socket]);
 
+  const createRoomSolo = useCallback(() => {
+    socket.current.emit("create room solo");
+  }, [socket]);
+
   const joinRoom = useCallback(
     (roomId) => {
       socket.current.emit("join room", roomId);
@@ -269,6 +280,7 @@ const useSocket = (socketParam = null) => {
     startGame,
     startRound,
     submitWord,
+    createRoomSolo,
     error,
     roomMessage,
     players,
