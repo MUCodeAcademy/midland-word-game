@@ -77,7 +77,7 @@ export const GamePage = () => {
           {isHost && (
             <>
               {!runningGame && <button onClick={() => startGame()}>Start Game</button>}
-              {!runningRound && <button onClick={() => startRound()}>Start Round</button>}
+              {runningGame && !runningRound && <button onClick={() => startRound()}>Start Round</button>}
             </>
           )}
         </div>
