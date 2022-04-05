@@ -79,7 +79,7 @@ const socketConf = (io) => {
               players: getAllPlayers(roomId),
               player: getPlayer(roomId, username),
               isRunningGame: isGameRunning(roomId),
-              isRoundRunning: isRoundRunning(roomId),
+              isRunningRound: isRoundRunning(roomId),
               roundWord: getRoundWord(roomId),
             });
           } else {
@@ -87,7 +87,7 @@ const socketConf = (io) => {
               players: getAllPlayers(roomId),
               player: getPlayer(roomId, username),
               isRunningGame: isGameRunning(roomId),
-              isRoundRunning: isRoundRunning(roomId),
+              isRunningRound: isRoundRunning(roomId),
             });
           }
         } else {
@@ -230,12 +230,14 @@ const socketConf = (io) => {
               duration -= 1;
             } else if (isRoundRunning(roomId)) {
               endRound(roomId);
+              io.to(roomId).emit("timer countdown", { time: 0 });
               io.to(roomId).emit("round over", { players: getAllPlayers(roomId), word: getRoundWord(roomId) });
               clearInterval(timer);
             } else {
               clearInterval(timer);
             }
           } else {
+            clearInterval(timer)
             io.to(roomId).emit("game over", { players: getAllPlayers(roomId) });
           }
         } else {

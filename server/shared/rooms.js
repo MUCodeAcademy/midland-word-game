@@ -51,7 +51,7 @@ const addPlayer = (roomId, username) => {
   if (numPlayers < 10) {
     room.players.push(newPlayer);
     let player = room.players.find((e) => e.username === username);
-    if (room.isRunning === true) {
+    if (room.isRunningRound) {
       player.isKnockedOut = true;
     }
     if (numPlayers === 0) {
