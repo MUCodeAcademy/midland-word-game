@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 function WordRowDisplay({ roundWordArr, userGuess }) {
   const [guessArr, setGuessArr] = useState([]);
@@ -72,29 +72,54 @@ function WordRowDisplay({ roundWordArr, userGuess }) {
     <div className="center text-white">
       <Grid container spacing={1} columns={10}>
         <Grid item xs={2}>
-          <div id="letter1" className={`${l1Correct ? "correct" : l1Included ? "included" : "incorrect"}`}>
+          <Box
+            id="letter1"
+            className={`${
+              l1Correct ? "correct" : l1Included ? "included" : "wr-incorrect"
+            }`}
+          >
             {guessArr[0]}
-          </div>
+          </Box>
         </Grid>
         <Grid item xs={2}>
-          <div id="letter2" className={`${l2Correct ? "correct" : l2Included ? "included" : "incorrect"}`}>
+          <Box
+            id="letter2"
+            className={`${
+              l2Correct ? "correct" : l2Included ? "included" : "wr-incorrect"
+            }`}
+          >
             {guessArr[1]}
-          </div>
+          </Box>
         </Grid>
         <Grid item xs={2}>
-          <div id="letter3" className={`${l3Correct ? "correct" : l3Included ? "included" : "incorrect"}`}>
+          <Box
+            id="letter3"
+            className={`${
+              l3Correct ? "correct" : l3Included ? "included" : "wr-incorrect"
+            }`}
+          >
             {guessArr[2]}
-          </div>
+          </Box>
         </Grid>
         <Grid item xs={2}>
-          <div id="letter4" className={`${l4Correct ? "correct" : l4Included ? "included" : "incorrect"}`}>
+          <Box
+            id="letter4"
+            className={`${
+              l4Correct ? "correct" : l4Included ? "included" : "wr-incorrect"
+            }`}
+          >
             {guessArr[3]}
-          </div>
+          </Box>
         </Grid>
         <Grid item xs={2}>
-          <div id="letter5" className={`${l5Correct ? "correct" : l5Included ? "included" : "incorrect"}`}>
+          <Box
+            id="letter5"
+            className={`${
+              l5Correct ? "correct" : l5Included ? "included" : "wr-incorrect"
+            }`}
+          >
             {guessArr[4]}
-          </div>
+          </Box>
         </Grid>
       </Grid>
     </div>
