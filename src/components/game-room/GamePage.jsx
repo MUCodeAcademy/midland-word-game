@@ -36,7 +36,14 @@ export const GamePage = () => {
   }, []);
 
   const copyRoomId = useCallback(() => {
-    navigator.clipboard.writeText(roomId); //i think this works but test it
+    async function init() {
+      if ("clipboard" in navigator) {
+        return await navigator.clipboard.writeText(roomId);
+      } else {
+        return document.execCommand("copy", true, roomId);
+      }
+    }
+    init();
   }, [roomId]);
   //talk need to happen about how to display other players
   //    if that will be in score or a new component
@@ -47,8 +54,7 @@ export const GamePage = () => {
     (seconds) => {
       let m = Math.floor(seconds / 60);
       let s = Math.floor(seconds % 60);
-      let mDisplay =
-        m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
+      let mDisplay = m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
       let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
       setTimer(mDisplay + sDisplay);
     },
@@ -61,9 +67,7 @@ export const GamePage = () => {
 
   return (
     <div>
-      <div>
-        {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
-      </div>
+      <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>
       <div>
         <div>
           <div>
@@ -72,12 +76,8 @@ export const GamePage = () => {
           </div>
           {isHost && (
             <>
-              {!runningGame && (
-                <button onClick={() => startGame()}>Start Game</button>
-              )}
-              {!runningRound && (
-                <button onClick={() => startRound()}>Start Round</button>
-              )}
+              {!runningGame && <button onClick={() => startGame()}>Start Game</button>}
+              {!runningRound && <button onClick={() => startRound()}>Start Round</button>}
             </>
           )}
         </div>
