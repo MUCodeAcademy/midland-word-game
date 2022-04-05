@@ -13,6 +13,7 @@ import PlayPage from "./components/PlayPage";
 import RegisterPage from "./components/RegisterPage";
 import Menu from "./shared/components/Menu";
 import ProtectedRoute from "./shared/components/ProtectedRoute";
+import GamePage from "./components/game-room/GamePage";
 import { connect } from "react-redux";
 import { setUser } from "./redux/actions/user.actions";
 import { verify } from "./shared/hooks/useAPI";
@@ -87,12 +88,11 @@ function App({ user, setUser }) {
         <Route
           path="/room/:roomId"
           element={
-            <ProtectedRoute isPrivate={true}>
+            
               <GamePage />
-            </ProtectedRoute>
           }
         />
-            <Route path="*" element={<Navigate to="/login" />} />
+            {/* <Route path="*" element={<Navigate to="/login" />} /> */}
           </Routes>
         </Router>
       )}

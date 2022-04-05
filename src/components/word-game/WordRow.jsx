@@ -8,7 +8,7 @@ function WordRow({
   guesses,
   submitWord,
 }) {
-  const roundWordArr = roundWord.split("");
+  const roundWordArr = roundWord ? roundWord.split("") : [];
 
   const guessInput = useRef(null);
 
