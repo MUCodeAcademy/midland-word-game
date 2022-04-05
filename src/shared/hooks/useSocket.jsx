@@ -216,9 +216,9 @@ const useSocket = (socketParam = null) => {
     [socket]
   );
 
-  const leaveRoom = useCallback(() => {
-    socket.current.emit("leave room");
-  }, [socket]);
+  // const leaveRoom = useCallback(() => {
+  //   socket.current.emit("leave room");
+  // }, [socket]);
 
   const startGame = useCallback(() => {
     if (socket) {
@@ -262,7 +262,7 @@ const useSocket = (socketParam = null) => {
   return {
     createRoom,
     joinRoom,
-    leaveRoom,
+    //leaveRoom,
     startGame,
     startRound,
     submitWord,
