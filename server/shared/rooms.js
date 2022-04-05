@@ -1,10 +1,5 @@
 const query = require("../config/mysql.conf");
 
-const getRoomId = () => {
-  const newRoom = (Math.random() + 1).toString(36).substring(7);
-  return newRoom;
-};
-
 let rooms = [];
 
 const createRoom = () => {
@@ -16,16 +11,14 @@ const createRoom = () => {
     isRunningRound: false,
     currentWord: "",
   };
-  
+
   rooms.push(room);
   return room.roomId;
 };
 
 const getUsername = async (uuid) => {
   try {
-    const [user] = await query("SELECT * FROM users WHERE users.uuid = ?", [
-      uuid,
-    ]);
+    const [user] = await query("SELECT * FROM users WHERE users.uuid = ?", [uuid]);
     if (!user) {
       return null;
     }
@@ -73,46 +66,39 @@ const addPlayer = (roomId, username) => {
 };
 
 const removePlayer = (roomId, username) => {
-  let room = rooms.find((e) => e.roomId === roomId);
-  let player = room.players.find((e) => e.username === username);
-  console.log(room.players.length)
-  let wasHost = false
-  if (player) {
-    let numPlayers = (room.players.length - 1);
-    if (player.isHost === true) {
-      wasHost = true
+  if (isValidRoom(roomId)) {
+    let room = rooms.find((e) => e.roomId === roomId);
+    let player = room.players.find((e) => e.username === username);
+    let wasHost = false;
+    if (player) {
+      let numPlayers = room.players.length - 1;
+      if (player.isHost === true) {
+        wasHost = true;
+      }
+      room.players = room.players.filter((e) => e.username !== player.username);
+      if (room.players.length === 0) {
+        rooms = rooms.filter((e) => e.roomId !== roomId);
+        return true;
+      }
+      if (wasHost) {
+        room.players[0].isHost = true;
+      }
+      if (numPlayers < 10) {
+        room.isFull = false;
+      } else {
+        room.isFull = true;
+      }
+      return true;
     }
-    //console.log(player)
-    room.players = room.players.filter((e) => e.username !== player.username);
-    console.log(room.players.length)
-    if(room.players.length === 0){
-      rooms = rooms.filter(e => e.roomId !== roomId)
-      return true
-    }
-    if(wasHost){
-      room.players[0].isHost = true
-    }
-    console.log(room.players[0])
-    if (numPlayers < 10) {
-      room.isFull = false;
-    } else {
-      room.isFull = true
-    }
-    return true;
+    return false;
   }
-  return false;
 };
 
 const startGame = (roomId) => {
-  console.log("start game func")
   let room = rooms.find((e) => e.roomId === roomId);
-  console.log(room)
   if (room.isRunningGame === false) {
     room.isRunningGame = true;
-    room.players = room.players.map(
-      (e) => ({ ...e, guesses: 0, lastGuess: "", isKnockedOut: false, wonRound: false }));
-      console.log("start game func")
-      console.log(room)
+    room.players = room.players.map((e) => ({ ...e, guesses: 0, lastGuess: "", isKnockedOut: false, wonRound: false }));
     return true;
   }
   return false;
@@ -128,9 +114,9 @@ const startRound = (roomId, currentWord) => {
   return true;
 };
 
-const isGameRunning =  (roomId) => {
+const isGameRunning = (roomId) => {
   let room = rooms.find((e) => e.roomId === roomId);
-  return room ? room.isRunningGame ? true : false : false;
+  return room ? (room.isRunningGame ? true : false) : false;
 };
 
 const isValidRoom = (roomId) => {
@@ -142,37 +128,32 @@ const isValidRoom = (roomId) => {
 };
 
 const submitWord = (roomId, username, word) => {
-  console.log('submit word func')
   let room = rooms.find((e) => e.roomId === roomId);
   let player = room.players.find((e) => e.username === username);
   if (word) {
     player.lastGuess = word;
-    player.guesses++
+    player.guesses++;
     if (player.lastGuess === room.currentWord) {
       player.wonRound = true;
     }
     let correctGuessers = room.players.filter((e) => e.wonRound && !e.isKnockedOut);
     let currentPlayers = room.players.filter((e) => !e.wonRound && !e.isKnockedOut);
-    console.log(correctGuessers.length)
-    console.log(currentPlayers.length)
     if (correctGuessers.length > 0) {
       if (currentPlayers.length === 1 || currentPlayers.length === 0) {
         room.isRunningRound = false;
-        currentPlayers.forEach(e => e.isKnockedOut = true);
+        currentPlayers.forEach((e) => (e.isKnockedOut = true));
       }
     }
-    checkGameOver(roomId)
+    checkGameOver(roomId);
     return true;
   } else {
-    return false
+    return false;
   }
 };
 
 const isHost = (roomId, username) => {
-  console.log('ishost func')
   let room = rooms.find((e) => e.roomId === roomId);
   let player = room.players.find((e) => e.username === username);
-  console.log(player)
   return player.isHost;
 };
 
@@ -187,7 +168,7 @@ const getRoundWord = (roomId) => {
 };
 
 const endRound = (roomId) => {
-  checkGameOver(roomId)
+  checkGameOver(roomId);
   let room = rooms.find((e) => e.roomId === roomId);
   if (room.isRunningRound) {
     room.isRunningRound = false;
@@ -216,14 +197,15 @@ const isRoomFull = (roomId) => {
 
 const getAllPlayers = (roomId) => {
   let room = rooms.find((e) => e.roomId === roomId);
-  console.log(room)
-  return room.players;
+  if (room) {
+    return room.players;
+  }
+  return [];
 };
 
-const hasWon =  (roomId, username) => {
+const hasWon = (roomId, username) => {
   let room = rooms.find((e) => e.roomId === roomId);
   let player = room.players.find((e) => e.username === username);
-  console.log(player)
   if (player.lastGuess === room.currentWord) {
     return true;
   }
@@ -233,17 +215,16 @@ const hasWon =  (roomId, username) => {
 const checkGameOver = (roomId) => {
   const room = rooms.find((e) => e.roomId === roomId);
 
-  const roundWinners = (sorter(room.players.filter((player) => player.wonRound && !player.isKnockedOut)));
+  const roundWinners = sorter(room.players.filter((player) => player.wonRound && !player.isKnockedOut));
   // const knockedOutWinners = (sorter(players.filter((player) => player.isKnockedOut && player.wonRound)));
-  const filteredPlayers = (sorter(room.players.filter((player) => !player.isKnockedOut && !player.wonRound)));
+  const filteredPlayers = sorter(room.players.filter((player) => !player.isKnockedOut && !player.wonRound));
   // const filteredKnockedOuts = (sorter(players.filter((player) => player.isKnockedOut && !player.wonRound)));
-  console.log(roundWinners)
-  if(roundWinners.length === 1 && (filteredPlayers.length === 1 || filteredPlayers.length === 0)){
-    endGame(roomId)
+  if (roundWinners.length === 1 && (filteredPlayers.length === 1 || filteredPlayers.length === 0)) {
+    endGame(roomId);
   }
-}
+};
 
-const sorter =(arr) => {
+const sorter = (arr) => {
   return arr.sort((playerOne, playerTwo) => {
     if (playerOne.guesses > playerTwo.guesses) {
       return 1;
@@ -253,7 +234,7 @@ const sorter =(arr) => {
     }
     return 0;
   });
-}
+};
 
 module.exports = {
   getUsername,
@@ -274,5 +255,4 @@ module.exports = {
   getAllPlayers,
   isRoomFull,
   submitWord,
-  getRoomId
 };

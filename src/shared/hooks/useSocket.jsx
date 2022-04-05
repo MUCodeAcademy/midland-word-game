@@ -2,124 +2,97 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
-const useSocket = ( socketParam = null ) => {
+const useSocket = (socketParam = null) => {
   const navigate = useNavigate();
   const socket = useRef(socketParam); //this might need to structure a bit different for socket transfer
+  const [username, setUsername] = useState(null);
   const [error, setError] = useState(null);
   const [roomMessage, setRoomMessage] = useState(null);
   const [players, setPlayers] = useState([]);
   const [player, setPlayer] = useState({});
   const [isHost, setIsHost] = useState(null);
   const [guesses, setGuesses] = useState([]);
-  const [transferring, setTransferring] = useState(false);
+  //const [transferring, setTransferring] = useState(false);
   const [roomTimer, setRoomTimer] = useState(null);
   const [runningRound, setRunningRound] = useState(false);
   const [runningGame, setRunningGame] = useState(null);
   const [roundWord, setRoundWord] = useState(null);
-  const [playerWonRound, setPlayerWonRound] = useState(false)
+  const [playerWonRound, setPlayerWonRound] = useState(false);
 
   useEffect(() => {
     if (player) {
-        console.log("host check")
-        console.log(player.isHost)
+      setPlayerWonRound(player.wonRound);
       setIsHost(player.isHost);
     }
-  }, [player, setIsHost]);
-
-  useEffect(() => {
-    if(player) {
-      setPlayerWonRound(player.wonRound)
-    }
-  }, [player, setPlayerWonRound])
+  }, [player, setPlayerWonRound, setIsHost]);
 
   useEffect(() => {
     if (!socket.current) {
-      //might need to be .current not sure
       socket.current = io("http://localhost:8080", {
-        withCredentials: true
+        withCredentials: true,
       });
     }
     return () => {
       //if (!transferring) {
-        //socket.current.disconnect();
+      socket.current.disconnect();
       //}
     };
   }, [socket]);
 
-  const indexOfUser = useCallback(
-    (username) => {
-      for (let i = 0; i < players.length; i++) {
-        if (players[i].username === username) {
-          return i;
-        }
-      }
-      return -1;
-    },
-    [players]
-  );
-
   useEffect(() => {
     socket.current.on("player data update", (data) => {
-      console.log('player data update')
-        console.log(data)
       setPlayers(data.players);
-      setPlayer(data.players.find(e => e.username = player.username));
-    })
-}, [socket.current, setPlayers, player])
+    });
+  }, [socket, setPlayers]);
+
+  useEffect(() => {
+    setPlayer(players.find((e) => e.username === username));
+  }, [players, username]);
 
   useEffect(() => {
     socket.current.on("room created", (data) => {
-      setTransferring(true); //this could be a problem of unmounting component before finishing state change
+      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
       navigate(`/room/${data.roomId}`, { state: socket.current });
     });
     socket.current.on("player data", (data) => {
-        console.log('player data')
-        console.log(data)
       //this means successful join
       setPlayers(data.players);
-      setPlayer(data.player);
+      //setPlayer(data.player);
+      setUsername(data.player.username);
       setRunningGame(data.isRunningGame);
       setRunningRound(data.setRunningRound);
       if (data.setRunningRound) {
         setRoundWord(data.roundWord);
       }
     });
-    socket.current.on("player leave", (data) => {
-      setPlayers((curr) =>
-        curr.filter((player) => {
-          if (player.username !== data.username) {
-            return true;
-          }
-          return false;
-        })
-      );
-    });
-  }, [socket, player, setPlayer]);
+    // socket.current.on("player leave", (data) => {
+    //   console.log("player leave")
+    //   console.log(data)
+    //   setPlayers((curr) =>
+    //     curr.filter((player) => {
+    //       if (player.username !== data.username) {
+    //         return true;
+    //       }
+    //       return false;
+    //     })
+    //   );
+    // });
+  }, [socket, setPlayers, setUsername, setRunningGame, setRunningRound, setRoundWord, navigate]);
 
   useEffect(() => {
     socket.current.on("player join", (data) => {
       setPlayers((curr) => [...curr, data.player]);
     });
-  },[setPlayers])
+  }, [setPlayers]);
 
   useEffect(() => {
     socket.current.on("new guess", (data) => {
-        console.log("new guess")
-        console.log(data)
-        console.log(player)
-      if (data.player.username === player.username) {
+      if (data.player.username === username) {
         setGuesses((curr) => [...curr, data.player.lastGuess]);
-        setPlayer(data.player)
       }
-      const index = indexOfUser(data.player.username);
-      console.log("-----------")
-      console.log(indexOfUser(data.player.username))
-      console.log(players)
-      console.log(players.slice(0, index));
-      console.log(players.slice(index + 1))
-      setPlayers((curr) => [...curr.filter(e => e.username !== data.player.username), data.player]);
+      setPlayers((curr) => [...curr.filter((e) => e.username !== data.player.username), data.player]);
     });
-  }, [socket, player, setPlayer, setGuesses, indexOfUser, players])
+  }, [socket, setPlayer, setGuesses, username]);
 
   //error events
   useEffect(() => {
@@ -165,77 +138,79 @@ const useSocket = ( socketParam = null ) => {
     socket.current.on("already won", () => {
       setError("You have already won this round");
     });
-  }, [socket, setError])
+  }, [socket, setError]);
 
   // game and room start / stop events
   useEffect(() => {
     socket.current.on("not running game", () => {
-      if(runningGame){
-        setRunningGame(false)
+      if (runningGame) {
+        setRunningGame(false);
       }
       setError("Game is not started");
     });
     socket.current.on("not running round", () => {
-      if(runningRound){
-        setRunningRound(false)
+      if (runningRound) {
+        setRunningRound(false);
       }
       setError("Round is not started");
     });
     socket.current.on("round over", (data) => {
-      setPlayer(curr => {
+      setPlayer((curr) => {
         return {
           ...curr,
           wonRound: false,
           lastGuess: "",
           guesses: 0,
-        }
-      })
-      setPlayers(data.players)
+        };
+      });
+      setPlayers(data.players);
       setRunningRound(false);
-      setRoomMessage("Round Over")
+      setRoomMessage("Round Over");
     });
-    socket.current.on("game over", () => { //server needs this event
-      setRunningGame(false)
-      setRoomMessage("Game Over")
-    })
+    socket.current.on("game over", () => {
+      setRunningGame(false);
+      setRoomMessage("Game Over");
+    });
     socket.current.on("game start", () => {
+      if (isHost) {
+        socket.current.emit("start round");
+      }
       setRunningGame(true);
       setRoomMessage("Game Starting");
     });
+  }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, setPlayer]);
+
+  useEffect(() => {
     socket.current.on("round start", (data) => {
-      setPlayer(curr => {
+      setPlayer((curr) => {
         return {
           ...curr,
           wonRound: false,
           lastGuess: "",
           guesses: 0,
-        }
-      })
-      console.log(data)
-      setPlayers(data.players)
+        };
+      });
+      setPlayers(data.players);
       setRunningRound(true);
       setGuesses([]);
-      setRoundWord(data.roundWord)
-      console.log(data.roundWord)
+      setRoundWord(data.roundWord);
       setRoomMessage("Round Starting");
     });
-  }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, player, setPlayer])
+  }, [socket, setPlayer, setPlayers, setRunningRound, setGuesses, setRoundWord, setRoomMessage]);
 
   // timer event
   useEffect(() => {
     socket.current.on("timer countdown", (data) => {
       setRoomTimer(data.time);
     });
-  }, [socket, setRoomTimer])
-
+  }, [socket, setRoomTimer]);
 
   const createRoom = useCallback(() => {
     socket.current.emit("create room");
   }, [socket]);
 
   const joinRoom = useCallback(
-      (roomId) => {
-        console.log('join room func', roomId)
+    (roomId) => {
       socket.current.emit("join room", roomId);
     },
     [socket]
@@ -264,7 +239,6 @@ const useSocket = ( socketParam = null ) => {
   const startRound = useCallback(() => {
     if (socket) {
       if (isHost) {
-        console.log(runningRound)
         if (!runningRound) {
           socket.current.emit("start round");
         } else {
@@ -307,41 +281,3 @@ const useSocket = ( socketParam = null ) => {
 };
 
 export default useSocket;
-
-/**
- * -- client socket sends --
- * create room
- * join room
- * leave room
- * start game
- * start round
- * submit word
- *
- * -- client socket received -- not completely accurate list 
- * not authenticated
- * room created {roomId} //will instantly call join room
- * failed room create
- * invalid room
- * room full
- * player data {playerArr []} //client will set local state to player arr returned
- * player join {player Obj} //client will add player to local state
- * failed join
- * player leave {username} //client will delete that player from local state
- * failed leave
- * game start {players: playersArr[], word} //will instantly call start round
- * already running game
- * failed game start
- * not host
- * round start {players: playersArr[], word}
- * failed round start
- * already running round
- * invalid word
- * new guess {player Obj}
- * player win {player Obj}
- * failed submit
- * already won
- * not running round
- * not running game
- * timer countdown {duration}
- * round over
- */
