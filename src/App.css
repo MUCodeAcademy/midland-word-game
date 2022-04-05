@@ -1,15 +1,5 @@
-.activeLink {
-  display: none;
-}
-.link {
+.noTextDecor {
   text-decoration: none;
-  background-color: black;
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  padding: 15px;
-  width: 20%;
-  min-height: 30px;
 }
 .correct {
   background-color: green;
@@ -19,8 +9,12 @@
   background-color: goldenrod;
 }
 
-.incorrect {
+.wr-incorrect {
   background-color: gray;
+}
+
+.incorrect {
+  background-color: crimson;
 }
 
 .center {
@@ -110,4 +104,5 @@
 }
 .play-page-button {
   margin-bottom: 10px;
+
 }

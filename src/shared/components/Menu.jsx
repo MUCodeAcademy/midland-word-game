@@ -1,63 +1,101 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
+import InfoIcon from "@mui/icons-material/Info";
 import {
+  AppBar,
+  Toolbar,
+  Button,
   Box,
   Drawer,
-  Button,
-  List,
+  IconButton,
   Divider,
+  List,
   ListItem,
   ListItemText,
+  ListItemIcon,
+  ButtonGroup,
 } from "@mui/material";
 
-export const Menu = () => {
-  const [battleOptions, setBattleOptions] = useState(false);
-  const [user, setUser] = useState(null);
+export const Menu = ({ user }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const battleClick = () => {
-    setBattleOptions(true);
-  };
-
   return (
     <>
       {!user && (
         <>
-          <NavLink
-            to="register"
-            className={({ isActive }) => (isActive ? "activeLink" : "link")}
-          >
-            Register
-          </NavLink>
-          <NavLink
-            to="login"
-            className={({ isActive }) => (isActive ? "activeLink" : "link")}
-          >
-            Login
-          </NavLink>
+          <AppBar position="static">
+            <Toolbar>
+              <ButtonGroup>
+                <Button>
+                  <NavLink to="register" className="noTextDecor">
+                    REGISTER
+                  </NavLink>
+                </Button>
+                <Button>
+                  <NavLink to="login" className="noTextDecor">
+                    LOGIN
+                  </NavLink>
+                </Button>
+                <Button>
+                  <NavLink to="about" className="noTextDecor">
+                    ABOUT
+                  </NavLink>
+                </Button>
+              </ButtonGroup>
+            </Toolbar>
+          </AppBar>
         </>
       )}
       {user && (
         <>
-          <Button onClick={() => setDrawerOpen(true)}>Menu</Button>
+          <IconButton size="large" onClick={() => setDrawerOpen(true)}>
+            <MenuIcon />
+          </IconButton>
           <Drawer
             anchor="left"
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
           >
-            <Box width=" 250px" textAlign="center" role="presentation">
-              <NavLink to="about">About</NavLink>
-              <NavLink to="classic">Classic</NavLink>
-              <NavLink to="play" onClick={battleClick}>
-                Battle
-              </NavLink>
-              {battleOptions && (
-                <div>
-                  <NavLink to="create">Create Battle</NavLink>
-                  <NavLink to="join">Join Battle</NavLink>
-                </div>
-              )}
-              <NavLink to="login">Logout</NavLink>
+            <Box width=" 250px">
+              <List>
+                <NavLink to="classic" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PersonIcon />
+                    </ListItemIcon>
+                    <ListItemText>CLASSIC</ListItemText>
+                  </ListItem>
+                </NavLink>
+                <NavLink to="play" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <PeopleAltIcon />
+                    </ListItemIcon>
+                    <ListItemText>BATTLE</ListItemText>
+                  </ListItem>
+                </NavLink>
+                <NavLink to="about" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <InfoIcon />
+                    </ListItemIcon>
+                    <ListItemText>ABOUT</ListItemText>
+                  </ListItem>
+                </NavLink>
+                <Divider />
+                <NavLink to="login" className="noTextDecor">
+                  <ListItem button>
+                    <ListItemIcon>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText>LOGOUT</ListItemText>
+                  </ListItem>
+                </NavLink>
+              </List>
             </Box>
           </Drawer>
         </>
@@ -66,7 +104,11 @@ export const Menu = () => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
 
 const mapDispatchToProps = {};
 
