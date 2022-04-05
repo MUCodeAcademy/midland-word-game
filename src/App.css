@@ -74,7 +74,7 @@
   padding-left: 10px;
   justify-content: center;
 }
-@media (max-width: 550px){
+@media (max-width: 550px) {
   .left-container {
     flex-direction: column;
   }
@@ -82,7 +82,7 @@
     margin-top: 10px;
   }
 }
-@media (max-width: 390px){
+@media (max-width: 390px) {
   .play-page-container {
     flex-direction: column;
   }
@@ -106,4 +106,8 @@
   padding-left: 15px;
   padding-right: 15px;
   height: 41vh;
+  flex-direction: column;
+}
+.play-page-button {
+  margin-bottom: 10px;
 }

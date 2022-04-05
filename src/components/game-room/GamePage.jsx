@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
@@ -6,6 +6,7 @@ import WordBoard from "../word-game/WordBoard";
 import Score from "./Score";
 
 export const GamePage = () => {
+  const copyBtn = useRef();
   const { roomId } = useParams();
   //const { state } = useLocation();
   //console.log(state)
@@ -35,21 +36,6 @@ export const GamePage = () => {
     };
   }, []);
 
-  const copyRoomId = useCallback(() => {
-    async function init() {
-      if ("clipboard" in navigator) {
-        return await navigator.clipboard.writeText(roomId);
-      } else {
-        return document.execCommand("copy", true, roomId);
-      }
-    }
-    init();
-  }, [roomId]);
-  //talk need to happen about how to display other players
-  //    if that will be in score or a new component
-  //    also more about how we want the layout of this to be
-  //the error || roomMessage will need to separate them or have a timeout / clear method
-
   const timerDisplay = useCallback(
     (seconds) => {
       let m = Math.floor(seconds / 60);
@@ -72,7 +58,15 @@ export const GamePage = () => {
         <div>
           <div>
             <span>{roomId}</span>
-            <button onClick={() => copyRoomId}>Copy</button>
+            <button
+              ref={copyBtn}
+              onClick={() => {
+                navigator.clipboard.writeText(roomId);
+                copyBtn.current.innerText = "Copied";
+              }}
+            >
+              Copy
+            </button>
           </div>
           {isHost && (
             <>
@@ -90,6 +84,7 @@ export const GamePage = () => {
             runningGame={runningGame}
             runningRound={runningRound}
             playerWonRound={playerWonRound}
+            solo={false}
           />
         </div>
         <div>
