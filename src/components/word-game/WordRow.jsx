@@ -1,8 +1,15 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
-function WordRow({ roundWord, runningRound, playerWonRound, guesses, submitWord }) {
-  const roundWordArr = roundWord ? roundWord.split("") : ""
+function WordRow({
+  roundWord,
+  runningRound,
+  playerWonRound,
+  guesses,
+  submitWord,
+}) {
+  const roundWordArr = roundWord.split("");
+
   const guessInput = useRef(null);
 
   const handleClick = useCallback((word) => {
