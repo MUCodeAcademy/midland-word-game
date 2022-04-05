@@ -52,7 +52,7 @@ const useSocket = (socketParam = null) => {
   useEffect(() => {
     socket.current.on("room created", (data) => {
       //setTransferring(true); //this could be a problem of unmounting component before finishing state change
-      navigate(`/room/${data.roomId}`, { state: socket.current });
+      navigate(`/room/${data.roomId}`);
     });
     socket.current.on("player data", (data) => {
       //this means successful join

@@ -85,14 +85,15 @@ function App({ user, setUser }) {
                 </ProtectedRoute>
               }
             />
-        <Route
-          path="/room/:roomId"
-          element={
-            
-              <GamePage />
-          }
-        />
-            {/* <Route path="*" element={<Navigate to="/login" />} /> */}
+            <Route
+              path="/room/:roomId"
+              element={
+                <ProtectedRoute isPrivate={true}>
+                  <GamePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </Router>
       )}
