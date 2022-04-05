@@ -9,8 +9,12 @@
   background-color: goldenrod;
 }
 
-.incorrect {
+.wr-incorrect {
   background-color: gray;
+}
+
+.incorrect {
+  background-color: crimson;
 }
 
 .center {
