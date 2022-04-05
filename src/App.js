@@ -26,63 +26,65 @@ function App({ user, setUser }) {
   useEffect(() => {
     const verifyUser = async () => {
       const res = await verify();
+      setLoading(false);
       if (res.success) {
         setUser(res.data.username);
-        setLoading(false);
       }
     };
     verifyUser();
   }, []);
 
   return (
-    !loading && (
-      <Router>
-        <Menu />
-        <Routes>
-          <Route
-            path="/Play"
-            element={
-              <ProtectedRoute isPrivate={true}>
-                <PlayPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <ProtectedRoute isPrivate={false}>
-                <LoginPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <ProtectedRoute isPrivate={false}>
-                <AboutPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/classic"
-            element={
-              <ProtectedRoute isPrivate={true}>
-                <ClassicPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <ProtectedRoute isPrivate={false}>
-                <RegisterPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
-      </Router>
-    )
+    <>
+      {!loading && (
+        <Router>
+          <Menu />
+          <Routes>
+            <Route
+              path="/Play"
+              element={
+                <ProtectedRoute isPrivate={true}>
+                  <PlayPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <ProtectedRoute isPrivate={false}>
+                  <LoginPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <ProtectedRoute isPrivate={false}>
+                  <AboutPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/classic"
+              element={
+                <ProtectedRoute isPrivate={true}>
+                  <ClassicPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <ProtectedRoute isPrivate={false}>
+                  <RegisterPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </Router>
+      )}
+    </>
   );
 }
 
