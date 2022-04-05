@@ -1,7 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
-function WordRow({ roundWord, runningRound, playerWonRound, guesses }) {
+function WordRow({
+  roundWord,
+  runningRound,
+  playerWonRound,
+  guesses,
+  submitWord,
+}) {
   const roundWordArr = roundWord.split("");
   const guessInput = useRef(null);
 
