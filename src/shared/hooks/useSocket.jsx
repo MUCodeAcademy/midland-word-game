@@ -60,8 +60,8 @@ const useSocket = (socketParam = null) => {
       //setPlayer(data.player);
       setUsername(data.player.username);
       setRunningGame(data.isRunningGame);
-      setRunningRound(data.setRunningRound);
-      if (data.setRunningRound) {
+      setRunningRound(data.isRunningRound);
+      if (data.isRunningRound) {
         setRoundWord(data.roundWord);
       }
     });
@@ -171,6 +171,9 @@ const useSocket = (socketParam = null) => {
       setRunningGame(false);
       setRoomMessage("Game Over");
     });
+  }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, setPlayer]);
+
+  useEffect(() => {
     socket.current.on("game start", () => {
       if (isHost) {
         socket.current.emit("start round");
@@ -178,7 +181,7 @@ const useSocket = (socketParam = null) => {
       setRunningGame(true);
       setRoomMessage("Game Starting");
     });
-  }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, setPlayer]);
+  }, [socket, setRunningGame, setRoomMessage, isHost])
 
   useEffect(() => {
     socket.current.on("round start", (data) => {
