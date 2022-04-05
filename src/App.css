@@ -1,15 +1,5 @@
-.activeLink {
-  display: none;
-}
-.link {
+.noTextDecor {
   text-decoration: none;
-  background-color: black;
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  padding: 15px;
-  width: 20%;
-  min-height: 30px;
 }
 .correct {
   background-color: green;
@@ -74,7 +64,7 @@
   padding-left: 10px;
   justify-content: center;
 }
-@media (max-width: 550px){
+@media (max-width: 550px) {
   .left-container {
     flex-direction: column;
   }
@@ -82,7 +72,7 @@
     margin-top: 10px;
   }
 }
-@media (max-width: 390px){
+@media (max-width: 390px) {
   .play-page-container {
     flex-direction: column;
   }
