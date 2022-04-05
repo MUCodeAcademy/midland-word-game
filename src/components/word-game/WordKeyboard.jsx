@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 const firstRow = letters.slice(0,7);
@@ -11,7 +11,7 @@ const secondRow = letters.slice(7,14);
 const thirdRow = letters.slice(14,21);
 const fourthRow = letters.slice(21)
 
-export default function WordKeyBoard() {
+export default function WordKeyBoard(guesses, roundWord) {
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#687c8c',
   ...theme.typography.body2,
@@ -40,6 +40,34 @@ const getLetterKeyClassName = (letter)=>{
   }
   return className;
 }
+
+const guessesArr = guesses.split("")
+const roundWordArr = roundWord.split("")
+const newGuessesArr = guesses[guesses.length -1].split("")
+
+useEffect(() => {
+  
+guessesArr.map((letter) => {
+
+  if (roundWordArr.includes(letter)) {setPartCorrect((partCorrect) => [...partCorrect, "letter"])}
+  else {setIncorrect((incorrect) => [...incorrect, "letter"])}
+
+if (newGuessesArr[0] === roundWordArr[0]) {
+  setCorrect((Correct) => [...Correct, "letter"])
+}
+if (newGuessesArr[1] === roundWordArr[1]) {
+  setCorrect((Correct) => [...Correct, "letter"])
+}
+if (newGuessesArr[2] === roundWordArr[2]) {
+  setCorrect((Correct) => [...Correct, "letter"])
+}
+if (newGuessesArr[3] === roundWordArr[3]) {
+  setCorrect((Correct) => [...Correct, "letter"])
+}
+if (newGuessesArr[4] === roundWordArr[4]) {
+  setCorrect((Correct) => [...Correct, "letter"])
+}
+}, [guesses]);
 
   return (
       <Grid direction="column" container sx={{ width: "100%", flexGrow: 1, display: "flex" }}>
@@ -77,5 +105,5 @@ const getLetterKeyClassName = (letter)=>{
         </Grid>
 
       </Grid>
-  );
+);
 }
