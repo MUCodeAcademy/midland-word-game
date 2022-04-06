@@ -1,7 +1,17 @@
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import React, { useCallback, useEffect, useState } from "react";
 import PlayerDisplay from "./PlayerDisplay";
 
-function Score({ players, player }) {
+const ScoreContainer = styled(Box)(({ theme }) => ({
+  ...theme.typography.body2,
+  backgroundColor: theme.palette.secondary.main,
+  borderRadius: "15px",
+  padding: "5px",
+  textAlign: "center",
+}));
+
+function Score({ players, username, runningRound }) {
   const [roundWinners, setRoundWinners] = useState([]);
   const [filteredPlayers, setFilteredPlayers] = useState([]);
   const [filteredKnockedOuts, setFilteredKnockedOuts] = useState([]);
@@ -22,79 +32,49 @@ function Score({ players, player }) {
   useEffect(() => {
     if (players) {
       setRoundWinners(sorter(players.filter((player) => player.wonRound && !player.isKnockedOut)));
-      setKnockedOutWinners(sorter(players.filter((player) => player.isKnockedOut && player.wonRound)));
       setFilteredPlayers(sorter(players.filter((player) => !player.isKnockedOut && !player.wonRound)));
+      setKnockedOutWinners(sorter(players.filter((player) => player.isKnockedOut && player.wonRound)));
       setFilteredKnockedOuts(sorter(players.filter((player) => player.isKnockedOut && !player.wonRound)));
     }
   }, [players, setFilteredPlayers, setFilteredKnockedOuts, setRoundWinners, sorter]);
 
   return (
-    <div className="score-container">
-      <div className="players-container">
-        <span className="players-container-title">Round Winners</span>
+    <ScoreContainer>
+      <Box>
+        <span className="players-container-title">Leader board</span>
         {roundWinners &&
-          player &&
-          roundWinners.map((playerSingle, i) => {
+          username &&
+          [...roundWinners, ...filteredPlayers].map((playerSingle, i) => {
             return (
               <PlayerDisplay
                 key={playerSingle.username + i}
                 player={playerSingle}
                 i={i}
-                isHost={playerSingle.isHost}
-                isYou={playerSingle.username === player.username}
+                isYou={playerSingle.username === username}
+                runningRound={runningRound}
               />
             );
           })}
-      </div>
-      <div className="players-container">
-        <span className="players-container-title">Players Still in</span>
-        {filteredPlayers &&
-          player &&
-          filteredPlayers.map((playerSingle, i) => {
-            return (
-              <PlayerDisplay
-                key={playerSingle.username + i}
-                player={playerSingle}
-                i={i}
-                isHost={playerSingle.isHost}
-                isYou={playerSingle.username === player.username}
-              />
-            );
-          })}
-      </div>
-      <div className="players-container">
-        <span className="players-container-title">Knocked Out Round Winners</span>
-        {knockedOutWinners &&
-          player &&
-          knockedOutWinners.map((playerSingle, i) => {
-            return (
-              <PlayerDisplay
-                key={playerSingle.username + i}
-                player={playerSingle}
-                i={i}
-                isHost={playerSingle.isHost}
-                isYou={playerSingle.username === player.username}
-              />
-            );
-          })}
-      </div>
-      <div className="players-container">
-        <span className="players-container-title">Knocked Out Players</span>
-        {filteredKnockedOuts &&
-          player &&
-          filteredKnockedOuts.map((playerSingle, i) => {
-            return (
-              <PlayerDisplay
-                key={playerSingle.username + i}
-                player={playerSingle}
-                i={i}
-                isHost={playerSingle.isHost}
-                isYou={playerSingle.username === player.username}
-              />
-            );
-          })}
-      </div>
-    </div>
+      </Box>
+      {knockedOutWinners.length + filteredKnockedOuts.length > 0 && (
+        <Box sx={{ borderTop: "3px solid red", marginTop: "20px" }}>
+          <span className="players-container-title">Knocked Out Players</span>
+          {knockedOutWinners &&
+            username &&
+            [...knockedOutWinners, ...filteredKnockedOuts].map((playerSingle, i) => {
+              return (
+                <PlayerDisplay
+                  key={playerSingle.username + i}
+                  player={playerSingle}
+                  i={i}
+                  isYou={playerSingle.username === username}
+                  runningRound={runningRound}
+                />
+              );
+            })}
+        </Box>
+      )}
+    </ScoreContainer>
   );
 }
 

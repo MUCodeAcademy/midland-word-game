@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
@@ -13,7 +13,7 @@ const useSocket = (socketParam = null) => {
   const [isHost, setIsHost] = useState(null);
   const [guesses, setGuesses] = useState([]);
   //const [transferring, setTransferring] = useState(false);
-  const [roomTimer, setRoomTimer] = useState(null);
+  const [roomTimer, setRoomTimer] = useState(120);
   const [runningRound, setRunningRound] = useState(false);
   const [runningGame, setRunningGame] = useState(null);
   const [roundWord, setRoundWord] = useState(null);
@@ -248,7 +248,7 @@ const useSocket = (socketParam = null) => {
     } else {
       setError("Failed to connect to server");
     }
-  }, [socket, isHost, setError]);
+  }, [socket, isHost, setError, runningGame]);
 
   const startRound = useCallback(() => {
     if (socket) {
@@ -292,6 +292,7 @@ const useSocket = (socketParam = null) => {
     runningRound,
     playerWonRound,
     isHost,
+    username
   };
 };
 
