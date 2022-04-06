@@ -89,7 +89,7 @@ export const LoginPage = ({ setUser }) => {
         </div>
         <p>
           Don't have an account?{" "}
-          <span className="login-redirect" onClick={() => navigate("/signup")}>
+          <span className="login-redirect" onClick={() => navigate("/register")}>
             Register
           </span>
         </p>

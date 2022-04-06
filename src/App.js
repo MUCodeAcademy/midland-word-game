@@ -1,9 +1,10 @@
 import "./App.css";
-import { 
+
+import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 import AboutPage from "./components/AboutPage";
 import ClassicPage from "./components/ClassicPage";
@@ -12,97 +13,99 @@ import PlayPage from "./components/PlayPage";
 import RegisterPage from "./components/RegisterPage";
 import Menu from "./shared/components/Menu";
 import ProtectedRoute from "./shared/components/ProtectedRoute";
+import GamePage from "./components/game-room/GamePage";
 import { connect } from "react-redux";
 import { setUser } from "./redux/actions/user.actions";
 import { verify } from "./shared/hooks/useAPI";
 import useAPI from "./shared/hooks/useAPI";
-import { useEffect } from "react";
-//WordKeyboard for testing
-import WordKeyboard from "./components/word-game/WordKeyboard";
 
+import { useEffect, useState } from "react";
 
+function App({ user, setUser }) {
+  const { verify } = useAPI();
 
-
-function App({user, setUser}) {
-  const {verify} = useAPI();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verifyUser = async () => {
       const res = await verify();
-        if(res.success){
-          setUser(res.data.username)
-        } 
-    }; verifyUser()
+
+      setLoading(false);
+      if (res.success) {
+        setUser(res.data.username);
+      }
+    };
+    verifyUser();
   }, []);
 
-    return (<Router>
-      <Menu />
-      <Routes>
-        <Route 
-          path="/Play"
-          element={
-            <ProtectedRoute isPrivate={true}>
-              <PlayPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route 
-          path="/login"
-          element={
-            <ProtectedRoute isPrivate={false}>
-              <LoginPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route 
-          path="/about"
-          element={
-            <ProtectedRoute isPrivate={false}>
-              <AboutPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route 
-          path="/classic"
-          element={
-            <ProtectedRoute isPrivate={true}>
-              <ClassicPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route 
-          path="/register"
-          element={
-            <ProtectedRoute isPrivate={false}>
-              <RegisterPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route 
-          path="*"
-          element={<Navigate to="/login" />} 
-          />
-                  <Route 
-          path="/wordkeyboard"
-          element={
-            <ProtectedRoute isPrivate={false}>
-    <WordKeyboard guesses={["guest"]} roundWord="horse" />
-            </ProtectedRoute>
-          }
-        />
+  return (
 
-           
-      </Routes>
-    </Router>)
+    <>
+      {!loading && (
+        <Router>
+          <Menu />
+          <Routes>
+            <Route
+              path="/play"
+              element={
+                <ProtectedRoute isPrivate={true}>
+                  <PlayPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <ProtectedRoute isPrivate={false}>
+                  <LoginPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                  <AboutPage />
+              }
+            />
+            <Route
+              path="/classic"
+              element={
+                <ProtectedRoute isPrivate={true}>
+                  <ClassicPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <ProtectedRoute isPrivate={false}>
+                  <RegisterPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/room/:roomId"
+              element={
+                <ProtectedRoute isPrivate={true}>
+                  <GamePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/login" />} />
+          </Routes>
+        </Router>
+      )}
+    </>
+  );
 }
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
   };
 };
 const mapDispatchToProps = {
-  setUser
+  setUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

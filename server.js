@@ -12,7 +12,8 @@ const socketConf = require("./server/config/socket.conf");
 
 const io = socketIO(server, {
   cors: {
-    origin: "*",
+    origin: ["http://localhost:3000"],
+    credentials: true
   },
 });
 socketConf(io);

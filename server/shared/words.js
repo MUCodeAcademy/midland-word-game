@@ -1,4 +1,4 @@
-import wordList from "wordle-wordlist";
+const wordList = require("wordle-wordlist");
 const answers = wordList.cache.answers;
 const all = wordList.cache.all;
 
