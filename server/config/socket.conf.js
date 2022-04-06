@@ -24,6 +24,25 @@ const {
   canSubmitGuess,
 } = require("../shared/rooms");
 
+const colors = [
+  "IndianRed",
+  "Red",
+  "Crimson",
+  "Orange",
+  "HotPink",
+  "SteelBlue",
+  "Green",
+  "Fuchsia",
+  "Brown",
+  "SaddleBrown",
+  "Salmon",
+  "SeaGreen",
+  "MidnightBlue",
+  "Olive",
+  "GoldenRod",
+  "Indigo",
+];
+
 const socketConf = (io) => {
   io.on("connection", (socket) => {
     console.log("connect");
@@ -41,6 +60,7 @@ const socketConf = (io) => {
     }
     let username;
     let userRoomId = null;
+    const color = colors[Math.floor(Math.random() * colors.length)];
 
     socket.on("create room solo", () => {
       const newRoomId = createRoom(1, 6);
@@ -58,6 +78,16 @@ const socketConf = (io) => {
         socket.emit("room created", { roomId: newRoomId });
       } else {
         socket.emit("failed room create");
+      }
+    });
+
+    socket.on("send message", ({ body }) => {
+      if (userRoomId) {
+        io.to(userRoomId).emit("new message", {
+          username,
+          color,
+          body,
+        });
       }
     });
 
@@ -80,7 +110,9 @@ const socketConf = (io) => {
           socket.emit("already joined");
         } else if (addPlayer(roomId, username)) {
           console.log("added player");
-          io.to(roomId).emit("player join", { player: getPlayer(roomId, username) });
+          io.to(roomId).emit("player join", {
+            player: getPlayer(roomId, username),
+          });
           userRoomId = roomId;
           socket.join(roomId);
           if (isRoundRunning(roomId)) {
@@ -133,7 +165,9 @@ const socketConf = (io) => {
             if (startGame(userRoomId)) {
               //client will run start round after getting this
               io.to(userRoomId).emit("game start");
-              io.to(userRoomId).emit("player data update", { players: getAllPlayers(userRoomId) });
+              io.to(userRoomId).emit("player data update", {
+                players: getAllPlayers(userRoomId),
+              });
             } else {
               socket.emit("failed game start");
             }
@@ -157,7 +191,10 @@ const socketConf = (io) => {
               if (startRound(userRoomId, getRandomWord())) {
                 //round start event sent in startCountdownTimer
                 if (getRoomLimit(userRoomId) === 1) {
-                  io.to(userRoomId).emit("round start", { players: getAllPlayers(userRoomId), roundWord: getRoundWord(userRoomId) });
+                  io.to(userRoomId).emit("round start", {
+                    players: getAllPlayers(userRoomId),
+                    roundWord: getRoundWord(userRoomId),
+                  });
                 } else {
                   startCountdownTimer(120, userRoomId);
                 }
@@ -188,12 +225,19 @@ const socketConf = (io) => {
                 if (!word || !isValidWord(word)) {
                   socket.emit("invalid word");
                 } else if (submitWord(userRoomId, username, word)) {
-                  io.to(userRoomId).emit("new guess", { player: getPlayer(userRoomId, username) });
+                  io.to(userRoomId).emit("new guess", {
+                    player: getPlayer(userRoomId, username),
+                  });
                   if (!isGameRunning(userRoomId)) {
-                    io.to(userRoomId).emit("game over", { players: getAllPlayers(userRoomId) });
+                    io.to(userRoomId).emit("game over", {
+                      players: getAllPlayers(userRoomId),
+                    });
                   }
                   if (!isRoundRunning(userRoomId)) {
-                    io.to(userRoomId).emit("round over", { players: getAllPlayers(userRoomId), word: getRoundWord(userRoomId) });
+                    io.to(userRoomId).emit("round over", {
+                      players: getAllPlayers(userRoomId),
+                      word: getRoundWord(userRoomId),
+                    });
                   }
                 } else {
                   socket.emit("failed submit");
@@ -228,7 +272,9 @@ const socketConf = (io) => {
       if (userRoomId) {
         removePlayer(userRoomId, username);
         if (isValidRoom(userRoomId)) {
-          io.to(userRoomId).emit("player data update", { players: getAllPlayers(userRoomId) });
+          io.to(userRoomId).emit("player data update", {
+            players: getAllPlayers(userRoomId),
+          });
           io.to(userRoomId).emit("player leave", { username });
         }
       }
@@ -238,7 +284,10 @@ const socketConf = (io) => {
   function startCountdownTimer(duration = 120, roomId) {
     console.log("timer");
     if (duration > 0) {
-      io.to(roomId).emit("round start", { players: getAllPlayers(roomId), roundWord: getRoundWord(roomId) });
+      io.to(roomId).emit("round start", {
+        players: getAllPlayers(roomId),
+        roundWord: getRoundWord(roomId),
+      });
       var timer = setInterval(function () {
         if (isValidRoom(roomId)) {
           if (isGameRunning(roomId)) {
@@ -248,7 +297,10 @@ const socketConf = (io) => {
             } else if (isRoundRunning(roomId)) {
               endRound(roomId);
               io.to(roomId).emit("timer countdown", { time: 0 });
-              io.to(roomId).emit("round over", { players: getAllPlayers(roomId), word: getRoundWord(roomId) });
+              io.to(roomId).emit("round over", {
+                players: getAllPlayers(roomId),
+                word: getRoundWord(roomId),
+              });
               clearInterval(timer);
             } else {
               clearInterval(timer);
