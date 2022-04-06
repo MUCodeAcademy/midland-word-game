@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import WordKeyboard from "./WordKeyboard";
-import WordRow from "./WordRow";
+// import WordRow from "./WordRow";
 
 export const WordBoard = ({ submitWord, guesses, roundWord, runningGame, runningRound, playerWonRound, solo }) => {
 const [guessedLetters, setGuessedLetters] = useState({});
@@ -53,13 +53,13 @@ useEffect(() => {
 
   return (
     <div>
-      <WordRow
+      {/* <WordRow
         submitWord={submitWord}
         guesses={guessesObjs}
         runningGame={runningGame}
         runningRound={runningRound}
         playerWonRound={playerWonRound}
-      />
+      /> */}
       {(!solo || guesses.length < 6) && <WordKeyboard guessedLetters={guessedLetters} />}
     </div>
   );
