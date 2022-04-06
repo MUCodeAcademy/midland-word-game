@@ -21,7 +21,7 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
     <div>
       <div>
         {guesses &&
-          guesses.map((val, i) => <WordRowDisplay key={val + j} val={val} />)}
+          guesses.map((val, i) => <WordRowDisplay key={i} val={val} />)}
       </div>
 
       {runningRound && !playerWonRound && (

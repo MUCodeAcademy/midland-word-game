@@ -6,8 +6,8 @@ function WordRowDisplay({ val }) {
     <div className="center text-white">
       <Grid container spacing={1} columns={10}>
         {val &&
-          val.map((letter) => (
-            <Grid item xs={2}>
+          val.map((letter, i) => (
+            <Grid item xs={2} key={letter.letter + letter.status + i}>
               <Box className={`${letter.status ? letter.status : ""}`}>
                 {letter.letter}
               </Box>
