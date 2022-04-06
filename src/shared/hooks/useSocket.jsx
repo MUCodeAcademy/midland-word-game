@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
@@ -13,7 +13,7 @@ const useSocket = (socketParam = null) => {
   const [isHost, setIsHost] = useState(null);
   const [guesses, setGuesses] = useState([]);
   //const [transferring, setTransferring] = useState(false);
-  const [roomTimer, setRoomTimer] = useState(null);
+  const [roomTimer, setRoomTimer] = useState(120);
   const [runningRound, setRunningRound] = useState(false);
   const [runningGame, setRunningGame] = useState(null);
   const [roundWord, setRoundWord] = useState(null);
@@ -53,6 +53,10 @@ const useSocket = (socketParam = null) => {
     socket.current.on("room created", (data) => {
       //setTransferring(true); //this could be a problem of unmounting component before finishing state change
       navigate(`/room/${data.roomId}`);
+    });
+    socket.current.on("room created solo", (data) => {
+      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
+      navigate(`/classic`, { state: {id: data.roomId} });
     });
     socket.current.on("player data", (data) => {
       //this means successful join
@@ -96,6 +100,9 @@ const useSocket = (socketParam = null) => {
 
   //error events
   useEffect(() => {
+    socket.current.on("guess limit", () => {
+      setError("You can not submit any more guesses")
+    })
     socket.current.on("not authenticated", () => {
       setError("Not authenticated"); //this is where we could hit the logout api endpoint
     });
@@ -212,6 +219,10 @@ const useSocket = (socketParam = null) => {
     socket.current.emit("create room");
   }, [socket]);
 
+  const createRoomSolo = useCallback(() => {
+    socket.current.emit("create room solo");
+  }, [socket]);
+
   const joinRoom = useCallback(
     (roomId) => {
       socket.current.emit("join room", roomId);
@@ -237,7 +248,7 @@ const useSocket = (socketParam = null) => {
     } else {
       setError("Failed to connect to server");
     }
-  }, [socket, isHost, setError]);
+  }, [socket, isHost, setError, runningGame]);
 
   const startRound = useCallback(() => {
     if (socket) {
@@ -269,6 +280,7 @@ const useSocket = (socketParam = null) => {
     startGame,
     startRound,
     submitWord,
+    createRoomSolo,
     error,
     roomMessage,
     players,
@@ -280,6 +292,7 @@ const useSocket = (socketParam = null) => {
     runningRound,
     playerWonRound,
     isHost,
+    username
   };
 };
 

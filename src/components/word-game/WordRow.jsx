@@ -25,9 +25,9 @@ function WordRow({
   return (
     <div>
       <div>
-        {guesses && guesses.map((val) => (
+        {guesses && guesses.map((val, i) => (
           <WordRowDisplay
-            key={val}
+            key={val + i}
             roundWordArr={roundWordArr}
             userGuess={val}
           />
