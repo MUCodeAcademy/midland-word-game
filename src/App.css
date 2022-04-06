@@ -2,19 +2,19 @@
   text-decoration: none;
 }
 .correct {
-  background-color: green;
+  background-color: green !important;
 }
 
-.included {
-  background-color: goldenrod;
+.misplaced {
+  background-color: goldenrod !important;
 }
 
 .wr-incorrect {
   background-color: gray;
 }
 
-.incorrect {
-  background-color: crimson;
+.wrong {
+  background-color: crimson !important;
 }
 
 .center {
@@ -23,6 +23,14 @@
 
 .text-white {
   color: white;
+}
+
+.default-keyboard {
+  background-color: white;
+}
+
+.default-dark-keyboard {
+  background-color: #1A2027;
 }
 
 .score-container {
