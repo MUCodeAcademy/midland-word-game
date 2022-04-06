@@ -24,41 +24,40 @@ function WordKeyBoard({guessedLetters}) {
   }));
 
     return (
-        <Grid direction="column" container sx={{ width: "100%", flexGrow: 1, display: "flex" }}>
-          <Grid sx={{ width:"100%", display: "flex" }} direction="row" item >
+        <Grid  container sx={{ width: "100%", flexGrow: 1, display: "flex" }}>
+          <Grid sx={{ width:"100%", display: "flex" }}  item >
             {
               firstRow.map((letter, index)=>{
 
-                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase()] ? guessedLetters[letter.toLowerCase()] : ""}>{letter}</Item>
               })
             }
           </Grid>
-          <Grid sx={{ width:"100%", display: "flex" }} direction="row" item >
+          <Grid sx={{ width:"100%", display: "flex" }}  item >
             {
               secondRow.map((letter, index)=>{
-                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase()] ? guessedLetters[letter.toLowerCase()] : ""}>{letter}</Item>
               })
             }
           </Grid>
-          <Grid sx={{ width:"100%", display: "flex" }} direction="row" item >
+          <Grid sx={{ width:"100%", display: "flex" }}  item >
             {
               thirdRow.map((letter, index)=>{
-                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase()] ? guessedLetters[letter.toLowerCase()] : ""}>{letter}</Item>
               })
             }
           </Grid>
 
-          <Grid sx={{ width:"100%", display: "flex" }} direction="row" item>
+          <Grid sx={{ width:"100%", display: "flex" }}  item>
             <Item>delete</Item>
             {
               fourthRow.map((letter, index)=>{
-                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase()] ? guessedLetters[letter.toLowerCase()] : ""}>{letter}</Item>
               })
             }
             <Item>enter</Item>
 
           </Grid>
-
         </Grid>
   );
 }
