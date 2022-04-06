@@ -17,7 +17,6 @@ export const GamePage = () => {
     error,
     roomMessage,
     players,
-    player,
     guesses,
     roomTimer,
     roundWord,
@@ -25,6 +24,7 @@ export const GamePage = () => {
     runningRound,
     playerWonRound,
     isHost,
+    username,
   } = useSocket();
 
   useEffect(() => {
@@ -67,8 +67,8 @@ export const GamePage = () => {
             solo={false}
           />
         </div>
-        <div>
-          <Score players={players} player={player} />
+        <div className="score-container">
+          <Score players={players} username={username} runningRound={runningRound} />
         </div>
       </div>
     </div>

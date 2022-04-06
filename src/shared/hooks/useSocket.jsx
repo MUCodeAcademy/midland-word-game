@@ -292,6 +292,7 @@ const useSocket = (socketParam = null) => {
     runningRound,
     playerWonRound,
     isHost,
+    username
   };
 };
 
