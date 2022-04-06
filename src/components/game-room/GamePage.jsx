@@ -1,18 +1,16 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
 import WordBoard from "../word-game/WordBoard";
+import Clock from "./Clock";
 import Score from "./Score";
 
 export const GamePage = () => {
   const copyBtn = useRef();
   const { roomId } = useParams();
-  //const { state } = useLocation();
-  //console.log(state)
   const {
     joinRoom,
-    leaveRoom,
     startGame,
     startRound,
     submitWord,
@@ -28,28 +26,10 @@ export const GamePage = () => {
     playerWonRound,
     isHost,
   } = useSocket();
-  const [timer, setTimer] = useState("");
+
   useEffect(() => {
     joinRoom(roomId);
-    return () => {
-      //leaveRoom();
-    };
-  }, []);
-
-  const timerDisplay = useCallback(
-    (seconds) => {
-      let m = Math.floor(seconds / 60);
-      let s = Math.floor(seconds % 60);
-      let mDisplay = m > 0 ? m + (m == 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
-      let sDisplay = s > 0 ? s + (s == 1 ? " sec" : " secs") : "";
-      setTimer(mDisplay + sDisplay);
-    },
-    [setTimer]
-  );
-
-  useEffect(() => {
-    timerDisplay(roomTimer);
-  }, [roomTimer]);
+  }, [joinRoom, roomId]);
 
   return (
     <div>
@@ -76,7 +56,7 @@ export const GamePage = () => {
           )}
         </div>
         <div>
-          <h3>{timer}</h3>
+          <Clock roomTimer={roomTimer} />
           <WordBoard
             submitWord={submitWord}
             guesses={guesses}
