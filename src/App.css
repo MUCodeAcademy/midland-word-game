@@ -1,5 +1,9 @@
+body {
+  background-color: #faf8d4;
+}
 .noTextDecor {
   text-decoration: none;
+  color: #2e4057;
 }
 .correct {
   background-color: green;
