@@ -97,7 +97,10 @@ function AboutPage() {
         <Grid item xs={9}>
           <Box className="padding-10">
             <Typography variant="h5">Tom Schumacher</Typography>
-            <Typography variant="body2">Hi there! *waves* I'm Tom. I'm an aspiring Software Developer just recently finishing up a Code Bootcamp at Midland University. When I'm not sobbing in my car by myself about how terrible I am at coding, I like to engage in self-deprecating humor to get people to like me. Byeeeeeee.</Typography>
+            <Typography variant="body2">Hi there! *waves* I'm Tom. 
+            I'm an aspiring Software Developer just recently finishing up a Code Bootcamp at Midland Code Academy. 
+            When I'm not sobbing in my car by myself about how terrible I am at coding, 
+            I like to engage in self-deprecating humor to get people to like me. Byeeeeeee.</Typography>
             <IconButton href="https://github.com/TomSchumacherCode" target="_blank">
               <GitHubIcon />
             </IconButton>

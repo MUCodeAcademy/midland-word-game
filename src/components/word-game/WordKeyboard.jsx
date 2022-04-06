@@ -29,21 +29,21 @@ function WordKeyBoard({guessedLetters}) {
             {
               firstRow.map((letter, index)=>{
 
-                return <Item key={letter + index} className={guessedLetters[letter] ? guessedLetters[letter] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
               })
             }
           </Grid>
           <Grid sx={{ width:"100%", display: "flex" }} direction="row" item >
             {
               secondRow.map((letter, index)=>{
-                return <Item key={letter + index} className={guessedLetters[letter] ? guessedLetters[letter] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
               })
             }
           </Grid>
           <Grid sx={{ width:"100%", display: "flex" }} direction="row" item >
             {
               thirdRow.map((letter, index)=>{
-                return <Item key={letter + index} className={guessedLetters[letter] ? guessedLetters[letter] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
               })
             }
           </Grid>
@@ -52,7 +52,7 @@ function WordKeyBoard({guessedLetters}) {
             <Item>delete</Item>
             {
               fourthRow.map((letter, index)=>{
-                return <Item key={letter + index} className={guessedLetters[letter] ? guessedLetters[letter] : ""}>{letter}</Item>
+                return <Item key={letter + index} className={guessedLetters[letter.toLowerCase] ? guessedLetters[letter.toLowerCase] : ""}>{letter}</Item>
               })
             }
             <Item>enter</Item>
