@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import useSocket from "../shared/hooks/useSocket";
 import WordBoard from "./word-game/WordBoard";
@@ -38,6 +38,11 @@ export const ClassicPage = () => {
           {!runningGame && (
             <Button variant="contained" onClick={() => startGame()}>
               {roundWord ? "Play again" : "Start Game"}
+            </Button>
+          )}
+          {runningGame && !runningRound && (
+            <Button variant="contained" onClick={() => startRound()}>
+              Start Round
             </Button>
           )}
         </div>
