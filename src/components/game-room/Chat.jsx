@@ -34,8 +34,8 @@ function Chat({ roomId, user, messages, sendMessage }) {
         }}
       >
         <Divider sx={{ fontSize: 13 }}>beginning of chat history</Divider>
-        {messages.map((msg) => (
-          <div className="message">
+        {messages.map((msg, index) => (
+          <div className="message" key={index}>
             <Typography
               display="inline"
               sx={{
