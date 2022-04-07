@@ -43,11 +43,17 @@ function AboutPage() {
         <Grid item xs={9}>
           <Box className="padding-10">
             <Typography variant="h5"> Brett Ellis</Typography>
-            <Typography variant="body2">Write about yourself here</Typography>
-            <IconButton href="" target="_blank">
+            <Typography variant="body2">
+              Hey y'all, I'm an up and coming junior developer.
+              You could say I'm generally a tech-savy person.
+              Hardware, software, frontend, backend, chances are that I've fiddled around with it at some point.
+              Planning to go on to work at my family's business, Sycamore Leaf Solutions.
+              Excited to get my hands dirty with whatever life gives me next!
+            </Typography>
+            <IconButton href="" target="https://github.com/BrettAshEllis">
               <GitHubIcon />
             </IconButton>
-            <IconButton href="" target="_blank">
+            <IconButton href="" target="https://www.linkedin.com/in/brett-ellis-4b5a82188/">
               <LinkedInIcon />
             </IconButton>
           </Box>
@@ -102,11 +108,11 @@ function AboutPage() {
         <Grid item xs={9}>
           <Box className="padding-10">
             <Typography variant="h5">Tom Schumacher</Typography>
-            <Typography variant="body2">Hi there! *waves* I'm Tom. 
-            I am an aspiring Software Developer recently finishing up at Midland Code Academy. 
-            My career until recently was focused around helping organizations hire the best
-            people to build cool stuff, but now I want to be one of those people building the cool stuff.
-            Let's build some cool stuff together. 
+            <Typography variant="body2">Hi there! *waves* I'm Tom.
+              I am an aspiring Software Developer recently finishing up at Midland Code Academy.
+              My career until recently was focused around helping organizations hire the best
+              people to build cool stuff, but now I want to be one of those people building the cool stuff.
+              Let's build some cool stuff together.
             </Typography>
             <IconButton href="https://github.com/TomSchumacherCode" target="_blank">
 
