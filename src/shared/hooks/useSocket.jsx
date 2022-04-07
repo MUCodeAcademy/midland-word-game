@@ -28,7 +28,7 @@ const useSocket = (socketParam = null) => {
 
   useEffect(() => {
     if (!socket.current) {
-      socket.current = io("http://localhost:8080", {
+      socket.current = io("https://midland-word-battle.herokuapp.com", {
         withCredentials: true,
       });
     }
@@ -56,7 +56,7 @@ const useSocket = (socketParam = null) => {
     });
     socket.current.on("room created solo", (data) => {
       //setTransferring(true); //this could be a problem of unmounting component before finishing state change
-      navigate(`/classic`, { state: {id: data.roomId} });
+      navigate(`/classic`, { state: { id: data.roomId } });
     });
     socket.current.on("player data", (data) => {
       //this means successful join
@@ -81,7 +81,15 @@ const useSocket = (socketParam = null) => {
     //     })
     //   );
     // });
-  }, [socket, setPlayers, setUsername, setRunningGame, setRunningRound, setRoundWord, navigate]);
+  }, [
+    socket,
+    setPlayers,
+    setUsername,
+    setRunningGame,
+    setRunningRound,
+    setRoundWord,
+    navigate,
+  ]);
 
   useEffect(() => {
     socket.current.on("player join", (data) => {
@@ -94,15 +102,18 @@ const useSocket = (socketParam = null) => {
       if (data.player.username === username) {
         setGuesses((curr) => [...curr, data.player.lastGuess]);
       }
-      setPlayers((curr) => [...curr.filter((e) => e.username !== data.player.username), data.player]);
+      setPlayers((curr) => [
+        ...curr.filter((e) => e.username !== data.player.username),
+        data.player,
+      ]);
     });
   }, [socket, setPlayer, setGuesses, username]);
 
   //error events
   useEffect(() => {
     socket.current.on("guess limit", () => {
-      setError("You can not submit any more guesses")
-    })
+      setError("You can not submit any more guesses");
+    });
     socket.current.on("not authenticated", () => {
       setError("Not authenticated"); //this is where we could hit the logout api endpoint
     });
@@ -178,7 +189,16 @@ const useSocket = (socketParam = null) => {
       setRunningGame(false);
       setRoomMessage("Game Over");
     });
-  }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, setPlayer]);
+  }, [
+    socket,
+    setError,
+    runningGame,
+    setRunningGame,
+    runningRound,
+    setRunningRound,
+    setRoomMessage,
+    setPlayer,
+  ]);
 
   useEffect(() => {
     socket.current.on("game start", () => {
@@ -188,7 +208,7 @@ const useSocket = (socketParam = null) => {
       setRunningGame(true);
       setRoomMessage("Game Starting");
     });
-  }, [socket, setRunningGame, setRoomMessage, isHost])
+  }, [socket, setRunningGame, setRoomMessage, isHost]);
 
   useEffect(() => {
     socket.current.on("round start", (data) => {
@@ -206,7 +226,15 @@ const useSocket = (socketParam = null) => {
       setRoundWord(data.roundWord);
       setRoomMessage("Round Starting");
     });
-  }, [socket, setPlayer, setPlayers, setRunningRound, setGuesses, setRoundWord, setRoomMessage]);
+  }, [
+    socket,
+    setPlayer,
+    setPlayers,
+    setRunningRound,
+    setGuesses,
+    setRoundWord,
+    setRoomMessage,
+  ]);
 
   // timer event
   useEffect(() => {
@@ -292,7 +320,7 @@ const useSocket = (socketParam = null) => {
     runningRound,
     playerWonRound,
     isHost,
-    username
+    username,
   };
 };
 
