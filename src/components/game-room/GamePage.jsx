@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
 import WordBoard from "../word-game/WordBoard";
+import Chat from "./Chat";
 import Clock from "./Clock";
 import Score from "./Score";
 import { Button, ThemeProvider, Grid } from "@mui/material/";
 import { generalTheme } from "../../shared/mui-theme";
 import { Box } from "@mui/system";
 
-export const GamePage = () => {
+export const GamePage = ({ user }) => {
   const copyBtn = useRef();
   const { roomId } = useParams();
   const {
@@ -28,6 +29,8 @@ export const GamePage = () => {
     playerWonRound,
     isHost,
     username,
+    messages,
+    sendMessage,
   } = useSocket();
 
   useEffect(() => {
@@ -35,6 +38,7 @@ export const GamePage = () => {
   }, [joinRoom, roomId]);
 
   return (
+
     <ThemeProvider theme={generalTheme}>
       <div className="center">
         <div className="padding-10">
@@ -109,12 +113,20 @@ export const GamePage = () => {
             </Grid>
           </Grid>
         </div>
+        <Chat
+          roomId={roomId}
+          user={user}
+          messages={messages}
+          sendMessage={sendMessage}
+        />
       </div>
     </ThemeProvider>
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
 
 const mapDispatchToProps = {};
 
