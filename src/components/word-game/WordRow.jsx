@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import { Button } from "@mui/material";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
-function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
+function WordRow({ runningRound, playerWonRound, guesses, submitWord, solo }) {
   const guessInput = useRef(null);
+  const [guessesFill, setGuessesFill] = useState([]);
 
   const handleClick = useCallback(
     (word) => {
@@ -15,6 +17,19 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
     if (guessInput.current) {
       guessInput.current.value = "";
     }
+    setGuessesFill([]);
+    for (let i = 0; i < 6 - guesses.length; i++) {
+      setGuessesFill((curr) => [
+        ...curr,
+        [
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+        ],
+      ]);
+    }
   }, [guesses]);
 
   return (
@@ -23,6 +38,12 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
         {guesses &&
           guesses.map((val, i) => <WordRowDisplay key={i} val={val} />)}
       </div>
+      {solo && (
+        <div>
+          {guessesFill &&
+            guessesFill.map((val, i) => <WordRowDisplay key={i} val={val} />)}
+        </div>
+      )}
 
       {runningRound && !playerWonRound && (
         <div>
@@ -31,14 +52,16 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
             type="text"
             ref={guessInput}
             placeholder="type your guess here"
+            className="margin-10"
           />
-          <button
+          <Button
+            variant="contained"
             onClick={() => {
               handleClick(guessInput.current.value);
             }}
           >
             Submit
-          </button>
+          </Button>
         </div>
       )}
     </div>

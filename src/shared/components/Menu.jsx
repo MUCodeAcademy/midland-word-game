@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -6,6 +6,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
 import InfoIcon from "@mui/icons-material/Info";
+import { clearUser } from "../../redux/actions"
 import {
   AppBar,
   Toolbar,
@@ -20,9 +21,20 @@ import {
   ListItemIcon,
   ButtonGroup,
 } from "@mui/material";
+import useAPI from "../hooks/useAPI";
 
-export const Menu = ({ user }) => {
+export const Menu = ({ user, clearUser }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { logout: logoutApi } = useAPI()
+
+  const logout = useCallback(async() => {
+    const res = await logoutApi()
+    if(res.success){
+      clearUser()
+      setDrawerOpen(false)
+    }
+  }, [logoutApi, clearUser, setDrawerOpen])
+
   return (
     <>
       {!user && (
@@ -64,7 +76,7 @@ export const Menu = ({ user }) => {
           >
             <Box width=" 250px">
               <List>
-                <NavLink to="classic" className="noTextDecor">
+                <NavLink to="classic" className="noTextDecor" onClick={() => setDrawerOpen(false)}>
                   <ListItem button>
                     <ListItemIcon>
                       <PersonIcon />
@@ -72,7 +84,7 @@ export const Menu = ({ user }) => {
                     <ListItemText>CLASSIC</ListItemText>
                   </ListItem>
                 </NavLink>
-                <NavLink to="play" className="noTextDecor">
+                <NavLink to="play" className="noTextDecor" onClick={() => setDrawerOpen(false)}>
                   <ListItem button>
                     <ListItemIcon>
                       <PeopleAltIcon />
@@ -80,7 +92,7 @@ export const Menu = ({ user }) => {
                     <ListItemText>BATTLE</ListItemText>
                   </ListItem>
                 </NavLink>
-                <NavLink to="about" className="noTextDecor">
+                <NavLink to="about" className="noTextDecor" onClick={() => setDrawerOpen(false)}>
                   <ListItem button>
                     <ListItemIcon>
                       <InfoIcon />
@@ -89,7 +101,7 @@ export const Menu = ({ user }) => {
                   </ListItem>
                 </NavLink>
                 <Divider />
-                <NavLink to="login" className="noTextDecor">
+                <NavLink to="" className="noTextDecor" onClick={() => logout()}>
                   <ListItem button>
                     <ListItemIcon>
                       <LogoutIcon />
@@ -112,6 +124,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  clearUser,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

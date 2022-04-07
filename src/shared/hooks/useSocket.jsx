@@ -19,10 +19,18 @@ const useSocket = (socketParam = null) => {
   const [roundWord, setRoundWord] = useState(null);
   const [playerWonRound, setPlayerWonRound] = useState(false);
 
+  const [messages, setMessages] = useState([]);
+
+  const [roomId, setRoomId] = useState(null);
+  const [wonRound, setWonRound] = useState(false);
+  const [socketRoomIdError, setSocketRoomIdError] = useState("");
+  const [checkedRoomId, setCheckedRoomId] = useState([]);
+
   useEffect(() => {
     if (player) {
       setPlayerWonRound(player.wonRound);
       setIsHost(player.isHost);
+      setWonRound(player.wonRound);
     }
   }, [player, setPlayerWonRound, setIsHost]);
 
@@ -50,14 +58,15 @@ const useSocket = (socketParam = null) => {
   }, [players, username]);
 
   useEffect(() => {
-    socket.current.on("room created", (data) => {
-      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
-      navigate(`/room/${data.roomId}`);
+    socket.current.on("disconnect", () => {
+      setError("Disconnect from server");
     });
-    socket.current.on("room created solo", (data) => {
-      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
-      navigate(`/classic`, { state: { id: data.roomId } });
+    socket.current.on("connect", () => {
+      setError("");
     });
+  }, [socket]);
+
+  useEffect(() => {
     socket.current.on("player data", (data) => {
       //this means successful join
       setPlayers(data.players);
@@ -89,7 +98,20 @@ const useSocket = (socketParam = null) => {
     setRunningRound,
     setRoundWord,
     navigate,
+    setRoomId,
   ]);
+
+  useEffect(() => {
+    socket.current.on("room created", (data) => {
+      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
+      navigate(`/room/${data.roomId}`);
+    });
+    socket.current.on("room created solo", (data) => {
+      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
+      //navigate(`/classic`, { state: {id: data.roomId} });
+      setRoomId(data.roomId);
+    });
+  }, [socket, navigate, setRoomId]);
 
   useEffect(() => {
     socket.current.on("player join", (data) => {
@@ -119,9 +141,6 @@ const useSocket = (socketParam = null) => {
     });
     socket.current.on("failed room create", () => {
       setError("Failed to create room please try again");
-    });
-    socket.current.on("invalid room", () => {
-      setError("Room not found");
     });
     socket.current.on("room full", () => {
       setError("Room is full");
@@ -158,6 +177,17 @@ const useSocket = (socketParam = null) => {
     });
   }, [socket, setError]);
 
+  useEffect(() => {
+    socket.current.on("invalid room", (roomId) => {
+      setError("Room not found");
+      setSocketRoomIdError("invalid room");
+      setCheckedRoomId(roomId);
+    });
+    socket.current.on("valid room", (roomId) => {
+      navigate(`/room/${roomId}`);
+    });
+  }, [setError, setSocketRoomIdError, navigate]);
+
   // game and room start / stop events
   useEffect(() => {
     socket.current.on("not running game", () => {
@@ -185,9 +215,10 @@ const useSocket = (socketParam = null) => {
       setRunningRound(false);
       setRoomMessage("Round Over");
     });
-    socket.current.on("game over", () => {
+    socket.current.on("game over", (data) => {
       setRunningGame(false);
       setRoomMessage("Game Over");
+      setPlayers(data.players);
     });
   }, [
     socket,
@@ -258,6 +289,13 @@ const useSocket = (socketParam = null) => {
     [socket]
   );
 
+  const checkRoom = useCallback(
+    (roomId) => {
+      socket.current.emit("check room", roomId);
+    },
+    [socket]
+  );
+
   // const leaveRoom = useCallback(() => {
   //   socket.current.emit("leave room");
   // }, [socket]);
@@ -301,6 +339,19 @@ const useSocket = (socketParam = null) => {
     [socket]
   );
 
+  const sendMessage = useCallback(
+    (body, roomId, username) => {
+      socket.current.emit("send message", { body, roomId, username });
+    },
+    [socket]
+  );
+
+  useEffect(() => {
+    socket.current.on("new message", (msg) => {
+      setMessages((curr) => [...curr, msg]);
+    });
+  }, [socket, setMessages]);
+
   return {
     createRoom,
     joinRoom,
@@ -309,6 +360,8 @@ const useSocket = (socketParam = null) => {
     startRound,
     submitWord,
     createRoomSolo,
+    sendMessage,
+    checkRoom,
     error,
     roomMessage,
     players,
@@ -321,6 +374,11 @@ const useSocket = (socketParam = null) => {
     playerWonRound,
     isHost,
     username,
+    messages,
+    roomId,
+    wonRound,
+    socketRoomIdError,
+    checkedRoomId,
   };
 };
 
