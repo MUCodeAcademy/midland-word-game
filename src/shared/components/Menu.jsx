@@ -28,25 +28,27 @@ export const Menu = ({ user }) => {
       {!user && (
         <>
           <AppBar position="static">
-            <Toolbar>
-              <ButtonGroup>
-                <Button>
-                  <NavLink to="register" className="noTextDecor">
-                    REGISTER
-                  </NavLink>
-                </Button>
-                <Button>
-                  <NavLink to="login" className="noTextDecor">
-                    LOGIN
-                  </NavLink>
-                </Button>
-                <Button>
-                  <NavLink to="about" className="noTextDecor">
-                    ABOUT
-                  </NavLink>
-                </Button>
-              </ButtonGroup>
-            </Toolbar>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Toolbar>
+                <ButtonGroup color="secondary" variant="contained">
+                  <Button>
+                    <NavLink to="register" className="noTextDecor">
+                      REGISTER
+                    </NavLink>
+                  </Button>
+                  <Button>
+                    <NavLink to="login" className="noTextDecor">
+                      LOGIN
+                    </NavLink>
+                  </Button>
+                  <Button>
+                    <NavLink to="about" className="noTextDecor">
+                      ABOUT
+                    </NavLink>
+                  </Button>
+                </ButtonGroup>
+              </Toolbar>
+            </Box>
           </AppBar>
         </>
       )}
