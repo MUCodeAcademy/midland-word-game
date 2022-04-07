@@ -303,8 +303,8 @@ const useSocket = (socketParam = null) => {
   );
 
   const sendMessage = useCallback(
-    (body) => {
-      socket.current.emit("send message", { body });
+    (body, roomId, username) => {
+      socket.current.emit("send message", { body, roomId, username });
     },
     [socket]
   );
