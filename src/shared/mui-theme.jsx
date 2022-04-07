@@ -15,6 +15,9 @@ export const generalTheme = createTheme({
       //medium blue
       main: "#2196f3",
     },
+    text: {
+      main: "white",
+    },
     background: {
       //pale yellow
       default: "#FAF8D4",
