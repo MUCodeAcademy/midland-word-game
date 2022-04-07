@@ -82,6 +82,7 @@ const socketConf = (io) => {
     });
 
     socket.on("send message", ({ body }) => {
+      console.log(body);
       if (userRoomId) {
         io.to(userRoomId).emit("new message", {
           username,

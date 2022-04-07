@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
 import WordBoard from "../word-game/WordBoard";
+import Chat from "./Chat";
 import Clock from "./Clock";
 import Score from "./Score";
 
@@ -33,7 +34,9 @@ export const GamePage = () => {
 
   return (
     <div>
-      <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>
+      <div>
+        {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
+      </div>
       <div>
         <div>
           <div>
@@ -50,8 +53,12 @@ export const GamePage = () => {
           </div>
           {isHost && (
             <>
-              {!runningGame && <button onClick={() => startGame()}>Start Game</button>}
-              {runningGame && !runningRound && <button onClick={() => startRound()}>Start Round</button>}
+              {!runningGame && (
+                <button onClick={() => startGame()}>Start Game</button>
+              )}
+              {runningGame && !runningRound && (
+                <button onClick={() => startRound()}>Start Round</button>
+              )}
             </>
           )}
         </div>
@@ -68,8 +75,13 @@ export const GamePage = () => {
           />
         </div>
         <div className="score-container">
-          <Score players={players} username={username} runningRound={runningRound} />
+          <Score
+            players={players}
+            username={username}
+            runningRound={runningRound}
+          />
         </div>
+        <Chat />
       </div>
     </div>
   );
