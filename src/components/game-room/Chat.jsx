@@ -14,7 +14,6 @@ import { Box } from "@mui/system";
 function Chat() {
   const { sendMessage, messages } = useSocket();
   const [message, setMessage] = useState("");
-  console.log(messages);
 
   return (
     <Box sx={{ width: 300, height: 300, backgroundColor: "pink" }}>
