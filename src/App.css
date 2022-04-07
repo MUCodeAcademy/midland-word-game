@@ -150,3 +150,7 @@ body {
 .height {
   height: 50px;
 }
+
+.keyboard-container {
+  background-color: #FF8000;
+}
