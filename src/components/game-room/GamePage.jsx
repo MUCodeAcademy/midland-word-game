@@ -76,7 +76,7 @@ export const GamePage = ({ user }) => {
                   )}
                 </>
               )}
-              {!runningGame && roundWord && (
+              {!runningGame && roundWord && !playerWonRound &&(
                 <div className="padding-10">
                   <span>{`The word was ${roundWord}`}</span>
                 </div>
