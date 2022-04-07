@@ -81,18 +81,6 @@ const socketConf = (io) => {
       }
     });
 
-    socket.on("send message", ({ body }) => {
-      console.log(body);
-      console.log(userRoomId);
-      if (userRoomId) {
-        io.to(userRoomId).emit("new message", {
-          username,
-          color,
-          body,
-        });
-      }
-    });
-
     socket.on("join room", async (roomId) => {
       console.log("join room");
       if (!isValidRoom(roomId)) {
@@ -268,6 +256,16 @@ const socketConf = (io) => {
     //     socket.emit("invalid room")
     //   }
     // })
+
+    socket.on("send message", ({ body, roomId, username }) => {
+      if (roomId) {
+        io.to(roomId).emit("new message", {
+          username,
+          color,
+          body,
+        });
+      }
+    });
 
     socket.on("disconnect", () => {
       console.log("disconnect");
