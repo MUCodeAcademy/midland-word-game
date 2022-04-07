@@ -18,10 +18,14 @@ const useSocket = (socketParam = null) => {
   const [runningGame, setRunningGame] = useState(null);
   const [roundWord, setRoundWord] = useState(null);
   const [playerWonRound, setPlayerWonRound] = useState(false);
+
+  const [messages, setMessages] = useState([]);
+
   const [roomId, setRoomId] = useState(null)
   const [wonRound, setWonRound] = useState(false)
   const [socketRoomIdError, setSocketRoomIdError] = useState("")
   const [checkedRoomId, setCheckedRoomId] = useState([])
+
 
   useEffect(() => {
     if (player) {
@@ -55,6 +59,7 @@ const useSocket = (socketParam = null) => {
   }, [players, username]);
 
   useEffect(() => {
+
     socket.current.on("disconnect", () => {
       setError("Disconnect from server")
     })
@@ -64,6 +69,7 @@ const useSocket = (socketParam = null) => {
   }, [socket])
 
   useEffect(() => {
+
     socket.current.on("player data", (data) => {
       //this means successful join
       setPlayers(data.players);
@@ -87,6 +93,7 @@ const useSocket = (socketParam = null) => {
     //     })
     //   );
     // });
+
   }, [socket, setPlayers, setUsername, setRunningGame, setRunningRound, setRoundWord, navigate, setRoomId]);
 
   useEffect(() => {
@@ -101,6 +108,7 @@ const useSocket = (socketParam = null) => {
     });
   }, [socket, navigate, setRoomId])
 
+
   useEffect(() => {
     socket.current.on("player join", (data) => {
       setPlayers((curr) => [...curr, data.player]);
@@ -112,15 +120,18 @@ const useSocket = (socketParam = null) => {
       if (data.player.username === username) {
         setGuesses((curr) => [...curr, data.player.lastGuess]);
       }
-      setPlayers((curr) => [...curr.filter((e) => e.username !== data.player.username), data.player]);
+      setPlayers((curr) => [
+        ...curr.filter((e) => e.username !== data.player.username),
+        data.player,
+      ]);
     });
   }, [socket, setPlayer, setGuesses, username]);
 
   //error events
   useEffect(() => {
     socket.current.on("guess limit", () => {
-      setError("You can not submit any more guesses")
-    })
+      setError("You can not submit any more guesses");
+    });
     socket.current.on("not authenticated", () => {
       setError("Not authenticated"); //this is where we could hit the logout api endpoint
     });
@@ -205,7 +216,16 @@ const useSocket = (socketParam = null) => {
       setRoomMessage("Game Over");
       setPlayers(data.players)
     });
-  }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, setPlayer]);
+  }, [
+    socket,
+    setError,
+    runningGame,
+    setRunningGame,
+    runningRound,
+    setRunningRound,
+    setRoomMessage,
+    setPlayer,
+  ]);
 
   useEffect(() => {
     socket.current.on("game start", () => {
@@ -215,7 +235,7 @@ const useSocket = (socketParam = null) => {
       setRunningGame(true);
       setRoomMessage("Game Starting");
     });
-  }, [socket, setRunningGame, setRoomMessage, isHost])
+  }, [socket, setRunningGame, setRoomMessage, isHost]);
 
   useEffect(() => {
     socket.current.on("round start", (data) => {
@@ -233,7 +253,15 @@ const useSocket = (socketParam = null) => {
       setRoundWord(data.roundWord);
       setRoomMessage("Round Starting");
     });
-  }, [socket, setPlayer, setPlayers, setRunningRound, setGuesses, setRoundWord, setRoomMessage]);
+  }, [
+    socket,
+    setPlayer,
+    setPlayers,
+    setRunningRound,
+    setGuesses,
+    setRoundWord,
+    setRoomMessage,
+  ]);
 
   // timer event
   useEffect(() => {
@@ -304,6 +332,19 @@ const useSocket = (socketParam = null) => {
     [socket]
   );
 
+  const sendMessage = useCallback(
+    (body, roomId, username) => {
+      socket.current.emit("send message", { body, roomId, username });
+    },
+    [socket]
+  );
+
+  useEffect(() => {
+    socket.current.on("new message", (msg) => {
+      setMessages((curr) => [...curr, msg]);
+    });
+  }, [socket, setMessages]);
+
   return {
     createRoom,
     joinRoom,
@@ -312,6 +353,7 @@ const useSocket = (socketParam = null) => {
     startRound,
     submitWord,
     createRoomSolo,
+    sendMessage,
     checkRoom,
     error,
     roomMessage,
@@ -325,6 +367,7 @@ const useSocket = (socketParam = null) => {
     playerWonRound,
     isHost,
     username,
+    messages,
     roomId,
     wonRound,
     socketRoomIdError,
