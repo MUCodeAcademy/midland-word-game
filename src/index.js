@@ -6,12 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux"
 import ErrorBoundary from "./shared/components/ErrorBoundary";
 import store from "./redux/store"
+import { ThemeProvider } from "@mui/material/styles";
+import { generalTheme } from "./shared/mui-theme";
 
 
 ReactDOM.render(
   <ErrorBoundary>
     <Provider store={store}>
-      <App />
+      <ThemeProvider theme={generalTheme}>
+        <App />
+      </ThemeProvider>
     </Provider>
   </ErrorBoundary>,
   document.getElementById("root")
