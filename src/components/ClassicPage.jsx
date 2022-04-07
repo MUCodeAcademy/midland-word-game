@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import useSocket from "../shared/hooks/useSocket";
@@ -34,8 +35,11 @@ export const ClassicPage = () => {
       <div className="classic-header">
         {wonRound ? <span>You win!</span> : <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>}
         <div>
-          {!runningGame && <button onClick={() => startGame()}>{roundWord ? "Play again" : "Start Game"}</button>}
-          {runningGame && !runningRound && <button onClick={() => startRound()}>Start Round</button>}
+          {!runningGame && (
+            <Button variant="contained" onClick={() => startGame()}>
+              {roundWord ? "Play again" : "Start Game"}
+            </Button>
+          )}
         </div>
         {!runningGame && roundWord && (
           <div>
