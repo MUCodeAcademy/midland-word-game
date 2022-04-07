@@ -14,12 +14,26 @@ import RegisterPage from "./components/RegisterPage";
 import Menu from "./shared/components/Menu";
 import ProtectedRoute from "./shared/components/ProtectedRoute";
 import GamePage from "./components/game-room/GamePage";
+
 import { connect } from "react-redux";
 import { setUser } from "./redux/actions/user.actions";
 import { verify } from "./shared/hooks/useAPI";
 import useAPI from "./shared/hooks/useAPI";
 
 import { useEffect, useState } from "react";
+
+// const letterTheme = createTheme({
+//   status: {
+//     correct: green,
+//     included: yellow,
+//     wrong: darkgrey,
+//     default: grey,
+//   }
+// })
+//? BACK UP INCASE NEEDED
+
+
+
 
 function App({ user, setUser }) {
   const { verify } = useAPI();
