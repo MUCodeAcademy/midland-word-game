@@ -13,12 +13,8 @@ body {
   background-color: goldenrod !important;
 }
 
-.wr-incorrect {
-  background-color: gray;
-}
-
 .wrong {
-  background-color: crimson !important;
+  background-color: rgb(182, 182, 182) !important;
 }
 
 .center {
@@ -34,7 +30,7 @@ body {
 }
 
 .default-dark-keyboard {
-  background-color: #1A2027;
+  background-color: #1a2027;
 }
 
 .score-container {
@@ -118,6 +114,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+
 }
 
 .padding-20 {
@@ -126,4 +123,22 @@ body {
 
 .padding-10 {
   padding: 10px;
+}
+
+.margin-10 {
+  margin: 10px;
+}
+
+.border {
+  border: gray solid 2px;
+  border-radius: 10px;
+}
+
+.width-80pc {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.margin-auto {
+  margin: 0 auto;
 }
