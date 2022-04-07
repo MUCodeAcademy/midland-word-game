@@ -234,7 +234,7 @@ const checkGameOver = (roomId) => {
 };
 
 const getRoomLimit = (roomId) => {
-  return rooms.find((e) => e.roomId === roomId).limit || null;
+  return rooms.find((e) => e.roomId === roomId).playerLimit || null;
 };
 
 const sorter = (arr) => {
