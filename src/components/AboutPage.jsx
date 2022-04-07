@@ -2,7 +2,8 @@ import React from "react";
 import { Avatar, Box, Grid, IconButton, Typography } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TomAndOliver from "../shared/assets/TomAndOliver.jpeg"
+import TomAndOliver from "../shared/assets/TomAndOliver.jpeg";
+import HeadshotBrett from "../shared/assets/HeadshotBrett.jpg";
 
 function AboutPage() {
   return (
@@ -38,7 +39,7 @@ function AboutPage() {
       </Grid>
       <Grid container item xs={12} sm={6}>
         <Grid item xs={3}>
-          <Avatar alt="Brett" sx={{ width: 100, height: 100 }} />
+          <Avatar alt="Brett" src={HeadshotBrett} sx={{ width: 100, height: 100 }} />
         </Grid>
         <Grid item xs={9}>
           <Box className="padding-10">
