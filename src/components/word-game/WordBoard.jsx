@@ -84,6 +84,7 @@ useEffect(() => {
             runningGame={runningGame}
             runningRound={runningRound}
             playerWonRound={playerWonRound}
+            solo={solo}
           />
         }
       </div>
