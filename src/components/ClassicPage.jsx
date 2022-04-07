@@ -1,4 +1,5 @@
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import useSocket from "../shared/hooks/useSocket";
@@ -52,17 +53,23 @@ export const ClassicPage = () => {
           </div>
         )}
       </div>
-      <div>
-        <WordBoard
-          submitWord={submitWord}
-          guesses={guesses}
-          roundWord={roundWord}
-          runningGame={runningGame}
-          runningRound={runningRound}
-          playerWonRound={playerWonRound}
-          solo={true}
-        />
-      </div>
+      <Grid container spacing={4} justifyContent="center" display="flex">
+        <Grid item xs={12}>
+          <div className="width-80pc">
+            <Box display="flex" justifyContent="center">
+              <WordBoard
+                submitWord={submitWord}
+                guesses={guesses}
+                roundWord={roundWord}
+                runningGame={runningGame}
+                runningRound={runningRound}
+                playerWonRound={playerWonRound}
+                solo={true}
+              />
+            </Box>
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
