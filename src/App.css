@@ -33,6 +33,13 @@ body {
   background-color: #1a2027;
 }
 
+.game-page-footer{
+  display: flex;
+  width: 80vw;
+  justify-content: space-evenly;
+  margin-top: 10px;
+}
+
 .score-container {
   width: 30%;
   min-width: 300px;

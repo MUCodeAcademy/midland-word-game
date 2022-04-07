@@ -102,23 +102,23 @@ export const GamePage = ({ user }) => {
                 </Box>
               </div>
             </Grid>
-            <Grid item xs={12}>
-              <div className="score-container margin-auto">
+            <div className="game-page-footer">
+              <Chat
+                roomId={roomId}
+                user={user}
+                messages={messages}
+                sendMessage={sendMessage}
+              />
+              <div className="score-container">
                 <Score
                   players={players}
                   username={username}
                   runningRound={runningRound}
                 />
               </div>
-            </Grid>
+            </div>
           </Grid>
         </div>
-        <Chat
-          roomId={roomId}
-          user={user}
-          messages={messages}
-          sendMessage={sendMessage}
-        />
       </div>
     </ThemeProvider>
   );
