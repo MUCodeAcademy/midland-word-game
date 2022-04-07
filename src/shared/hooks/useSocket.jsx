@@ -311,7 +311,6 @@ const useSocket = (socketParam = null) => {
 
   useEffect(() => {
     socket.current.on("new message", (msg) => {
-      console.log(msg);
       setMessages((curr) => [...curr, msg]);
     });
   }, [socket, setMessages]);
