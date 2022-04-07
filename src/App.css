@@ -13,12 +13,8 @@ body {
   background-color: goldenrod !important;
 }
 
-.wr-incorrect {
-  background-color: gray;
-}
-
 .wrong {
-  background-color: crimson !important;
+  background-color: rgb(182, 182, 182) !important;
 }
 
 .center {
@@ -53,6 +49,11 @@ body {
 }
 
 .play-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.play-page-main {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,6 +104,23 @@ body {
 }
 .play-page-button {
   margin-bottom: 10px;
+
+}
+
+.classic-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  align-content: center;
+}
+.classic-header {
+  margin: 10px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 .padding-20 {
@@ -112,6 +130,7 @@ body {
 .padding-10 {
   padding: 10px;
 }
+
 .chatHeader {
   display: flex;
 }
@@ -125,4 +144,26 @@ body {
 }
 .messageDisplay {
   padding: 10px;
+
+
+.margin-10 {
+  margin: 10px;
+}
+
+.border {
+  border: gray solid 2px;
+  border-radius: 10px;
+}
+
+.width-80pc {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.margin-auto {
+  margin: 0 auto;
+}
+
+.height {
+  height: 50px;
 }

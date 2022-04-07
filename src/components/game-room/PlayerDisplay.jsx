@@ -5,7 +5,7 @@ import React from "react";
 
 const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
-  color: theme.palette.text.primary,
+  color: theme.palette.text.main,
   backgroundColor: theme.palette.primary.main,
   borderRadius: "20px",
   height: "30px",
@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Container = styled(Box)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: theme.palette.text.secondary,
   backgroundColor: theme.palette.secondary.light,
   borderRadius: "25px",
   display: "flex",

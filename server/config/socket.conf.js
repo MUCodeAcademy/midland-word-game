@@ -15,7 +15,6 @@ const {
   isRoundRunning,
   getRoundWord,
   endRound,
-  endGame,
   hasWon,
   getAllPlayers,
   isRoomFull,
@@ -45,7 +44,6 @@ const colors = [
 
 const socketConf = (io) => {
   io.on("connection", (socket) => {
-    console.log("connect");
     const cookies = cookie.parse(socket.request.headers.cookie || "");
     if (cookies && cookies.access_token) {
       try {
@@ -82,9 +80,9 @@ const socketConf = (io) => {
     });
 
     socket.on("join room", async (roomId) => {
-      console.log("join room");
+      
       if (!isValidRoom(roomId)) {
-        socket.emit("invalid room");
+        socket.emit("invalid room", roomId);
       } else if (isRoomFull(roomId)) {
         socket.emit("room full");
       } else {
@@ -99,10 +97,9 @@ const socketConf = (io) => {
         } else if (getPlayer(roomId, username)) {
           socket.emit("already joined");
         } else if (addPlayer(roomId, username)) {
-          console.log("added player");
-          io.to(roomId).emit("player join", {
-            player: getPlayer(roomId, username),
-          });
+
+          io.to(roomId).emit("player join", { player: getPlayer(roomId, username) });
+
           userRoomId = roomId;
           socket.join(roomId);
           if (isRoundRunning(roomId)) {
@@ -128,7 +125,6 @@ const socketConf = (io) => {
     });
 
     // socket.on("leave room", () => {
-    //     console.log("leave room")
     //   if (userRoomId) {
     //     if (removePlayer(userRoomId, username)) {
     //       if(isValidRoom){
@@ -149,7 +145,6 @@ const socketConf = (io) => {
 
     socket.on("start game", () => {
       if (isValidRoom(userRoomId)) {
-        console.log("start game");
         if (isHost(userRoomId, username)) {
           if (!isGameRunning(userRoomId)) {
             if (startGame(userRoomId)) {
@@ -168,13 +163,12 @@ const socketConf = (io) => {
           socket.emit("not host");
         }
       } else {
-        socket.emit("invalid room");
+        socket.emit("invalid room", userRoomId);
       }
     });
 
     socket.on("start round", () => {
       if (isValidRoom(userRoomId)) {
-        console.log("start round");
         if (isHost(userRoomId, username)) {
           if (isGameRunning(userRoomId)) {
             if (!isRoundRunning(userRoomId)) {
@@ -201,13 +195,12 @@ const socketConf = (io) => {
           socket.emit("not host");
         }
       } else {
-        socket.emit("invalid room");
+        socket.emit("invalid room", userRoomId);
       }
     });
 
     socket.on("submit word", (word) => {
       if (isValidRoom(userRoomId)) {
-        console.log("submit word");
         if (isGameRunning(userRoomId)) {
           if (isRoundRunning(userRoomId)) {
             if (!hasWon(userRoomId, username)) {
@@ -245,9 +238,17 @@ const socketConf = (io) => {
           socket.emit("not running game");
         }
       } else {
-        socket.emit("invalid room");
+        socket.emit("invalid room", userRoomId);
       }
     });
+
+    socket.on("check room", (roomId) => {
+      if(isValidRoom(roomId)){
+        socket.emit("valid room", roomId)
+      } else {
+        socket.emit("invalid room", roomId)
+      }
+    })
 
     // socket.on("host check", () => {
     //   if(isValidRoom(userRoomId)){
@@ -268,7 +269,6 @@ const socketConf = (io) => {
     });
 
     socket.on("disconnect", () => {
-      console.log("disconnect");
       if (userRoomId) {
         removePlayer(userRoomId, username);
         if (isValidRoom(userRoomId)) {
@@ -282,7 +282,6 @@ const socketConf = (io) => {
   });
 
   function startCountdownTimer(duration = 120, roomId) {
-    console.log("timer");
     if (duration > 0) {
       io.to(roomId).emit("round start", {
         players: getAllPlayers(roomId),
