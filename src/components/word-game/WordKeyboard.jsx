@@ -1,7 +1,6 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 
 const letters = [
@@ -52,7 +51,7 @@ function WordKeyBoard({ guessedLetters }) {
   }));
 
   return (
-    <Grid container sx={{ width: "100%", flexGrow: 1, display: "flex" }}>
+    <Grid className="keyboard-container" container sx={{ width: "100%", flexGrow: 1, display: "flex" }}>
       <Grid sx={{ width: "100%", display: "flex" }} item>
         {firstRow.map((letter, index) => {
           return (

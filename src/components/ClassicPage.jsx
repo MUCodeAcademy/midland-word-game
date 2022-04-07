@@ -47,8 +47,8 @@ export const ClassicPage = () => {
             </Button>
           )}
         </div>
-        {!runningGame && roundWord && (
-          <div>
+        {!runningGame && roundWord && !playerWonRound && (
+          <div className="padding-10">
             <span>{`The word was ${roundWord}`}</span>
           </div>
         )}

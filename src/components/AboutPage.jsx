@@ -3,7 +3,11 @@ import { Avatar, Box, Grid, IconButton, Typography } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TomAndOliver from "../shared/assets/TomAndOliver.jpeg";
+
 import syd from "../shared/assets/syd.jpg";
+
+import HeadshotBrett from "../shared/assets/HeadshotBrett.jpg";
+
 
 function AboutPage() {
   return (
@@ -42,16 +46,22 @@ function AboutPage() {
       </Grid>
       <Grid container item xs={12} sm={6}>
         <Grid item xs={3}>
-          <Avatar alt="Brett" sx={{ width: 100, height: 100 }} />
+          <Avatar alt="Brett" src={HeadshotBrett} sx={{ width: 100, height: 100 }} />
         </Grid>
         <Grid item xs={9}>
           <Box className="padding-10">
             <Typography variant="h5"> Brett Ellis</Typography>
-            <Typography variant="body2">Write about yourself here</Typography>
-            <IconButton href="" target="_blank">
+            <Typography variant="body2">
+              Hey y'all, I'm an up and coming junior developer.
+              You could say I'm generally a tech-savy person.
+              Hardware, software, frontend, backend, chances are that I've fiddled around with it at some point.
+              Planning to go on to work at my family's business, Sycamore Leaf Solutions.
+              Excited to get my hands dirty with whatever life gives me next!
+            </Typography>
+            <IconButton href="https://github.com/BrettAshEllis" target="_blank">
               <GitHubIcon />
             </IconButton>
-            <IconButton href="" target="_blank">
+            <IconButton href="https://www.linkedin.com/in/brett-ellis-4b5a82188/" target="_blank">
               <LinkedInIcon />
             </IconButton>
           </Box>
@@ -120,13 +130,13 @@ function AboutPage() {
         <Grid item xs={9}>
           <Box className="padding-10">
             <Typography variant="h5">Tom Schumacher</Typography>
-            <Typography variant="body2">
-              Hi there! *waves* I'm Tom. I am an aspiring Software Developer
-              recently finishing up at Midland Code Academy. My career until
-              recently was focused around helping organizations hire the best
-              people to build cool stuff, but now I want to be one of those
-              people building the cool stuff. Let's build some cool stuff
-              together.
+
+            <Typography variant="body2">Hi there! *waves* I'm Tom.
+              I am an aspiring Software Developer recently finishing up at Midland Code Academy.
+              My career until recently was focused around helping organizations hire the best
+              people to build cool stuff, but now I want to be one of those people building the cool stuff.
+              Let's build some cool stuff together.
+
             </Typography>
             <IconButton
               href="https://github.com/TomSchumacherCode"
