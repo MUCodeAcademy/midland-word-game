@@ -4,8 +4,10 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import useSocket from "../shared/hooks/useSocket";
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
+import GroupsIcon from '@mui/icons-material/Groups';
 
-export const PlayPage = ({}) => {
+export const PlayPage = ({ }) => {
   const [roomId, setRoomId] = useState("");
   const [roomIdError, setRoomIdError] = useState(null);
   const [showError, setShowError] = useState(false);
@@ -43,12 +45,12 @@ export const PlayPage = ({}) => {
           helperText={showError ? roomIdError : ""}
           onChange={(e) => setRoomId(e.target.value)}
         />
-        <Button variant="contained" onClick={() => redirect()}>
+        <Button variant="contained" startIcon={<GroupsIcon />} size="large" onClick={() => redirect()}>
           Join Room
         </Button>
       </div>
       <div className="right-container">
-        <Button variant="contained" onClick={() => createRoom()}>
+        <Button variant="contained" startIcon={<EmojiPeopleIcon />} size="medium" onClick={() => createRoom()}>
           Create Room
         </Button>
       </div>
