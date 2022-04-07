@@ -6,7 +6,7 @@ import WordBoard from "../word-game/WordBoard";
 import Clock from "./Clock";
 import Score from "./Score";
 import { Button, ThemeProvider, Grid } from "@mui/material/";
-import generalTheme from "../../shared/mui-theme";
+import { generalTheme } from "../../shared/mui-theme";
 import { Box } from "@mui/system";
 
 export const GamePage = () => {
