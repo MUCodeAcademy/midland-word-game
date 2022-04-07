@@ -114,7 +114,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-
 }
 
 .padding-20 {
@@ -141,4 +140,8 @@ body {
 
 .margin-auto {
   margin: 0 auto;
+}
+
+.height {
+  height: 50px;
 }
