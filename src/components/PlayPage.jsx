@@ -4,8 +4,9 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import useSocket from "../shared/hooks/useSocket";
-import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 import GroupsIcon from '@mui/icons-material/Groups';
+import ManIcon from '@mui/icons-material/Man';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 export const PlayPage = ({ }) => {
   const [roomId, setRoomId] = useState("");
@@ -13,7 +14,8 @@ export const PlayPage = ({ }) => {
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
   const {
-    createRoom
+    createRoom,
+    createRoomSolo,
   } = useSocket();
 
   useEffect(() => {
@@ -45,14 +47,22 @@ export const PlayPage = ({ }) => {
           helperText={showError ? roomIdError : ""}
           onChange={(e) => setRoomId(e.target.value)}
         />
-        <Button variant="contained" startIcon={<GroupsIcon />} size="large" onClick={() => redirect()}>
+        <Button variant="contained" startIcon={<GroupsIcon />} onClick={() => redirect()}>
           Join Room
+        </Button>
+        <Button variant="contained" startIcon={<GroupAddIcon />} onClick={() => createRoom()}>
+          Create Room
         </Button>
       </div>
       <div className="right-container">
-        <Button variant="contained" startIcon={<EmojiPeopleIcon />} size="medium" onClick={() => createRoom()}>
-          Create Room
-        </Button>
+        <div className="play-page-button">
+
+        </div>
+        <div className="play-page-button">
+          <Button className="play-page-button" variant="contained" startIcon={<ManIcon />} onClick={() => navigate("/classic")}>
+            Play Solo
+          </Button>
+        </div>
       </div>
     </div>
   );
