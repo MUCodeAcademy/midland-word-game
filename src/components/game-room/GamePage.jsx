@@ -7,7 +7,7 @@ import Chat from "./Chat";
 import Clock from "./Clock";
 import Score from "./Score";
 
-export const GamePage = () => {
+export const GamePage = ({ user }) => {
   const copyBtn = useRef();
   const { roomId } = useParams();
   const {
@@ -26,6 +26,8 @@ export const GamePage = () => {
     playerWonRound,
     isHost,
     username,
+    messages,
+    sendMessage,
   } = useSocket();
 
   useEffect(() => {
@@ -81,13 +83,20 @@ export const GamePage = () => {
             runningRound={runningRound}
           />
         </div>
-        <Chat />
+        <Chat
+          roomId={roomId}
+          user={user}
+          messages={messages}
+          sendMessage={sendMessage}
+        />
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
 
 const mapDispatchToProps = {};
 
