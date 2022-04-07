@@ -89,9 +89,7 @@ useEffect(() => {
         }
       </div>
       <div className="padding-10">
-        {(!solo || guesses.length < 6) && (
           <WordKeyboard guessedLetters={guessedLetters} />
-        )}
       </div>
 
     </div>
