@@ -50,10 +50,10 @@ function AboutPage() {
               Planning to go on to work at my family's business, Sycamore Leaf Solutions.
               Excited to get my hands dirty with whatever life gives me next!
             </Typography>
-            <IconButton href="" target="https://github.com/BrettAshEllis">
+            <IconButton href="https://github.com/BrettAshEllis" target="_blank">
               <GitHubIcon />
             </IconButton>
-            <IconButton href="" target="https://www.linkedin.com/in/brett-ellis-4b5a82188/">
+            <IconButton href="https://www.linkedin.com/in/brett-ellis-4b5a82188/" target="_blank">
               <LinkedInIcon />
             </IconButton>
           </Box>
