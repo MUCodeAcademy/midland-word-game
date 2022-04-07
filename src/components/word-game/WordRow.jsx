@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef, useCallback, useState } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
-function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
+function WordRow({ runningRound, playerWonRound, guesses, submitWord, solo }) {
   const guessInput = useRef(null);
+  const [guessesFill, setGuessesFill] = useState([]);
 
   const handleClick = useCallback(
     (word) => {
@@ -15,23 +16,29 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
     if (guessInput.current) {
       guessInput.current.value = "";
     }
+    setGuessesFill([]);
+    for (let i = 0; i < 6 - guesses.length; i++) {
+      setGuessesFill((curr) => [
+        ...curr,
+        [
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+          { letter: "‎", status: "" },
+        ],
+      ]);
+    }
   }, [guesses]);
 
   return (
     <div>
-      <div>
-        {guesses &&
-          guesses.map((val, i) => <WordRowDisplay key={i} val={val} />)}
-      </div>
+      <div>{guesses && guesses.map((val, i) => <WordRowDisplay key={i} val={val} />)}</div>
+      {solo && <div>{guessesFill && guessesFill.map((val, i) => <WordRowDisplay key={i} val={val} />)}</div>}
 
       {runningRound && !playerWonRound && (
         <div>
-          <input
-            id="input"
-            type="text"
-            ref={guessInput}
-            placeholder="type your guess here"
-          />
+          <input id="input" type="text" ref={guessInput} placeholder="type your guess here" />
           <button
             onClick={() => {
               handleClick(guessInput.current.value);

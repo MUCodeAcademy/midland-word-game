@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
+
 const generalTheme = createTheme({
   palette: {
     type: "light",
@@ -23,4 +24,5 @@ const generalTheme = createTheme({
     },
   },
 });
+
 export default generalTheme;

@@ -1,5 +1,9 @@
+body {
+  background-color: #faf8d4;
+}
 .noTextDecor {
   text-decoration: none;
+  color: #2e4057;
 }
 .correct {
   background-color: green !important;
@@ -95,6 +99,22 @@
 }
 .play-page-button {
   margin-bottom: 10px;
+}
+
+.classic-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+  align-content: center;
+}
+.classic-header {
+  margin: 10px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 .padding-20 {
