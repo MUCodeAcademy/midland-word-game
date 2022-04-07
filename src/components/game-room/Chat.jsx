@@ -1,54 +1,78 @@
-import React, { useState, useRef, useCallback } from "react";
-import useSocket from "../../shared/hooks/useSocket";
-import { useParams } from "react-router-dom";
+import React, { useState } from "react";
 import {
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
+  Divider,
+  Paper,
+  TextField,
   Typography,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
+import ForumIcon from "@mui/icons-material/Forum";
 import { Box } from "@mui/system";
 
-function Chat() {
-  const { sendMessage, messages } = useSocket();
+function Chat({ roomId, user, messages, sendMessage }) {
   const [message, setMessage] = useState("");
 
   return (
-    <Box sx={{ width: 300, height: 300, backgroundColor: "pink" }}>
-      {messages.map((msg) => {
-        <div>
-          <span>{msg.username}</span>
-          <span>{msg.body}</span>
-        </div>;
-      })}
-      <List>
-        {messages.map((msg) => {
-          <ListItem alignItems="flex-start">
-            <ListItemText secondary={msg.username}>
-              <Typography sx={{ color: msg.color }}>{msg.username}</Typography>;
-              {msg.body}
-            </ListItemText>
-          </ListItem>;
-        })}
-      </List>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <IconButton
-        onClick={() => {
-          if (message.length > 0) {
-            sendMessage(message);
-            setMessage("");
-          }
+    <Paper
+      sx={{ width: 325, height: 365, p: 3, backgroundColor: "#FF934F" }}
+      elevation={7}
+    >
+      <div className="chatHeader">
+        <ForumIcon color="primary" />
+        <Typography sx={{ fontWeight: "bold", fontSize: 20, color: "primary" }}>
+          Chat:
+        </Typography>
+      </div>
+      <Box
+        sx={{
+          height: 250,
+          p: 2,
+          overflowY: "scroll",
+          backgroundColor: "#FAF8D4",
+          wordWrap: "break-word",
         }}
       >
-        <SendIcon />
-      </IconButton>
-    </Box>
+        <Divider sx={{ fontSize: 13 }}>beginning of chat history</Divider>
+        {messages.map((msg) => (
+          <div className="message">
+            <Typography
+              display="inline"
+              sx={{
+                color: msg.color,
+                fontWeight: "bold",
+              }}
+            >
+              {msg.username}:{" "}
+            </Typography>
+            <Typography paragraph>{msg.body}</Typography>
+            <Divider />
+          </div>
+        ))}
+      </Box>
+      <div className="messageInput">
+        <TextField
+          id="standard-text"
+          label="New Message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          multiline
+          maxRows={4}
+          //margin="normal"
+        />
+        <IconButton
+          onClick={() => {
+            if (message.length > 0) {
+              sendMessage(message, roomId, user);
+              setMessage("");
+            }
+          }}
+          color="primary"
+        >
+          <SendIcon />
+        </IconButton>
+      </div>
+    </Paper>
   );
 }
 
