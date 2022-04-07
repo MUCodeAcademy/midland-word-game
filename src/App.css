@@ -174,3 +174,7 @@ body {
 .height {
   height: 50px;
 }
+
+.keyboard-container {
+  background-color: #EE7017;
+}
