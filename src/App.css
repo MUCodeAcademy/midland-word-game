@@ -34,7 +34,7 @@ body {
 }
 
 .default-dark-keyboard {
-  background-color: #1A2027;
+  background-color: #1a2027;
 }
 
 .score-container {
@@ -103,7 +103,6 @@ body {
 }
 .play-page-button {
   margin-bottom: 10px;
-
 }
 
 .padding-20 {
@@ -111,5 +110,19 @@ body {
 }
 
 .padding-10 {
+  padding: 10px;
+}
+.chatHeader {
+  display: flex;
+}
+.message {
+  padding: 5px;
+}
+.messageInput {
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+.messageDisplay {
   padding: 10px;
 }
