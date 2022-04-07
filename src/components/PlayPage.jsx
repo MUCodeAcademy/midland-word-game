@@ -50,9 +50,19 @@ export const PlayPage = ({ }) => {
         <Button variant="contained" startIcon={<GroupsIcon />} onClick={() => redirect()}>
           Join Room
         </Button>
-        <Button variant="contained" startIcon={<GroupAddIcon />} onClick={() => createRoom()}>
+      </div>
+      <div className="right-container">
+        <div className="play-page-button">
+        <Button variant="contained" onClick={() => createRoom()}>
+
           Create Room
         </Button>
+        </div>
+        <div className="play-page-button">
+        <Button className="play-page-button" variant="contained" onClick={() => createRoomSolo()}>
+          Play Solo
+        </Button>
+        </div>
       </div>
       <div className="right-container">
         <div className="play-page-button">

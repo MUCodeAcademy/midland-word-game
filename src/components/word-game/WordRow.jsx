@@ -1,23 +1,18 @@
 import React, { useEffect, useRef, useCallback } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
-function WordRow({
-  roundWord,
-  runningRound,
-  playerWonRound,
-  guesses,
-  submitWord,
-}) {
-  const roundWordArr = roundWord ? roundWord.split("") : [];
-
+function WordRow({ runningRound, playerWonRound, guesses, submitWord }) {
   const guessInput = useRef(null);
 
-  const handleClick = useCallback((word) => {
-    submitWord(word);
-  }, [submitWord]);
+  const handleClick = useCallback(
+    (word) => {
+      submitWord(word);
+    },
+    [submitWord]
+  );
 
   useEffect(() => {
-    if(guessInput.current){
+    if (guessInput.current) {
       guessInput.current.value = "";
     }
   }, [guesses]);
@@ -25,13 +20,8 @@ function WordRow({
   return (
     <div>
       <div>
-        {guesses && guesses.map((val) => (
-          <WordRowDisplay
-            key={val}
-            roundWordArr={roundWordArr}
-            userGuess={val}
-          />
-        ))}
+        {guesses &&
+          guesses.map((val, i) => <WordRowDisplay key={i} val={val} />)}
       </div>
 
       {runningRound && !playerWonRound && (

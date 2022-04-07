@@ -6,15 +6,19 @@ body {
   color: #2e4057;
 }
 .correct {
-  background-color: green;
+  background-color: green !important;
 }
 
-.included {
-  background-color: goldenrod;
+.misplaced {
+  background-color: goldenrod !important;
 }
 
-.incorrect {
+.wr-incorrect {
   background-color: gray;
+}
+
+.wrong {
+  background-color: crimson !important;
 }
 
 .center {
@@ -25,32 +29,27 @@ body {
   color: white;
 }
 
-.score-container {
+.default-keyboard {
+  background-color: white;
 }
-.players-container {
+
+.default-dark-keyboard {
+  background-color: #1A2027;
+}
+
+.score-container {
+  width: 30%;
+  min-width: 300px;
+}
+.score-page-container {
+  background-color: gray;
+  border-radius: 15px;
   padding: 5px;
-  margin: 7px;
-  border-radius: 7px;
-  box-shadow: 0px 2px 11px 0px black;
-  margin-bottom: 10px;
+  text-align: center;
 }
 .players-container-title {
   font-size: 17px;
   padding-left: 5px;
-}
-.player {
-  margin-top: 3px;
-  border-radius: 7px;
-  border: 1px solid black;
-  padding: 2px;
-  padding-left: 5px;
-  box-shadow: 0px 0px 3px 1px black;
-  margin-top: 10px;
-  font-size: 15px;
-}
-.local-player {
-  border: 1px solid green;
-  box-shadow: 0px 0px 3px 1px green;
 }
 
 .play-page-container {
@@ -100,4 +99,17 @@ body {
   padding-left: 15px;
   padding-right: 15px;
   height: 41vh;
+  flex-direction: column;
+}
+.play-page-button {
+  margin-bottom: 10px;
+
+}
+
+.padding-20 {
+  padding: 20px;
+}
+
+.padding-10 {
+  padding: 10px;
 }

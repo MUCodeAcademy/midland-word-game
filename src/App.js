@@ -78,9 +78,7 @@ function App({ user, setUser }) {
             <Route
               path="/about"
               element={
-                <ProtectedRoute isPrivate={false}>
                   <AboutPage />
-                </ProtectedRoute>
               }
             />
             <Route
