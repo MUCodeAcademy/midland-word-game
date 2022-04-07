@@ -18,11 +18,14 @@ const useSocket = (socketParam = null) => {
   const [runningGame, setRunningGame] = useState(null);
   const [roundWord, setRoundWord] = useState(null);
   const [playerWonRound, setPlayerWonRound] = useState(false);
+  const [roomId, setRoomId] = useState(null)
+  const [wonRound, setWonRound] = useState(false)
 
   useEffect(() => {
     if (player) {
       setPlayerWonRound(player.wonRound);
       setIsHost(player.isHost);
+      setWonRound(player.wonRound)
     }
   }, [player, setPlayerWonRound, setIsHost]);
 
@@ -56,7 +59,8 @@ const useSocket = (socketParam = null) => {
     });
     socket.current.on("room created solo", (data) => {
       //setTransferring(true); //this could be a problem of unmounting component before finishing state change
-      navigate(`/classic`, { state: {id: data.roomId} });
+      //navigate(`/classic`, { state: {id: data.roomId} });
+      setRoomId(data.roomId)
     });
     socket.current.on("player data", (data) => {
       //this means successful join
@@ -81,7 +85,7 @@ const useSocket = (socketParam = null) => {
     //     })
     //   );
     // });
-  }, [socket, setPlayers, setUsername, setRunningGame, setRunningRound, setRoundWord, navigate]);
+  }, [socket, setPlayers, setUsername, setRunningGame, setRunningRound, setRoundWord, navigate, setRoomId]);
 
   useEffect(() => {
     socket.current.on("player join", (data) => {
@@ -174,9 +178,10 @@ const useSocket = (socketParam = null) => {
       setRunningRound(false);
       setRoomMessage("Round Over");
     });
-    socket.current.on("game over", () => {
+    socket.current.on("game over", (data) => {
       setRunningGame(false);
       setRoomMessage("Game Over");
+      setPlayers(data.players)
     });
   }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, setPlayer]);
 
@@ -292,7 +297,9 @@ const useSocket = (socketParam = null) => {
     runningRound,
     playerWonRound,
     isHost,
-    username
+    username,
+    roomId,
+    wonRound,
   };
 };
 

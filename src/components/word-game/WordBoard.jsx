@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import WordKeyboard from "./WordKeyboard";
-// import WordRow from "./WordRow";
+import WordRow from "./WordRow";
 
-export const WordBoard = ({ submitWord, guesses, roundWord, runningGame, runningRound, playerWonRound, solo }) => {
+export const WordBoard = ({ submitWord, guesses, roundWord, runningGame, runningRound, playerWonRound, solo = false }) => {
 const [guessedLetters, setGuessedLetters] = useState({});
 const [guessesObjs, setGuessesObjs] = useState([]);
 
@@ -51,16 +51,23 @@ useEffect(() => {
   })
 }, [guesses, setGuessesObjs, checkGuess])
 
+useEffect(() => {
+  if(runningRound){
+    setGuessedLetters({})
+  }
+}, [runningRound])
+
   return (
     <div>
-      {/* <WordRow
+      <WordRow
         submitWord={submitWord}
         guesses={guessesObjs}
         runningGame={runningGame}
         runningRound={runningRound}
         playerWonRound={playerWonRound}
-      /> */}
-      {(!solo || guesses.length < 6) && <WordKeyboard guessedLetters={guessedLetters} />}
+        solo={solo}
+      />
+      <WordKeyboard guessedLetters={guessedLetters} />
     </div>
   );
 };

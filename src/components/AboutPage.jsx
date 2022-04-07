@@ -22,11 +22,15 @@ function AboutPage() {
         <Grid item xs={9}>
           <Box className="padding-10">
             <Typography variant="h5"> Russell Dunham</Typography>
-            <Typography variant="body2">Write about yourself here</Typography>
-            <IconButton href="" target="_blank">
+            <Typography variant="body2">
+              I am fresh out of a coding boot camp where I learned to be a full
+              stack developer. Now I am trying to get my foot in the door to get
+              a job in software development.
+            </Typography>
+            <IconButton href="https://github.com/Melrov" target="_blank">
               <GitHubIcon />
             </IconButton>
-            <IconButton href="" target="_blank">
+            <IconButton href="https://www.linkedin.com/in/russell-d-6a94b5231/" target="_blank">
               <LinkedInIcon />
             </IconButton>
           </Box>
@@ -99,15 +103,19 @@ function AboutPage() {
           <Box className="padding-10">
             <Typography variant="h5">Tom Schumacher</Typography>
             <Typography variant="body2">Hi there! *waves* I'm Tom. 
-            I am an aspriing Software Developer recently finishing up at Midland Code Academy. 
+            I am an aspiring Software Developer recently finishing up at Midland Code Academy. 
             My career until recently was focused around helping organizations hire the best
             people to build cool stuff, but now I want to be one of those people building the cool stuff.
             Let's build some cool stuff together. 
             </Typography>
             <IconButton href="https://github.com/TomSchumacherCode" target="_blank">
+
               <GitHubIcon />
             </IconButton>
-            <IconButton href="https://www.linkedin.com/in/tom-schumacher-ab307251/" target="_blank">
+            <IconButton
+              href="https://www.linkedin.com/in/tom-schumacher-ab307251/"
+              target="_blank"
+            >
               <LinkedInIcon />
             </IconButton>
           </Box>
