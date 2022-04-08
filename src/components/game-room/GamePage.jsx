@@ -6,22 +6,38 @@ import WordBoard from "../word-game/WordBoard";
 import Chat from "./Chat";
 import Clock from "./Clock";
 import Score from "./Score";
-import { Button, ThemeProvider, Grid, Modal, Typography } from "@mui/material/";
+import {
+  Button,
+  ThemeProvider,
+  Grid,
+  Modal,
+  Typography,
+  IconButton,
+} from "@mui/material/";
 import { generalTheme } from "../../shared/mui-theme";
 
+import { Box } from "@mui/system";
+import CloseIcon from "@mui/icons-material/Close";
+
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 240,
-  bgcolor: '#FF934F',
-  border: '2px solid #000',
+  bgcolor: "#FF934F",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
   display: "flex",
   flexDirection: "column",
-  alignItems: "center"
+  alignItems: "center",
+};
+
+const closeButtonStyle = {
+  position: "absolute",
+  right: 0,
+  top: 0,
 };
 
 export const GamePage = ({ user }) => {
@@ -69,10 +85,9 @@ export const GamePage = ({ user }) => {
     if (roomMessage === "Game Over") {
       handleOpen();
     } else {
-      handleClose()
+      handleClose();
     }
   }, [roomMessage]);
-  
 
   return (
     <ThemeProvider theme={generalTheme}>
@@ -84,8 +99,22 @@ export const GamePage = ({ user }) => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
+            <IconButton
+              aria-label="delete"
+              size="large"
+              sx={closeButtonStyle}
+              onClick={() => handleClose()}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
             <Typography>Winner</Typography>
-            <Typography>{winnerUsername === username ? <span style={{textDecoration: "underline"}}>You</span> : winnerUsername}</Typography>
+            <Typography>
+              {winnerUsername === username ? (
+                <span style={{ textDecoration: "underline" }}>You</span>
+              ) : (
+                winnerUsername
+              )}
+            </Typography>
           </Box>
         </Modal>
         <div className="padding-10 room-message">

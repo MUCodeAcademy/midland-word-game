@@ -4,37 +4,36 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
 const letters = [
-  "A",
-  "B",
-  "C",
-  "D",
+  "Q",
+  "W",
   "E",
+  "R",
+  "T",
+  "Y",
+  "U",
+  "I",
+  "O",
+  "P",
+  "A",
+  "S",
+  "D",
   "F",
   "G",
   "H",
-  "I",
   "J",
   "K",
   "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
   "Z",
+  "X",
+  "C",
+  "V",
+  "B",
+  "N",
+  "M",
 ];
-const firstRow = letters.slice(0, 7);
-const secondRow = letters.slice(7, 14);
-const thirdRow = letters.slice(14, 21);
-const fourthRow = letters.slice(21);
+const firstRow = letters.slice(0, 10);
+const secondRow = letters.slice(11, 19);
+const thirdRow = letters.slice(20, 27);
 
 function WordKeyBoard({ guessedLetters }) {
   const theme = useTheme();
@@ -48,6 +47,8 @@ function WordKeyBoard({ guessedLetters }) {
     display: "flex",
     flexGrow: 1,
     justifyContent: "center",
+    userSelect: "none",
+    border: "1px solid black",
   }));
 
   return (
@@ -85,25 +86,8 @@ function WordKeyBoard({ guessedLetters }) {
         })}
       </Grid>
       <Grid sx={{ width: "100%", display: "flex" }} item>
+      <Item>delete</Item>
         {thirdRow.map((letter, index) => {
-          return (
-            <Item
-              key={letter + index}
-              className={
-                guessedLetters[letter.toLowerCase()]
-                  ? guessedLetters[letter.toLowerCase()]
-                  : ""
-              }
-            >
-              {letter}
-            </Item>
-          );
-        })}
-      </Grid>
-
-      <Grid sx={{ width: "100%", display: "flex" }} item>
-        <Item>delete</Item>
-        {fourthRow.map((letter, index) => {
           return (
             <Item
               key={letter + index}
