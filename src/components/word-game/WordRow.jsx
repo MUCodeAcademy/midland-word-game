@@ -1,10 +1,17 @@
 import { Button } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useEffect, useRef, useCallback, useState } from "react";
 import WordRowDisplay from "./WordRowDisplay";
 
 function WordRow({ runningRound, playerWonRound, guesses, submitWord, solo }) {
   const guessInput = useRef(null);
   const [guessesFill, setGuessesFill] = useState([]);
+
+  const [inputGuess, setInputGuess] = useState([]);
+
+  const handleKeyPress = (event) => {
+    setInputGuess((curr) => [...curr, [event.key]]);
+  };
 
   const handleClick = useCallback(
     (word) => {
@@ -52,6 +59,7 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord, solo }) {
             type="text"
             ref={guessInput}
             placeholder="type your guess here"
+            onKeyDown={(e) => handleKeyPress(e)}
             className="margin-10"
           />
           <Button
