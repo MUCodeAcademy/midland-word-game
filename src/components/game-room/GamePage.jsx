@@ -15,7 +15,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 240,
   bgcolor: '#FF934F',
   border: '2px solid #000',
   boxShadow: 24,
@@ -84,7 +84,7 @@ export const GamePage = ({ user }) => {
         >
           <Box sx={style}>
             <Typography>Winner</Typography>
-            <Typography>{winnerUsername}</Typography>
+            <Typography>{winnerUsername === username ? <span style={{textDecoration: "underline"}}>You</span> : winnerUsername}</Typography>
           </Box>
         </Modal>
         <div className="padding-10 room-message">
