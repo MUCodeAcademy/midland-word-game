@@ -53,7 +53,9 @@ function Chat({ roomId, user, messages, sendMessage }) {
             >
               {msg.username}:{" "}
             </Typography>
-            <Typography paragraph>{msg.body}</Typography>
+            <Typography display="inline" paragraph>
+              {msg.body}
+            </Typography>
             <Divider />
           </div>
         ))}
