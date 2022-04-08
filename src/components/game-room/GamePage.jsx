@@ -32,7 +32,7 @@ export const GamePage = ({ user }) => {
     messages,
     sendMessage,
   } = useSocket();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     joinRoom(roomId);
@@ -44,17 +44,10 @@ export const GamePage = ({ user }) => {
         <div className="padding-10 room-message">
           {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
         </div>
+
         <div>
           <Grid container spacing={4} justifyContent="center" display="flex">
             <Grid item xs={4}>
-
-              <Button
-                variant="contained"
-                onClick={() => navigate("/play")}
-                size="large">
-                Disconnect
-              </Button>
-
               <div style={{ marginTop: "10px" }}>
                 <span className="margin-10">Room ID: {roomId}</span>
                 <Button
@@ -69,6 +62,7 @@ export const GamePage = ({ user }) => {
                 </Button>
               </div>
             </Grid>
+
             <Grid item xs={4}>
               {isHost && (
                 <>
@@ -92,10 +86,7 @@ export const GamePage = ({ user }) => {
                   )}
                 </>
               )}
-              {!runningGame && roundWord && !playerWonRound && (
-
               {!runningRound && roundWord && !playerWonRound && (
-
                 <div className="padding-10">
                   <span>{`The word was ${roundWord}`}</span>
                 </div>
@@ -106,7 +97,16 @@ export const GamePage = ({ user }) => {
                 <Clock roomTimer={roomTimer} />
               </div>
             </Grid>
-            <Grid item xs={12}>
+            <Grid style={{ paddingTop: "10px" }} item xs={12}>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/play")}
+                size="small"
+              >
+                Leave Game
+              </Button>
+            </Grid>
+            <Grid item xs={12} style={{ paddingTop: "10px" }}>
               <div className="width-80pc">
                 <Box display="flex" justifyContent="center">
                   <WordBoard

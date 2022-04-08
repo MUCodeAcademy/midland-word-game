@@ -219,7 +219,7 @@ body {
 
 .room-message {
   font-weight: bold;
-  height: 21.5px;
+  height: 25px;
   background-color: #ff934f;
   border-radius: 5px;
   max-width: 300px;
