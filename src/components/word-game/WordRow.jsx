@@ -47,8 +47,7 @@ function WordRow({
         </div>
       )}
       <div>
-        {console.log(guessFill)}
-        {guessFill && <WordRowDisplay val={guessFill} />}
+        {guessFill && runningRound && <WordRowDisplay val={guessFill} />}
       </div>
     </div>
   );

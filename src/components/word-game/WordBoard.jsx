@@ -20,27 +20,25 @@ export const WordBoard = ({
 
   //KeyDown event listener on entire page
 
-  function handleKeyDown
-    (e) {
-      console.log(runningRound);
-      if (!playerWonRound) {
-        //enter
-        if (e.keyCode === 13) {
-          console.log(inputGuess);
-          submitWord(inputGuess.join(""));
-        }
-        //backspace
-        else if (e.keyCode === 8) {
-          setInputGuess((curr) => [...curr.pop()]);
-        }
-        //letters
-        else if (e.keyCode > 64 && e.keyCode < 91) {
-          if (inputGuess.length < 5) {
-            setInputGuess((curr) => [...curr, e.key]);
-          }
+  function handleKeyDown(e) {
+    if (!playerWonRound && runningRound) {
+      //enter
+      if (e.keyCode === 13) {
+        console.log(inputGuess);
+        submitWord(inputGuess.join(""));
+      }
+      //backspace
+      else if (e.keyCode === 8) {
+        setInputGuess((curr) => [...curr.slice(0, curr.length - 1)]);
+      }
+      //letters
+      else if (e.keyCode > 64 && e.keyCode < 91) {
+        if (inputGuess.length < 5) {
+          setInputGuess((curr) => [...curr, e.key]);
         }
       }
     }
+  }
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -53,11 +51,11 @@ export const WordBoard = ({
   useEffect(() => {
     console.log(inputGuess);
     setGuessFill([
-      { letter: inputGuess[0] ? inputGuess[0] : "‎", status: "" },
-      { letter: inputGuess[1] ? inputGuess[1] : "‎", status: "" },
-      { letter: inputGuess[2] ? inputGuess[2] : "‎", status: "" },
-      { letter: inputGuess[3] ? inputGuess[3] : "‎", status: "" },
-      { letter: inputGuess[4] ? inputGuess[4] : "‎", status: "" },
+      { letter: inputGuess[0] ? inputGuess[0] : "‎", status: "wrong" },
+      { letter: inputGuess[1] ? inputGuess[1] : "‎", status: "wrong" },
+      { letter: inputGuess[2] ? inputGuess[2] : "‎", status: "wrong" },
+      { letter: inputGuess[3] ? inputGuess[3] : "‎", status: "wrong" },
+      { letter: inputGuess[4] ? inputGuess[4] : "‎", status: "wrong" },
     ]);
   }, [inputGuess]);
 
@@ -105,6 +103,7 @@ export const WordBoard = ({
   );
 
   useEffect(() => {
+    setInputGuess([]);
     setGuessesObjs([]);
     guesses.forEach((guess) => {
       checkGuess(guess);
@@ -128,14 +127,13 @@ export const WordBoard = ({
             runningRound={runningRound}
             playerWonRound={playerWonRound}
             guessFill={guessFill}
+            solo={solo}
           />
         }
       </div>
 
       <div className="padding-10">
-        {(!solo || guesses.length < 6) && (
-          <WordKeyboard guessedLetters={guessedLetters} />
-        )}
+        <WordKeyboard guessedLetters={guessedLetters} />
       </div>
     </div>
   );
