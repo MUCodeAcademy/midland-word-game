@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
@@ -6,13 +6,32 @@ import WordBoard from "../word-game/WordBoard";
 import Chat from "./Chat";
 import Clock from "./Clock";
 import Score from "./Score";
-import { Button, ThemeProvider, Grid } from "@mui/material/";
+import { Button, ThemeProvider, Grid, Modal, Typography } from "@mui/material/";
 import { generalTheme } from "../../shared/mui-theme";
 import { Box } from "@mui/system";
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 240,
+  bgcolor: '#FF934F',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center"
+};
 
 export const GamePage = ({ user }) => {
   const copyBtn = useRef();
   const { roomId } = useParams();
+  const [open, setOpen] = useState(false);
+  const [winnerUsername, setWinnerUsername] = useState("");
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const {
     joinRoom,
     startGame,
@@ -38,9 +57,37 @@ export const GamePage = ({ user }) => {
     joinRoom(roomId);
   }, [joinRoom, roomId]);
 
+  useEffect(() => {
+    const winner = players.find(
+      (player) => player.wonRound && !player.isKnockedOut
+    );
+    if (winner) {
+      setWinnerUsername(winner.username);
+    }
+  }, [players]);
+  useEffect(() => {
+    if (roomMessage === "Game Over") {
+      handleOpen();
+    } else {
+      handleClose()
+    }
+  }, [roomMessage]);
+  
+
   return (
     <ThemeProvider theme={generalTheme}>
       <div className="center">
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography>Winner</Typography>
+            <Typography>{winnerUsername === username ? <span style={{textDecoration: "underline"}}>You</span> : winnerUsername}</Typography>
+          </Box>
+        </Modal>
         <div className="padding-10 room-message">
           {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
         </div>
