@@ -13,9 +13,15 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord, solo }) {
     setInputGuess((curr) => [...curr, [event.key]]);
   };
 
+  //autofocus on input after each submission
+  function resetForm() {
+    guessInput.current.focus();
+  }
+
   const handleClick = useCallback(
     (word) => {
       submitWord(word);
+      resetForm();
     },
     [submitWord]
   );
@@ -54,6 +60,7 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord, solo }) {
 
       {runningRound && !playerWonRound && (
         <div>
+          {inputGuess}
           <input
             id="input"
             type="text"
@@ -61,6 +68,7 @@ function WordRow({ runningRound, playerWonRound, guesses, submitWord, solo }) {
             placeholder="type your guess here"
             onKeyDown={(e) => handleKeyPress(e)}
             className="margin-10"
+            autoFocus
           />
           <Button
             variant="contained"
