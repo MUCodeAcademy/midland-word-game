@@ -29,15 +29,15 @@ function WordRow({
       setGuessedWord("");
     }
     setGuessesFill([]);
-    for (let i = 0; i < 6 - guesses.length; i++) {
+    for (let i = 0; i < 5 - guesses.length; i++) {
       setGuessesFill((curr) => [
         ...curr,
         [
-          { letter: "‎", status: "" },
-          { letter: "‎", status: "" },
-          { letter: "‎", status: "" },
-          { letter: "‎", status: "" },
-          { letter: "‎", status: "" },
+          { letter: "‎", status: "wrong" },
+          { letter: "‎", status: "wrong" },
+          { letter: "‎", status: "wrong" },
+          { letter: "‎", status: "wrong" },
+          { letter: "‎", status: "wrong" },
         ],
       ]);
     }
@@ -45,17 +45,17 @@ function WordRow({
 
   return (
     <div>
-      <Box sx={{ height: 250, overflowY: "scroll" }}>
+      <Box sx={{ height: solo ? "auto" : 250, overflowY: solo ? "" : "scroll" }}>
         {guesses &&
           guesses.map((val, i) => <WordRowDisplay key={i} val={val} />)}
-        <div ref={messagesEndRef} />
-      </Box>
       {solo && (
         <div>
           {guessesFill &&
             guessesFill.map((val, i) => <WordRowDisplay key={i} val={val} />)}
         </div>
       )}
+        <div ref={messagesEndRef} />
+      </Box>
       <div>
         {guessFill && runningRound && <WordRowDisplay val={guessFill} />}
       </div>
