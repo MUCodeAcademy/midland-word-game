@@ -10,7 +10,7 @@ import SendIcon from "@mui/icons-material/Send";
 import ForumIcon from "@mui/icons-material/Forum";
 import { Box } from "@mui/system";
 
-function Chat({ roomId, user, messages, sendMessage }) {
+function Chat({ roomId, user, messages, sendMessage, setChatFocused }) {
   const [message, setMessage] = useState("");
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
@@ -62,12 +62,14 @@ function Chat({ roomId, user, messages, sendMessage }) {
         <TextField
           style={{ backgroundColor: "#faf8d4" }}
           size="small"
-          id="standard-text"
+          id="chat"
           label="New Message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           multiline
           maxRows={4}
+          onClick={() => setChatFocused(true)}
+          onBlur={() => setChatFocused(false)}
           //margin="normal"
         />
         <IconButton
