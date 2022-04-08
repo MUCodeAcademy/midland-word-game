@@ -53,12 +53,20 @@ function PlayerDisplay({ player, i, isYou, runningRound }) {
         <div style={{ textAlign: "center" }}>
           <PlayerName>
             {player.isHost ? "Host " : ""}
-            <span style={isYou ? { textDecoration: "underline" } : {}}>{isYou ? "You" : player.username}</span>
+            <span style={isYou ? { textDecoration: "underline" } : {}}>
+              {isYou ? "You" : player.username}
+            </span>
           </PlayerName>
-          <span>{player.lastGuess && (!player.wonRound || !runningRound) ? ` - ${player.lastGuess}` : " - guess"}</span>
+          <span>
+            {player.lastGuess && (!player.wonRound || !runningRound)
+              ? ` - ${player.lastGuess}`
+              : " - guess"}
+          </span>
         </div>
       </LeftContainer>
-      <Item sx={player.wonRound ? { color: "yellow !important" } : {}}>{"Guesses " + player.guesses}</Item>
+      <Item sx={player.wonRound ? { color: "yellow !important" } : {}}>
+        {"Guesses " + player.guesses}
+      </Item>
     </Container>
   );
 }

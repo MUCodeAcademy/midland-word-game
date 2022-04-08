@@ -8,7 +8,6 @@ import Clock from "./Clock";
 import Score from "./Score";
 import { Button, ThemeProvider, Grid } from "@mui/material/";
 import { generalTheme } from "../../shared/mui-theme";
-import { Box } from "@mui/system";
 
 export const GamePage = ({ user }) => {
   const copyBtn = useRef();
@@ -88,8 +87,8 @@ export const GamePage = ({ user }) => {
             </Grid>
 
             <Grid item container justifyContent="space-between" spacing={12}>
-              <Grid item container direction="column" xs={3} sx={{ p: 5 }}>
-                <Grid item sx={{ pl: 10 }}>
+              <Grid item container xs={3} sm={4} sx={{ p: 5 }}>
+                <Grid item sx={{ pl: 5, mb: 5 }}>
                   <div className="score-container">
                     <Score
                       players={players}
@@ -107,7 +106,7 @@ export const GamePage = ({ user }) => {
                   />
                 </Grid>
               </Grid>
-              <Grid item xs={12} md={7} sx={{ p: 5 }}>
+              <Grid item sm={12} md={8} sx={{ p: 5 }}>
                 <div>
                   <WordBoard
                     submitWord={submitWord}
