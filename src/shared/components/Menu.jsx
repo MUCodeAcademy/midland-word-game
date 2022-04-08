@@ -57,7 +57,6 @@ export const Menu = ({ user, clearUser }) => {
       <Drawer
         anchor="left"
         open={drawerOpen}
-        onOpen={() => setDrawerOpen(true)}
         onClose={() => setDrawerOpen(false)}
       >
         <Box width=" 250px">
