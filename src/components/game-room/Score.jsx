@@ -6,9 +6,11 @@ import PlayerDisplay from "./PlayerDisplay";
 const ScoreContainer = styled(Box)(({ theme }) => ({
   ...theme.typography.body2,
   backgroundColor: theme.palette.secondary.main,
-  borderRadius: "15px",
-  padding: "5px",
+  borderRadius: "5px",
+  padding: "3px",
   textAlign: "center",
+  flexBasis: "200px",
+  marginTop: "10px",
 }));
 
 function Score({ players, username, runningRound }) {
@@ -31,12 +33,34 @@ function Score({ players, username, runningRound }) {
 
   useEffect(() => {
     if (players) {
-      setRoundWinners(sorter(players.filter((player) => player.wonRound && !player.isKnockedOut)));
-      setFilteredPlayers(sorter(players.filter((player) => !player.isKnockedOut && !player.wonRound)));
-      setKnockedOutWinners(sorter(players.filter((player) => player.isKnockedOut && player.wonRound)));
-      setFilteredKnockedOuts(sorter(players.filter((player) => player.isKnockedOut && !player.wonRound)));
+      setRoundWinners(
+        sorter(
+          players.filter((player) => player.wonRound && !player.isKnockedOut)
+        )
+      );
+      setFilteredPlayers(
+        sorter(
+          players.filter((player) => !player.isKnockedOut && !player.wonRound)
+        )
+      );
+      setKnockedOutWinners(
+        sorter(
+          players.filter((player) => player.isKnockedOut && player.wonRound)
+        )
+      );
+      setFilteredKnockedOuts(
+        sorter(
+          players.filter((player) => player.isKnockedOut && !player.wonRound)
+        )
+      );
     }
-  }, [players, setFilteredPlayers, setFilteredKnockedOuts, setRoundWinners, sorter]);
+  }, [
+    players,
+    setFilteredPlayers,
+    setFilteredKnockedOuts,
+    setRoundWinners,
+    sorter,
+  ]);
 
   return (
     <ScoreContainer>
@@ -61,17 +85,19 @@ function Score({ players, username, runningRound }) {
           <span className="players-container-title">Knocked Out Players</span>
           {knockedOutWinners &&
             username &&
-            [...knockedOutWinners, ...filteredKnockedOuts].map((playerSingle, i) => {
-              return (
-                <PlayerDisplay
-                  key={playerSingle.username + i}
-                  player={playerSingle}
-                  i={i}
-                  isYou={playerSingle.username === username}
-                  runningRound={runningRound}
-                />
-              );
-            })}
+            [...knockedOutWinners, ...filteredKnockedOuts].map(
+              (playerSingle, i) => {
+                return (
+                  <PlayerDisplay
+                    key={playerSingle.username + i}
+                    player={playerSingle}
+                    i={i}
+                    isYou={playerSingle.username === username}
+                    runningRound={runningRound}
+                  />
+                );
+              }
+            )}
         </Box>
       )}
     </ScoreContainer>

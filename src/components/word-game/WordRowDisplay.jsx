@@ -12,7 +12,7 @@ function WordRowDisplay({ val }) {
                 sx={{ border: "1px solid black", padding: 2 }}
                 className={`${letter.status ? letter.status : ""}`}
               >
-                {letter.letter}
+                {letter.letter.toUpperCase()}
               </Box>
             </Grid>
           ))}

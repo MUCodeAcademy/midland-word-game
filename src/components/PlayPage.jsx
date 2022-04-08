@@ -9,10 +9,12 @@ import ManIcon from "@mui/icons-material/Man";
 
 export const PlayPage = () => {
   const [roomId, setRoomId] = useState("");
-  const [roomIdError, setRoomIdError] = useState(null);
-  const [showError, setShowError] = useState(false);
+  const [roomIdError, setRoomIdError] = useState(
+    "Must be at least 5 characters"
+  );
   const navigate = useNavigate();
-  const { createRoom, checkRoom, socketRoomIdError, checkedRoomId, error } = useSocket();
+  const { createRoom, checkRoom, socketRoomIdError, checkedRoomId, error } =
+    useSocket();
 
   useEffect(() => {
     if (roomId.length < 5) {
@@ -21,43 +23,52 @@ export const PlayPage = () => {
       setRoomIdError("Must be at max 6 characters");
     } else if (roomId === checkedRoomId) {
       setRoomIdError(socketRoomIdError);
-      setShowError(true);
     } else {
-      setRoomIdError(null);
+      setRoomIdError("Enter Room Code");
     }
   }, [roomId, socketRoomIdError, checkedRoomId]);
 
   const redirect = useCallback(() => {
-    setShowError(true);
-    if (!roomIdError) {
+    if (roomIdError === "Enter Room Code") {
       checkRoom(roomId);
     }
   }, [roomId, roomIdError, checkRoom]);
 
   return (
     <div className="play-page-container">
-    {error && <span>{error}</span>}
+      {error && <span>{error}</span>}
       <div className="play-page-main">
         <div className="left-container">
           <TextField
             label="Room Code"
             variant="standard"
             value={roomId}
-            helperText={showError ? roomIdError : ""}
+            helperText={roomIdError}
             onChange={(e) => setRoomId(e.target.value)}
           />
-          <Button variant="contained" startIcon={<GroupsIcon />} onClick={() => redirect()}>
-            Join Room
-          </Button>
+          <div className="play-page-button">
+            <Button
+              variant="contained"
+              startIcon={<GroupsIcon />}
+              onClick={() => redirect()}
+            >
+              Join Room
+            </Button>
+          </div>
         </div>
         <div className="right-container">
-          <div className="play-page-button">
+          <div className="play-page-button" style={{ marginBottom: "10px" }}>
             <Button variant="contained" onClick={() => createRoom()}>
               Create Room
             </Button>
           </div>
           <div className="play-page-button">
-            <Button className="play-page-button" variant="contained" startIcon={<ManIcon />} onClick={() => navigate("/classic")}>
+            <Button
+              className="play-page-button"
+              variant="contained"
+              startIcon={<ManIcon />}
+              onClick={() => navigate("/classic")}
+            >
               Play Solo
             </Button>
           </div>
