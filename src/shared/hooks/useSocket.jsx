@@ -7,7 +7,7 @@ const useSocket = (socketParam = null) => {
   const socket = useRef(socketParam); //this might need to structure a bit different for socket transfer
   const [username, setUsername] = useState(null);
   const [error, setError] = useState(null);
-  const [roomMessage, setRoomMessage] = useState(null);
+  const [roomMessage, setRoomMessage] = useState("Waiting for Host to Start");
   const [players, setPlayers] = useState([]);
   const [player, setPlayer] = useState({});
   const [isHost, setIsHost] = useState(null);
@@ -18,14 +18,17 @@ const useSocket = (socketParam = null) => {
   const [runningGame, setRunningGame] = useState(null);
   const [roundWord, setRoundWord] = useState(null);
   const [playerWonRound, setPlayerWonRound] = useState(false);
-  const [roomId, setRoomId] = useState(null)
-  const [wonRound, setWonRound] = useState(false)
+
+  const [messages, setMessages] = useState([]);
+
+  const [roomId, setRoomId] = useState(null);
+  const [socketRoomIdError, setSocketRoomIdError] = useState("");
+  const [checkedRoomId, setCheckedRoomId] = useState([]);
 
   useEffect(() => {
     if (player) {
       setPlayerWonRound(player.wonRound);
       setIsHost(player.isHost);
-      setWonRound(player.wonRound)
     }
   }, [player, setPlayerWonRound, setIsHost]);
 
@@ -45,27 +48,29 @@ const useSocket = (socketParam = null) => {
   useEffect(() => {
     socket.current.on("player data update", (data) => {
       setPlayers(data.players);
+      setPlayer(data.players.find((e) => e.username === username));
     });
-  }, [socket, setPlayers]);
+  }, [socket, setPlayers, setPlayer, username]);
+
+  // useEffect(() => {
+  //   console.log(players)
+  //   setPlayer(players.find((e) => e.username === username));
+  // }, [players, username]);
 
   useEffect(() => {
-    setPlayer(players.find((e) => e.username === username));
-  }, [players, username]);
+    socket.current.on("disconnect", () => {
+      setError("Disconnected from Server");
+    });
+    socket.current.on("connect", () => {
+      setError("");
+    });
+  }, [socket]);
 
   useEffect(() => {
-    socket.current.on("room created", (data) => {
-      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
-      navigate(`/room/${data.roomId}`);
-    });
-    socket.current.on("room created solo", (data) => {
-      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
-      //navigate(`/classic`, { state: {id: data.roomId} });
-      setRoomId(data.roomId)
-    });
     socket.current.on("player data", (data) => {
       //this means successful join
       setPlayers(data.players);
-      //setPlayer(data.player);
+      setPlayer(data.player);
       setUsername(data.player.username);
       setRunningGame(data.isRunningGame);
       setRunningRound(data.isRunningRound);
@@ -85,7 +90,28 @@ const useSocket = (socketParam = null) => {
     //     })
     //   );
     // });
-  }, [socket, setPlayers, setUsername, setRunningGame, setRunningRound, setRoundWord, navigate, setRoomId]);
+  }, [
+    socket,
+    setPlayers,
+    setUsername,
+    setRunningGame,
+    setRunningRound,
+    setRoundWord,
+    navigate,
+    setRoomId,
+  ]);
+
+  useEffect(() => {
+    socket.current.on("room created", (data) => {
+      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
+      navigate(`/room/${data.roomId}`);
+    });
+    socket.current.on("room created solo", (data) => {
+      //setTransferring(true); //this could be a problem of unmounting component before finishing state change
+      //navigate(`/classic`, { state: {id: data.roomId} });
+      setRoomId(data.roomId);
+    });
+  }, [socket, navigate, setRoomId]);
 
   useEffect(() => {
     socket.current.on("player join", (data) => {
@@ -97,24 +123,25 @@ const useSocket = (socketParam = null) => {
     socket.current.on("new guess", (data) => {
       if (data.player.username === username) {
         setGuesses((curr) => [...curr, data.player.lastGuess]);
+        setPlayer(data.player);
       }
-      setPlayers((curr) => [...curr.filter((e) => e.username !== data.player.username), data.player]);
+      setPlayers((curr) => [
+        ...curr.filter((e) => e.username !== data.player.username),
+        data.player,
+      ]);
     });
-  }, [socket, setPlayer, setGuesses, username]);
+  }, [socket, setPlayers, setGuesses, username]);
 
   //error events
   useEffect(() => {
     socket.current.on("guess limit", () => {
-      setError("You can not submit any more guesses")
-    })
+      setError("You can not submit any more guesses");
+    });
     socket.current.on("not authenticated", () => {
       setError("Not authenticated"); //this is where we could hit the logout api endpoint
     });
     socket.current.on("failed room create", () => {
       setError("Failed to create room please try again");
-    });
-    socket.current.on("invalid room", () => {
-      setError("Room not found");
     });
     socket.current.on("room full", () => {
       setError("Room is full");
@@ -151,6 +178,17 @@ const useSocket = (socketParam = null) => {
     });
   }, [socket, setError]);
 
+  useEffect(() => {
+    socket.current.on("invalid room", (roomId) => {
+      setError("Room not found");
+      setSocketRoomIdError("invalid room");
+      setCheckedRoomId(roomId);
+    });
+    socket.current.on("valid room", (roomId) => {
+      navigate(`/room/${roomId}`);
+    });
+  }, [setError, setSocketRoomIdError, navigate]);
+
   // game and room start / stop events
   useEffect(() => {
     socket.current.on("not running game", () => {
@@ -175,15 +213,27 @@ const useSocket = (socketParam = null) => {
         };
       });
       setPlayers(data.players);
+      setPlayer(data.players.find((e) => e.username === username));
       setRunningRound(false);
       setRoomMessage("Round Over");
     });
     socket.current.on("game over", (data) => {
       setRunningGame(false);
       setRoomMessage("Game Over");
-      setPlayers(data.players)
+      setPlayers(data.players);
+      setPlayer(data.players.find((e) => e.username === username));
     });
-  }, [socket, setError, runningGame, setRunningGame, runningRound, setRunningRound, setRoomMessage, setPlayer]);
+  }, [
+    socket,
+    username,
+    setError,
+    runningGame,
+    setRunningGame,
+    runningRound,
+    setRunningRound,
+    setRoomMessage,
+    setPlayer,
+  ]);
 
   useEffect(() => {
     socket.current.on("game start", () => {
@@ -193,7 +243,7 @@ const useSocket = (socketParam = null) => {
       setRunningGame(true);
       setRoomMessage("Game Starting");
     });
-  }, [socket, setRunningGame, setRoomMessage, isHost])
+  }, [socket, setRunningGame, setRoomMessage, isHost]);
 
   useEffect(() => {
     socket.current.on("round start", (data) => {
@@ -209,9 +259,17 @@ const useSocket = (socketParam = null) => {
       setRunningRound(true);
       setGuesses([]);
       setRoundWord(data.roundWord);
-      setRoomMessage("Round Starting");
+      setRoomMessage("Round Active");
     });
-  }, [socket, setPlayer, setPlayers, setRunningRound, setGuesses, setRoundWord, setRoomMessage]);
+  }, [
+    socket,
+    setPlayer,
+    setPlayers,
+    setRunningRound,
+    setGuesses,
+    setRoundWord,
+    setRoomMessage,
+  ]);
 
   // timer event
   useEffect(() => {
@@ -231,6 +289,13 @@ const useSocket = (socketParam = null) => {
   const joinRoom = useCallback(
     (roomId) => {
       socket.current.emit("join room", roomId);
+    },
+    [socket]
+  );
+
+  const checkRoom = useCallback(
+    (roomId) => {
+      socket.current.emit("check room", roomId);
     },
     [socket]
   );
@@ -278,6 +343,19 @@ const useSocket = (socketParam = null) => {
     [socket]
   );
 
+  const sendMessage = useCallback(
+    (body, roomId, username) => {
+      socket.current.emit("send message", { body, roomId, username });
+    },
+    [socket]
+  );
+
+  useEffect(() => {
+    socket.current.on("new message", (msg) => {
+      setMessages((curr) => [...curr, msg]);
+    });
+  }, [socket, setMessages]);
+
   return {
     createRoom,
     joinRoom,
@@ -286,6 +364,8 @@ const useSocket = (socketParam = null) => {
     startRound,
     submitWord,
     createRoomSolo,
+    sendMessage,
+    checkRoom,
     error,
     roomMessage,
     players,
@@ -298,8 +378,10 @@ const useSocket = (socketParam = null) => {
     playerWonRound,
     isHost,
     username,
+    messages,
     roomId,
-    wonRound,
+    socketRoomIdError,
+    checkedRoomId,
   };
 };
 

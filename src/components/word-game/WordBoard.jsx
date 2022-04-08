@@ -15,6 +15,7 @@ export const WordBoard = ({
   const [guessedLetters, setGuessedLetters] = useState({});
   const [guessesObjs, setGuessesObjs] = useState([]);
 
+
   const [inputGuess, setInputGuess] = useState([]);
   const [guessFill, setGuessFill] = useState([]);
 
@@ -115,25 +116,22 @@ export const WordBoard = ({
   }, [runningRound]);
 
   return (
-    <div className="border">
-      <div className="padding-10">
-        {
-          <WordRow
-            submitWord={submitWord}
-            guesses={guessesObjs}
-            runningGame={runningGame}
-            runningRound={runningRound}
-            playerWonRound={playerWonRound}
-            guessFill={guessFill}
-            solo={solo}
-          />
-        }
-      </div>
+    <>
+      <WordRow
+        submitWord={submitWord}
+        guesses={guessesObjs}
+        runningGame={runningGame}
+        runningRound={runningRound}
+        playerWonRound={playerWonRound}
+guessFill={guessFill}
+        solo={solo}
+      />
 
       <div className="padding-10">
         <WordKeyboard guessedLetters={guessedLetters} />
       </div>
-    </div>
+    </>
+
   );
 };
 

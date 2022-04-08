@@ -1,10 +1,6 @@
 body {
   background-color: #faf8d4;
 }
-.noTextDecor {
-  text-decoration: none;
-  color: #2e4057;
-}
 .correct {
   background-color: green !important;
   font-weight: bold;
@@ -36,22 +32,25 @@ body {
   background-color: #1a2027;
 }
 
-.score-container {
-  width: 30%;
-  min-width: 300px;
+.game-page-footer {
+  display: flex;
+  width: 80vw;
+  justify-content: space-evenly;
+  margin-top: 10px;
 }
-.score-page-container {
-  background-color: gray;
-  border-radius: 15px;
-  padding: 5px;
-  text-align: center;
-}
+
 .players-container-title {
+  font-weight: bold;
   font-size: 17px;
   padding-left: 5px;
 }
 
 .play-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.play-page-main {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,6 +58,7 @@ body {
 }
 .left-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   border-right: 1px solid black;
   height: 41vh;
@@ -87,7 +87,6 @@ body {
     width: 80vw;
   }
   .right-container {
-    padding-top: 10px;
     height: auto !important;
   }
 }
@@ -95,13 +94,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 10px 15px 0px 15px;
   height: 41vh;
   flex-direction: column;
 }
 .play-page-button {
   margin-bottom: 10px;
+
+  margin-top: 15px;
 }
 
 .classic-container {
@@ -114,6 +114,7 @@ body {
 .classic-header {
   margin: 10px;
   font-size: 20px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -125,6 +126,17 @@ body {
 
 .padding-10 {
   padding: 10px;
+}
+
+.chatHeader {
+  display: flex;
+}
+.message {
+  padding: 5px;
+}
+.messageInput {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .margin-10 {
@@ -147,4 +159,116 @@ body {
 
 .height {
   height: 50px;
+}
+
+.gameWords {
+  height: 250px;
+}
+
+.active div,
+.active {
+  background-color: #faf8d4;
+  color: #2e4057;
+}
+
+.active div:hover {
+  background-color: #faf8d4;
+  color: #2e4057;
+}
+
+.menu-link:not(.active),
+.menu-link:not(.active) div {
+  color: #faf8d4;
+}
+
+.menu-link:not(.active) .menu-item:hover {
+  background-color: #2e4057;
+}
+
+.menu-link,
+.active {
+  text-decoration: none;
+}
+
+.menu-icon {
+  margin-right: auto;
+  height: 40px;
+}
+
+.toolbar {
+  min-height: 48px !important;
+  flex-flow: row wrap;
+}
+
+.clock {
+  max-width: 140px;
+  padding: 2px;
+  border-radius: 5px;
+  background-color: #ff934f;
+  color: #2e4057;
+  margin-top: 5px;
+}
+
+.room-message {
+  font-weight: bold;
+  height: 25px;
+  background-color: #ff934f;
+  border-radius: 5px;
+  max-width: 300px;
+  margin: 5px auto;
+}
+
+.board-layout {
+  width: 98%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.chat-container {
+  flex-basis: 100px;
+  margin-top: 10px;
+}
+
+.chat-container > div {
+  padding: 10px;
+}
+
+.word-board-container {
+  flex-basis: 300px;
+  margin: 0px 10px;
+  margin-top: 10px;
+  flex-grow: 1;
+  border-radius: 5px;
+  border: 2px solid #2e4057;
+}
+
+.score-container {
+  flex-basis: 200px;
+  flex-grow: 1;
+}
+
+.letter,
+.misplaced,
+.wrong,
+.correct {
+  padding: 5px !important;
+}
+
+.chat-pop-container {
+  background-color: #ff934f;
+}
+.chat-pop-button {
+  margin-top: 10px;
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .chat-container {
+    display: none;
+  }
+  .chat-pop-button {
+    display: block;
+  }
 }

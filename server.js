@@ -9,14 +9,22 @@ const http = require("http");
 const server = http.createServer(app);
 const socketIO = require("socket.io");
 const socketConf = require("./server/config/socket.conf");
+const chatConf = require("./server/config/chat.conf");
 
 const io = socketIO(server, {
   cors: {
     origin: ["http://localhost:3000"],
-    credentials: true
+    credentials: true,
   },
 });
 socketConf(io);
+chatConf(io);
+
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    req.secure ? next() : res.redirect("https://" + req.headers.host + req.url);
+  });
+}
 
 app.use(express.json());
 app.use(express.static(__dirname + "/build"));

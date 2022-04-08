@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { TextField, Button } from "@mui/material";
 import useAPI from "../shared/hooks/useAPI";
 import { useNavigate } from "react-router-dom";
@@ -7,95 +7,130 @@ function RegisterPage() {
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [usernameError, setUsernameError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
-  const [passMatchError, setPassMatchError] = useState(null);
-  const [showError, setShowError] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [usernameTouched, setUsernameTouched] = useState(false);
+  const [confirmTouched, setConfirmTouched] = useState(false);
   const [apiError, setApiError] = useState(null);
+  const [apiSuccess, setApiSuccess] = useState(null);
   const { register: apiRegister } = useAPI();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (usernameInput.length > 20) {
-      setUsernameError("Username must be at max 20 characters");
-    } else if (usernameInput.length < 2) {
-      setUsernameError("Username must be at least 2 characters");
-    } else {
-      setUsernameError(null);
-    }
-  }, [usernameInput]);
+  const usernameError = useMemo(() => {
+    return (
+      usernameTouched && (usernameInput.length > 20 || usernameInput.length < 2)
+    );
+  }, [usernameInput, usernameTouched]);
 
-  useEffect(() => {
-    if (passwordInput.length > 20) {
-      setPasswordError("Password must be at max 20 characters");
-    } else if (passwordInput.length < 6) {
-      setPasswordError("Password must be at least 6 characters");
-    } else {
-      setPasswordError(null);
-    }
-  }, [passwordInput]);
+  const passwordError = useMemo(() => {
+    return (
+      passwordTouched && (passwordInput.length > 20 || passwordInput.length < 6)
+    );
+  }, [passwordInput, passwordTouched]);
 
-  useEffect(() => {
-    if (passwordInput !== confirmPassword) {
-      setPassMatchError("Passwords do not match.");
-    } else {
-      setPassMatchError(null);
-    }
-  }, [confirmPassword]);
+  const confirmError = useMemo(() => {
+    return (
+      (passwordTouched || confirmTouched) && passwordInput !== confirmPassword
+    );
+  }, [confirmPassword, passwordTouched, passwordInput, confirmTouched]);
 
   const register = useCallback(async () => {
+    if (
+      passwordError ||
+      confirmError ||
+      usernameError ||
+      !usernameTouched ||
+      !passwordTouched ||
+      !confirmTouched
+    ) {
+      return;
+    }
+    setApiError(null);
+    setApiSuccess(null);
     const res = await apiRegister(usernameInput, passwordInput);
     if (!res.success) {
       setApiError(res.error);
-    } else if (usernameError || passwordError || passMatchError) {
-      setShowError(true);
     } else {
-      navigate("/login");
+      setApiSuccess("Successfully signed up!");
+      resetForm();
     }
   });
+
+  const resetForm = () => {
+    setConfirmPassword("");
+    setUsernameInput("");
+    setPasswordInput("");
+    setConfirmTouched(false);
+    setUsernameTouched(false);
+    setPasswordTouched(false);
+  };
 
   return (
     <div>
       <div className="login-container">
-        {apiError && (
-          <div className="login-error">
-            <span>{apiError}</span>
-          </div>
-        )}
+        <div className="login-message">
+          {apiError && (
+            <div className="login-error">
+              <span>{apiError}</span>
+            </div>
+          )}
+          {apiSuccess && (
+            <div className="login-success">
+              <span>{apiSuccess}</span>
+            </div>
+          )}
+        </div>
+
         <div className="login-input-container">
           <div className="input-container">
             <TextField
               style={{ width: "100%" }}
-              error={showError && !!usernameError}
+              error={usernameError && usernameTouched}
               label="Username"
               value={usernameInput}
-              helperText={showError ? usernameError : ""}
-              onChange={(e) => setUsernameInput(e.target.value)}
+              helperText={"Must be between 2 and 20 characters"}
+              onChange={(e) => {
+                setUsernameInput(e.target.value);
+                setUsernameTouched(true);
+              }}
             />
           </div>
           <div className="input-container">
             <TextField
               style={{ width: "100%" }}
-              error={showError && !!passwordError}
+              error={passwordError && passwordTouched}
               label="Password"
               type="password"
               value={passwordInput}
-              helperText={showError ? passwordError : ""}
-              onChange={(e) => setPasswordInput(e.target.value)}
+              helperText={"Must be between 6 and 20 characters"}
+              onChange={(e) => {
+                setPasswordInput(e.target.value);
+                setPasswordTouched(true);
+              }}
             />
           </div>
           <div>
             <TextField
               style={{ width: "100%" }}
-              error={showError && !!passMatchError}
+              error={confirmError}
               label="Confirm password"
               type="password"
               value={confirmPassword}
-              helperText={showError ? passMatchError : ""}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              helperText={
+                confirmPassword !== passwordInput || confirmPassword === ""
+                  ? "Passwords must match"
+                  : "Passwords Match"
+              }
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setConfirmTouched(true);
+              }}
             />
           </div>
-          <Button variant="contained" onClick={() => register()}>
+          <Button
+            style={{ marginTop: "10px" }}
+            variant="contained"
+            onClick={() => register()}
+          >
             Register
           </Button>
         </div>

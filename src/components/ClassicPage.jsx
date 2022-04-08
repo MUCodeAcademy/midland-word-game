@@ -1,4 +1,5 @@
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import useSocket from "../shared/hooks/useSocket";
@@ -19,7 +20,6 @@ export const ClassicPage = () => {
     runningRound,
     playerWonRound,
     roomId,
-    wonRound,
   } = useSocket();
 
   useEffect(() => {
@@ -33,36 +33,48 @@ export const ClassicPage = () => {
   return (
     <div className="classic-container">
       <div className="classic-header">
-        {wonRound ? <span>You win!</span> : <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>}
         <div>
-          {!runningGame && (
+          {!runningGame && !runningRound && (
             <Button variant="contained" onClick={() => startGame()}>
-              {roundWord ? "Play again" : "Start Game"}
+              Start Game
             </Button>
           )}
-          {runningGame && !runningRound && (
+          {/* {runningGame && !runningRound && (
             <Button variant="contained" onClick={() => startRound()}>
               Start Round
             </Button>
-          )}
+          )} */}
         </div>
-        {!runningGame && roundWord && (
-          <div>
-            <span>{`The word was ${roundWord}`}</span>
+        {!runningGame && roundWord && !playerWonRound && (
+          <div className="padding-10">
+            <span>
+              The word was <b>{roundWord.toUpperCase()}</b>
+            </span>
+          </div>
+        )}
+        {error && (
+          <div className="padding-10">
+            <span>{error}</span>
           </div>
         )}
       </div>
-      <div>
-        <WordBoard
-          submitWord={submitWord}
-          guesses={guesses}
-          roundWord={roundWord}
-          runningGame={runningGame}
-          runningRound={runningRound}
-          playerWonRound={playerWonRound}
-          solo={true}
-        />
-      </div>
+      <Grid container spacing={4} justifyContent="center" display="flex">
+        <Grid item xs={12}>
+          <div className="width-80pc">
+            <Box display="flex" justifyContent="center">
+              <WordBoard
+                submitWord={submitWord}
+                guesses={guesses}
+                roundWord={roundWord}
+                runningGame={runningGame}
+                runningRound={runningRound}
+                playerWonRound={playerWonRound}
+                solo={true}
+              />
+            </Box>
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
