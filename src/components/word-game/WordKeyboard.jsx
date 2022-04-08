@@ -34,7 +34,6 @@ const letters = [
 const firstRow = letters.slice(0, 10);
 const secondRow = letters.slice(11, 19);
 const thirdRow = letters.slice(20, 27);
-const fourthRow = letters.slice(21);
 
 function WordKeyBoard({ guessedLetters }) {
   const theme = useTheme();
