@@ -19,15 +19,9 @@ export const WordBoard = ({
   const [guessFill, setGuessFill] = useState([]);
 
   //KeyDown event listener on entire page
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return function cleanup() {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
-  const handleKeyDown = useCallback(
-    (e) => {
+  function handleKeyDown
+    (e) {
       console.log(runningRound);
       if (!playerWonRound) {
         //enter
@@ -46,9 +40,14 @@ export const WordBoard = ({
           }
         }
       }
-    },
-    [runningRound, inputGuess]
-  );
+    }
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   //sets inputGuess into correct format for WordRowDisplay
   useEffect(() => {
