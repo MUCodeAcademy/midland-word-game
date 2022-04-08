@@ -22,10 +22,7 @@ function Chat({ roomId, user, messages, sendMessage }) {
   }, [Chat, messages]);
 
   return (
-    <Paper
-      sx={{ width: 325, height: 365, p: 3, backgroundColor: "#FF934F" }}
-      elevation={7}
-    >
+    <Paper sx={{ height: 365, p: 3, backgroundColor: "#FF934F" }} elevation={7}>
       <div className="chatHeader">
         <ForumIcon color="primary" />
         <Typography sx={{ fontWeight: "bold", fontSize: 20, color: "primary" }}>
@@ -61,7 +58,7 @@ function Chat({ roomId, user, messages, sendMessage }) {
         ))}
         <div ref={messagesEndRef} />
       </Box>
-      <div className="messageInput">
+      <div className="messageInput padding-10">
         <TextField
           id="standard-text"
           label="New Message"
