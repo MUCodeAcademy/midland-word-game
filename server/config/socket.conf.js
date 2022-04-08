@@ -80,7 +80,6 @@ const socketConf = (io) => {
     });
 
     socket.on("join room", async (roomId) => {
-      
       if (!isValidRoom(roomId)) {
         socket.emit("invalid room", roomId);
       } else if (isRoomFull(roomId)) {
@@ -97,8 +96,9 @@ const socketConf = (io) => {
         } else if (getPlayer(roomId, username)) {
           socket.emit("already joined");
         } else if (addPlayer(roomId, username)) {
-
-          io.to(roomId).emit("player join", { player: getPlayer(roomId, username) });
+          io.to(roomId).emit("player join", {
+            player: getPlayer(roomId, username),
+          });
 
           userRoomId = roomId;
           socket.join(roomId);
@@ -243,12 +243,12 @@ const socketConf = (io) => {
     });
 
     socket.on("check room", (roomId) => {
-      if(isValidRoom(roomId)){
-        socket.emit("valid room", roomId)
+      if (isValidRoom(roomId)) {
+        socket.emit("valid room", roomId);
       } else {
-        socket.emit("invalid room", roomId)
+        socket.emit("invalid room", roomId);
       }
-    })
+    });
 
     // socket.on("host check", () => {
     //   if(isValidRoom(userRoomId)){
@@ -296,10 +296,16 @@ const socketConf = (io) => {
             } else if (isRoundRunning(roomId)) {
               endRound(roomId);
               io.to(roomId).emit("timer countdown", { time: 0 });
-              io.to(roomId).emit("round over", {
-                players: getAllPlayers(roomId),
-                word: getRoundWord(roomId),
-              });
+              if (isGameRunning(roomId)) {
+                io.to(roomId).emit("round over", {
+                  players: getAllPlayers(roomId),
+                  word: getRoundWord(roomId),
+                });
+              } else {
+                io.to(roomId).emit("game over", {
+                  players: getAllPlayers(roomId),
+                });
+              }
               clearInterval(timer);
             } else {
               clearInterval(timer);

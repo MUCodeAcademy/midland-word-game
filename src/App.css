@@ -1,10 +1,6 @@
 body {
   background-color: #faf8d4;
 }
-.noTextDecor {
-  text-decoration: none;
-  color: #2e4057;
-}
 .correct {
   background-color: green !important;
 }
@@ -58,6 +54,7 @@ body {
 }
 .left-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   border-right: 1px solid black;
   height: 41vh;
@@ -86,7 +83,6 @@ body {
     width: 80vw;
   }
   .right-container {
-    padding-top: 10px;
     height: auto !important;
   }
 }
@@ -94,13 +90,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 10px 15px 0px 15px;
   height: 41vh;
   flex-direction: column;
 }
 .play-page-button {
+
   margin-bottom: 10px;
+
+  margin-top: 15px;
 }
 
 .classic-container {
@@ -113,6 +111,7 @@ body {
 .classic-header {
   margin: 10px;
   font-size: 20px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -163,6 +162,60 @@ body {
   background-color: #ee7017;
 }
 
+
 .gameWords {
   height: 250px;
+}
+
+.active div,
+.active {
+  background-color: #faf8d4;
+  color: #2e4057;
+}
+
+.active div:hover {
+  background-color: #faf8d4;
+  color: #2e4057;
+}
+
+.menu-link:not(.active),
+.menu-link:not(.active) div {
+  color: #faf8d4;
+}
+
+.menu-link:not(.active) .menu-item:hover {
+  background-color: #2e4057;
+}
+
+.menu-link,
+.active {
+  text-decoration: none;
+}
+
+.menu-icon {
+  margin-right: auto;
+  height: 40px;
+}
+
+.toolbar {
+  min-height: 48px !important;
+  flex-flow: row wrap;
+}
+
+.clock {
+  max-width: 140px;
+  padding: 2px;
+  border-radius: 5px;
+  background-color: #ff934f;
+  color: #2e4057;
+  margin-top: 5px;
+}
+
+.room-message {
+  font-weight: bold;
+  height: 25px;
+  background-color: #ff934f;
+  border-radius: 5px;
+  max-width: 300px;
+  margin: 5px auto;
 }

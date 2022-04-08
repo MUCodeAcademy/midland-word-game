@@ -57,11 +57,8 @@ function PlayerDisplay({ player, i, isYou, runningRound }) {
               {isYou ? "You" : player.username}
             </span>
           </PlayerName>
-          <span>
-            {player.lastGuess && (!player.wonRound || !runningRound)
-              ? ` - ${player.lastGuess}`
-              : " - guess"}
-          </span>
+
+          <span>{player.lastGuess && (!player.wonRound || !runningRound) ? ` - ${player.lastGuess}` : ""}</span>
         </div>
       </LeftContainer>
       <Item sx={player.wonRound ? { color: "yellow !important" } : {}}>

@@ -6,9 +6,16 @@ function Clock({ roomTimer }) {
     (seconds) => {
       let m = Math.floor(seconds / 60);
       let s = Math.floor(seconds % 60);
-      let mDisplay = m > 0 ? m + (m === 1 ? " min" : " mins") + (s > 0 ? ", " : "") : "";
-      let sDisplay = s > 0 ? s + (s === 1 ? " sec" : " secs") : "";
-      setTimer(seconds > 0 ? mDisplay + sDisplay : "Times up");
+      let mDisplay = m > 0 ? m : "0";
+      let sDisplay;
+      if (s > 0 && s < 10) {
+        sDisplay = `0${s}`;
+      } else if (s > 0) {
+        sDisplay = s;
+      } else {
+        sDisplay = "00";
+      }
+      setTimer(mDisplay + ":" + sDisplay);
     },
     [setTimer]
   );
@@ -16,7 +23,12 @@ function Clock({ roomTimer }) {
   useEffect(() => {
     timerDisplay(roomTimer);
   }, [roomTimer, timerDisplay]);
-  return <div>{timer}</div>;
+  return (
+    <div className="clock">
+      <div style={{ fontWeight: "bold" }}>Time Remaining</div>
+      {timer}
+    </div>
+  );
 }
 
 export default Clock;
