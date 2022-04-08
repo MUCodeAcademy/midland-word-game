@@ -124,6 +124,7 @@ const useSocket = (socketParam = null) => {
       if (data.player.username === username) {
         setGuesses((curr) => [...curr, data.player.lastGuess]);
         setPlayer(data.player);
+        setError("")
       }
       setPlayers((curr) => [
         ...curr.filter((e) => e.username !== data.player.username),
