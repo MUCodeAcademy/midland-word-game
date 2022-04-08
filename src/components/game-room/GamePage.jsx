@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
 import WordBoard from "../word-game/WordBoard";
 import Chat from "./Chat";
@@ -32,6 +32,7 @@ export const GamePage = ({ user }) => {
     messages,
     sendMessage,
   } = useSocket();
+  const navigate = useNavigate()
 
   useEffect(() => {
     joinRoom(roomId);
@@ -46,6 +47,14 @@ export const GamePage = ({ user }) => {
         <div>
           <Grid container spacing={4} justifyContent="center" display="flex">
             <Grid item xs={4}>
+
+              <Button
+                variant="contained"
+                onClick={() => navigate("/play")}
+                size="large">
+                Disconnect
+              </Button>
+
               <div style={{ marginTop: "10px" }}>
                 <span className="margin-10">Room ID: {roomId}</span>
                 <Button
@@ -83,7 +92,10 @@ export const GamePage = ({ user }) => {
                   )}
                 </>
               )}
+              {!runningGame && roundWord && !playerWonRound && (
+
               {!runningRound && roundWord && !playerWonRound && (
+
                 <div className="padding-10">
                   <span>{`The word was ${roundWord}`}</span>
                 </div>
