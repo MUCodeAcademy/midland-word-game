@@ -43,7 +43,7 @@ export const Menu = ({ user, clearUser }) => {
           <img
             className="menu-icon"
             alt="word-battle-icon"
-            src="./word-game-logo.png"
+            src="/word-game-logo.png"
           />
           <IconButton
             style={{ alignSelf: "flex-end", color: "#faf8d4" }}
@@ -57,6 +57,7 @@ export const Menu = ({ user, clearUser }) => {
       <SwipeableDrawer
         anchor="left"
         open={drawerOpen}
+        onOpen={() => setDrawerOpen(true)}
         onClose={() => setDrawerOpen(false)}
       >
         <Box width=" 250px">
