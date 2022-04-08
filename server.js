@@ -26,11 +26,18 @@ app.use(cookieParser());
 // the passport.initialize line should work once we complete the passport.conf
 app.use(passport.initialize());
 // the following line needs to have the correct path (could change, may be the same)
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.header("x-forwarded-proto") !== "https") {
+      res.redirect(`https://${req.header("host")}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
+
 app.use("/api/users", userRoutes);
 app.get("*", (req, res) => {
-  if (process.env.NODE_ENV === "production" && !req.secure) {
-    return res.redirect("https://midland-word-battle.herokuapp.com/");
-  }
   return res.sendFile("/build/index.html", { root: __dirname + "/" });
 });
 
