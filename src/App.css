@@ -3,14 +3,17 @@ body {
 }
 .correct {
   background-color: green !important;
+  font-weight: bold;
 }
 
 .misplaced {
   background-color: goldenrod !important;
+  font-weight: bold;
 }
 
 .wrong {
   background-color: rgb(182, 182, 182) !important;
+  font-weight: bold;
 }
 
 .center {
