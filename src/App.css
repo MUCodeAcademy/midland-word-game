@@ -40,16 +40,6 @@ body {
   margin-top: 10px;
 }
 
-.score-container {
-  width: 30%;
-  min-width: 300px;
-}
-.score-page-container {
-  background-color: gray;
-  border-radius: 15px;
-  padding: 5px;
-  text-align: center;
-}
 .players-container-title {
   font-size: 17px;
   padding-left: 5px;
