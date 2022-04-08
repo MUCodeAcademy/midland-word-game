@@ -20,7 +20,6 @@ export const ClassicPage = () => {
     runningRound,
     playerWonRound,
     roomId,
-    wonRound,
   } = useSocket();
 
   useEffect(() => {
@@ -34,7 +33,7 @@ export const ClassicPage = () => {
   return (
     <div className="classic-container">
       <div className="classic-header">
-        {wonRound ? <span>You win!</span> : <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>}
+        {playerWonRound ? <span>You win!</span> : <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>}
         <div>
           {!runningGame && (
             <Button variant="contained" onClick={() => startGame()}>

@@ -180,7 +180,7 @@ const socketConf = (io) => {
                     roundWord: getRoundWord(userRoomId),
                   });
                 } else {
-                  startCountdownTimer(120, userRoomId);
+                  startCountdownTimer(30, userRoomId);
                 }
               } else {
                 socket.emit("failed round start");
@@ -296,10 +296,14 @@ const socketConf = (io) => {
             } else if (isRoundRunning(roomId)) {
               endRound(roomId);
               io.to(roomId).emit("timer countdown", { time: 0 });
-              io.to(roomId).emit("round over", {
-                players: getAllPlayers(roomId),
-                word: getRoundWord(roomId),
-              });
+              if(isGameRunning(roomId)){
+                io.to(roomId).emit("round over", {
+                  players: getAllPlayers(roomId),
+                  word: getRoundWord(roomId),
+                });
+              } else {
+                io.to(roomId).emit("game over", { players: getAllPlayers(roomId) });
+              }
               clearInterval(timer);
             } else {
               clearInterval(timer);
