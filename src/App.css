@@ -64,6 +64,7 @@ body {
 }
 .left-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   border-right: 1px solid black;
   height: 41vh;
@@ -92,7 +93,6 @@ body {
     width: 80vw;
   }
   .right-container {
-    padding-top: 10px;
     height: auto !important;
   }
 }
@@ -100,13 +100,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 10px 15px 0px 15px;
   height: 41vh;
   flex-direction: column;
 }
 .play-page-button {
-  margin-bottom: 10px;
+  margin-top: 15px;
 }
 
 .classic-container {
