@@ -38,7 +38,6 @@ export const GamePage = ({ user }) => {
   }, [joinRoom, roomId]);
 
   return (
-
     <ThemeProvider theme={generalTheme}>
       <div className="center">
         <div className="padding-10">
@@ -76,7 +75,7 @@ export const GamePage = ({ user }) => {
                   )}
                 </>
               )}
-              {!runningGame && roundWord && !playerWonRound &&(
+              {!runningGame && roundWord && !playerWonRound && (
                 <div className="padding-10">
                   <span>{`The word was ${roundWord}`}</span>
                 </div>
@@ -87,9 +86,29 @@ export const GamePage = ({ user }) => {
                 <Clock roomTimer={roomTimer} />
               </div>
             </Grid>
-            <Grid item xs={12}>
-              <div className="width-80pc">
-                <Box display="flex" justifyContent="center">
+
+            <Grid item container justifyContent="space-between" spacing={12}>
+              <Grid item container direction="column" xs={3} sx={{ p: 5 }}>
+                <Grid item sx={{ pl: 10 }}>
+                  <div className="score-container">
+                    <Score
+                      players={players}
+                      username={username}
+                      runningRound={runningRound}
+                    />
+                  </div>
+                </Grid>
+                <Grid item sx={{ pl: 5 }}>
+                  <Chat
+                    roomId={roomId}
+                    user={user}
+                    messages={messages}
+                    sendMessage={sendMessage}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md={7} sx={{ p: 5 }}>
+                <div>
                   <WordBoard
                     submitWord={submitWord}
                     guesses={guesses}
@@ -99,24 +118,9 @@ export const GamePage = ({ user }) => {
                     playerWonRound={playerWonRound}
                     solo={false}
                   />
-                </Box>
-              </div>
+                </div>
+              </Grid>
             </Grid>
-            <div className="game-page-footer">
-              <Chat
-                roomId={roomId}
-                user={user}
-                messages={messages}
-                sendMessage={sendMessage}
-              />
-              <div className="score-container">
-                <Score
-                  players={players}
-                  username={username}
-                  runningRound={runningRound}
-                />
-              </div>
-            </div>
           </Grid>
         </div>
       </div>
