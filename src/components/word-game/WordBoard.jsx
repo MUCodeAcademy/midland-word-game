@@ -24,7 +24,6 @@ export const WordBoard = ({
     if (!playerWonRound && runningRound) {
       //enter
       if (e.keyCode === 13) {
-        console.log(inputGuess);
         submitWord(inputGuess.join(""));
       }
       //backspace
@@ -49,7 +48,6 @@ export const WordBoard = ({
 
   //sets inputGuess into correct format for WordRowDisplay
   useEffect(() => {
-    console.log(inputGuess);
     setGuessFill([
       { letter: inputGuess[0] ? inputGuess[0] : "‎", status: "wrong" },
       { letter: inputGuess[1] ? inputGuess[1] : "‎", status: "wrong" },
