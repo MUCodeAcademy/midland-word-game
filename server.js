@@ -29,7 +29,7 @@ app.use(passport.initialize());
 app.use("/api/users", userRoutes);
 app.get("*", (req, res) => {
   if (process.env.NODE_ENV === "production" && !req.secure) {
-    return res.redirect("https://" + req.headers.host + req.url);
+    return res.redirect("https://midland-word-battle.herokuapp.com/");
   }
   return res.sendFile("/build/index.html", { root: __dirname + "/" });
 });
