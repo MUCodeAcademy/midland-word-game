@@ -49,6 +49,7 @@ function WordKeyBoard({ guessedLetters }) {
     flexGrow: 1,
     justifyContent: "center",
     userSelect: "none",
+    border: "1px solid black",
   }));
 
   return (
