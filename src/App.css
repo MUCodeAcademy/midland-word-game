@@ -7,12 +7,12 @@ body {
 }
 
 .misplaced {
-  background-color: goldenrod !important;
+  background-color: rgb(184, 141, 3) !important;
   font-weight: bold;
 }
 
 .wrong {
-  background-color: rgb(182, 182, 182) !important;
+  background-color: rgb(99, 99, 99) !important;
   font-weight: bold;
 }
 
@@ -254,6 +254,12 @@ body {
 .wrong,
 .correct {
   padding: 5px !important;
+}
+.misplaced,
+.wrong,
+.correct {
+  color: white !important;
+  font-weight: bold !important;
 }
 
 .chat-pop-container {

@@ -10,6 +10,7 @@ export const WordBoard = ({
   runningGame,
   runningRound,
   playerWonRound,
+  chatFocused,
   solo,
 }) => {
   const [guessedLetters, setGuessedLetters] = useState({});
@@ -20,31 +21,36 @@ export const WordBoard = ({
 
   //KeyDown event listener on entire page
 
-  function handleKeyDown(e) {
+  function handleInput(code, key) {
     if (!playerWonRound && runningRound) {
       //enter
-      if (e.keyCode === 13) {
+      if (code === 13) {
         submitWord(inputGuess.join(""));
       }
       //backspace
-      else if (e.keyCode === 8) {
+      else if (code === 8) {
         setInputGuess((curr) => [...curr.slice(0, curr.length - 1)]);
       }
       //letters
-      else if (e.keyCode > 64 && e.keyCode < 91) {
+      else if (code > 64 && code < 91) {
         if (inputGuess.length < 5) {
-          setInputGuess((curr) => [...curr, e.key]);
+          setInputGuess((curr) => [...curr, key]);
         }
       }
     }
   }
 
+  function handleKeyPress(e) {
+    if (chatFocused) return;
+    handleInput(e.keyCode, e.key);
+  }
+
   useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", handleKeyPress);
     return function cleanup() {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("keydown", handleKeyPress);
     };
-  }, [handleKeyDown]);
+  }, [handleKeyPress]);
 
   //sets inputGuess into correct format for WordRowDisplay
   useEffect(() => {
@@ -127,7 +133,10 @@ export const WordBoard = ({
       />
 
       <div className="padding-10">
-        <WordKeyboard guessedLetters={guessedLetters} />
+        <WordKeyboard
+          handleInput={handleInput}
+          guessedLetters={guessedLetters}
+        />
       </div>
     </>
   );

@@ -46,7 +46,7 @@ export const GamePage = ({ user }) => {
   const { roomId } = useParams();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [chatFocused, setChatFocused] = useState(false);
   const popOpen = Boolean(anchorEl);
   const [winnerUsername, setWinnerUsername] = useState("");
   const handleOpen = () => setOpen(true);
@@ -199,6 +199,7 @@ export const GamePage = ({ user }) => {
         <div className="board-layout">
           <div className="chat-container">
             <Chat
+              setChatFocused={setChatFocused}
               roomId={roomId}
               user={user}
               messages={messages}
@@ -207,6 +208,7 @@ export const GamePage = ({ user }) => {
           </div>
           <div className="word-board-container">
             <WordBoard
+              chatFocused={chatFocused}
               submitWord={submitWord}
               guesses={guesses}
               roundWord={roundWord}
@@ -250,6 +252,7 @@ export const GamePage = ({ user }) => {
               <CloseIcon />
             </IconButton>
             <Chat
+              setChatFocused={setChatFocused}
               roomId={roomId}
               user={user}
               messages={messages}
