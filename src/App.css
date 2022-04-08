@@ -37,6 +37,7 @@ body {
 }
 
 .players-container-title {
+  font-weight: bold;
   font-size: 17px;
   padding-left: 5px;
 }
@@ -212,4 +213,59 @@ body {
   border-radius: 5px;
   max-width: 300px;
   margin: 5px auto;
+}
+
+.board-layout {
+  width: 98%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.chat-container {
+  flex-basis: 100px;
+  margin-top: 10px;
+}
+
+.chat-container > div {
+  padding: 10px;
+}
+
+.word-board-container {
+  flex-basis: 300px;
+  margin: 0px 10px;
+  margin-top: 10px;
+  flex-grow: 1;
+  border-radius: 5px;
+  border: 2px solid #2e4057;
+}
+
+.score-container {
+  flex-basis: 200px;
+  flex-grow: 1;
+}
+
+.letter,
+.misplaced,
+.wrong,
+.correct {
+  padding: 5px !important;
+}
+
+.chat-pop-container {
+  background-color: #ff934f;
+}
+.chat-pop-button {
+  margin-top: 10px;
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .chat-container {
+    display: none;
+  }
+  .chat-pop-button {
+    display: block;
+  }
 }
