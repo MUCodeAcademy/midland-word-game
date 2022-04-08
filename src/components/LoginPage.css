@@ -1,38 +1,50 @@
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 60vh;
 }
 
 .login-error {
-    margin-bottom: 10px;
-    background-color: red;
-    color: white;
-    padding: 5px;
-    width: 250px;
-    border-radius: 10px;
-    text-align: center;
-    margin-bottom: 20px;
+  background-color: red;
+}
+
+.login-error,
+.login-success {
+  color: white;
+  padding: 5px;
+  width: 250px;
+  border-radius: 10px;
+  text-align: center;
+  height: 21.5px;
+}
+
+.login-message {
+  margin-bottom: 20px;
+  height: 31.5px;
+}
+
+.login-success {
+  background-color: green;
 }
 
 .login-input-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .input-container {
-    width: 260px;
-    margin-bottom: 10px;
-    height: 80px;
+  width: 260px;
+  margin-bottom: 10px;
+  height: 80px;
 }
 
 .login-redirect {
-    cursor: pointer;
-    color: blue;
+  cursor: pointer;
+  color: blue;
 }
 
-.login-redirect:hover{
-    text-decoration: underline;
+.login-redirect:hover {
+  text-decoration: underline;
 }

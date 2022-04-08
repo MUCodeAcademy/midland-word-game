@@ -51,16 +51,25 @@ export const LoginPage = ({ setUser }) => {
     } else {
       init();
     }
-  }, [usernameInput, usernameError, passwordInput, passwordError, setShowError, setApiError]);
+  }, [
+    usernameInput,
+    usernameError,
+    passwordInput,
+    passwordError,
+    setShowError,
+    setApiError,
+  ]);
 
   return (
     <div>
       <div className="login-container">
-        {apiError && (
-          <div className="login-error">
-            <span>{apiError}</span>
-          </div>
-        )}
+        <div className="login-message">
+          {apiError && (
+            <div className="login-error">
+              <span>{apiError}</span>
+            </div>
+          )}
+        </div>
         <div className="login-input-container">
           <div className="input-container">
             <TextField
@@ -89,7 +98,10 @@ export const LoginPage = ({ setUser }) => {
         </div>
         <p>
           Don't have an account?{" "}
-          <span className="login-redirect" onClick={() => navigate("/register")}>
+          <span
+            className="login-redirect"
+            onClick={() => navigate("/register")}
+          >
             Register
           </span>
         </p>

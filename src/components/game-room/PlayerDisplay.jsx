@@ -55,7 +55,7 @@ function PlayerDisplay({ player, i, isYou, runningRound }) {
             {player.isHost ? "Host " : ""}
             <span style={isYou ? { textDecoration: "underline" } : {}}>{isYou ? "You" : player.username}</span>
           </PlayerName>
-          <span>{player.lastGuess && (!player.wonRound || !runningRound) ? ` - ${player.lastGuess}` : " - guess"}</span>
+          <span>{player.lastGuess && (!player.wonRound || !runningRound) ? ` - ${player.lastGuess}` : ""}</span>
         </div>
       </LeftContainer>
       <Item sx={player.wonRound ? { color: "yellow !important" } : {}}>{"Guesses " + player.guesses}</Item>
