@@ -20,12 +20,6 @@ const io = socketIO(server, {
 socketConf(io);
 chatConf(io);
 
-if (process.env.NODE_ENV === "production") {
-  app.use((req, res, next) => {
-    req.secure ? next() : res.redirect("https://" + req.headers.host + req.url);
-  });
-}
-
 app.use(express.json());
 app.use(express.static(__dirname + "/build"));
 app.use(cookieParser());
@@ -34,6 +28,9 @@ app.use(passport.initialize());
 // the following line needs to have the correct path (could change, may be the same)
 app.use("/api/users", userRoutes);
 app.get("*", (req, res) => {
+  if (process.env.NODE_ENV === "production" && !req.secure) {
+    return res.redirect("https://" + req.headers.host + req.url);
+  }
   return res.sendFile("/build/index.html", { root: __dirname + "/" });
 });
 
