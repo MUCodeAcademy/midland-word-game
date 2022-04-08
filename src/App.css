@@ -118,6 +118,7 @@ body {
 .classic-header {
   margin: 10px;
   font-size: 20px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;

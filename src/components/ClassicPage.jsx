@@ -33,22 +33,28 @@ export const ClassicPage = () => {
   return (
     <div className="classic-container">
       <div className="classic-header">
-        {playerWonRound ? <span>You win!</span> : <div>{(error || roomMessage) && <span>{error ? error : roomMessage}</span>}</div>}
         <div>
-          {!runningGame && (
+          {!runningGame && !runningRound && (
             <Button variant="contained" onClick={() => startGame()}>
-              {roundWord ? "Play again" : "Start Game"}
+              Start Game
             </Button>
           )}
-          {runningGame && !runningRound && (
+          {/* {runningGame && !runningRound && (
             <Button variant="contained" onClick={() => startRound()}>
               Start Round
             </Button>
-          )}
+          )} */}
         </div>
         {!runningGame && roundWord && !playerWonRound && (
           <div className="padding-10">
-            <span>{`The word was ${roundWord}`}</span>
+            <span>
+              The word was <b>{roundWord.toUpperCase()}</b>
+            </span>
+          </div>
+        )}
+        {error && (
+          <div className="padding-10">
+            <span>{error}</span>
           </div>
         )}
       </div>
