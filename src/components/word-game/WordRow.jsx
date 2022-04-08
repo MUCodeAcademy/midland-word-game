@@ -29,7 +29,7 @@ function WordRow({
       setGuessedWord("");
     }
     setGuessesFill([]);
-    for (let i = 0; i < 5 - guesses.length; i++) {
+    for (let i = 0; i < (!runningRound ? 6 : 5) - guesses.length; i++) {
       setGuessesFill((curr) => [
         ...curr,
         [
@@ -56,9 +56,12 @@ function WordRow({
       )}
         <div ref={messagesEndRef} />
       </Box>
-      <div>
+      { !solo &&  <div>
         {guessFill && runningRound && <WordRowDisplay val={guessFill} />}
-      </div>
+      </div>}
+      { solo &&  <div>
+        {guessFill && guesses.length !== 6 && <WordRowDisplay val={guessFill} />}
+      </div>}
     </div>
   );
 }
