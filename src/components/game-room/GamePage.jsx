@@ -129,9 +129,16 @@ export const GamePage = ({ user }) => {
           </Box>
         </Modal>
         <div className="padding-10 room-message">
-          {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
+          {(error || roomMessage) && (
+            <span>
+              {!runningRound && roundWord
+                ? `The word was ${roundWord}`
+                : error
+                ? error
+                : roomMessage}
+            </span>
+          )}
         </div>
-
         <div>
           <Grid container spacing={4} justifyContent="center" display="flex">
             <Grid item xs={4}>
@@ -172,11 +179,6 @@ export const GamePage = ({ user }) => {
                     </Button>
                   )}
                 </>
-              )}
-              {!runningGame && roundWord && !playerWonRound && (
-                <div className="padding-10">
-                  <span>{`The word was ${roundWord}`}</span>
-                </div>
               )}
             </Grid>
             <Grid item xs={4}>
