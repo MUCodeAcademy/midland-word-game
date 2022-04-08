@@ -29,7 +29,7 @@ export const PlayPage = () => {
   }, [roomId, socketRoomIdError, checkedRoomId]);
 
   const redirect = useCallback(() => {
-    if (!roomIdError) {
+    if (roomIdError === "Enter Room Code") {
       checkRoom(roomId);
     }
   }, [roomId, roomIdError, checkRoom]);
