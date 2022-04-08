@@ -7,9 +7,10 @@ const ScoreContainer = styled(Box)(({ theme }) => ({
   ...theme.typography.body2,
   backgroundColor: theme.palette.secondary.main,
   borderRadius: "5px",
-  padding: "5px",
+  padding: "3px",
   textAlign: "center",
-  width: "100%",
+  flexBasis: "200px",
+  marginTop: "10px",
 }));
 
 function Score({ players, username, runningRound }) {

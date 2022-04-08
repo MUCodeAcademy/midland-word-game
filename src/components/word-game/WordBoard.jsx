@@ -72,23 +72,20 @@ export const WordBoard = ({
   }, [runningRound]);
 
   return (
-    <div className="border">
-      <div className="padding-10">
-        {
-          <WordRow
-            submitWord={submitWord}
-            guesses={guessesObjs}
-            runningGame={runningGame}
-            runningRound={runningRound}
-            playerWonRound={playerWonRound}
-            solo={solo}
-          />
-        }
-      </div>
+    <>
+      <WordRow
+        submitWord={submitWord}
+        guesses={guessesObjs}
+        runningGame={runningGame}
+        runningRound={runningRound}
+        playerWonRound={playerWonRound}
+        solo={solo}
+      />
+
       <div className="padding-10">
         <WordKeyboard guessedLetters={guessedLetters} />
       </div>
-    </div>
+    </>
   );
 };
 

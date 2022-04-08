@@ -60,6 +60,8 @@ function Chat({ roomId, user, messages, sendMessage }) {
       </Box>
       <div className="messageInput padding-10">
         <TextField
+          style={{ backgroundColor: "#faf8d4" }}
+          size="small"
           id="standard-text"
           label="New Message"
           value={message}

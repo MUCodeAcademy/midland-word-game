@@ -13,6 +13,7 @@ import {
   Modal,
   Typography,
   IconButton,
+  Popover,
 } from "@mui/material/";
 import { generalTheme } from "../../shared/mui-theme";
 
@@ -44,6 +45,9 @@ export const GamePage = ({ user }) => {
   const copyBtn = useRef();
   const { roomId } = useParams();
   const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const popOpen = Boolean(anchorEl);
   const [winnerUsername, setWinnerUsername] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -87,6 +91,14 @@ export const GamePage = ({ user }) => {
       handleClose();
     }
   }, [roomMessage]);
+
+  const handlePopClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <ThemeProvider theme={generalTheme}>
@@ -182,46 +194,69 @@ export const GamePage = ({ user }) => {
               Leave Game
             </Button>
           </Grid>
-
-          <Grid item container justifyContent="space-between" spacing={12}>
-            <Grid item container xs={3} sm={4} sx={{ p: 5 }}>
-              <Grid item sx={{ pl: 5, mb: 5 }}>
-                <div className="score-container">
-                  <Score
-                    players={players}
-                    username={username}
-                    runningRound={runningRound}
-                  />
-                </div>
-              </Grid>
-              <Grid item sx={{ pl: 5 }}>
-                <Chat
-                  roomId={roomId}
-                  user={user}
-                  messages={messages}
-                  sendMessage={sendMessage}
-                />
-              </Grid>
-            </Grid>
-            <Grid item sm={12} md={8} sx={{ p: 5 }}>
-              <Grid item xs={12} style={{ paddingTop: "10px" }}>
-                <div className="width-80pc">
-                  <Box display="flex" justifyContent="center">
-                    <WordBoard
-                      submitWord={submitWord}
-                      guesses={guesses}
-                      roundWord={roundWord}
-                      runningGame={runningGame}
-                      runningRound={runningRound}
-                      playerWonRound={playerWonRound}
-                      solo={false}
-                    />
-                  </Box>
-                </div>
-              </Grid>
-            </Grid>
-          </Grid>
         </div>
+
+        <div className="board-layout">
+          <div className="chat-container">
+            <Chat
+              roomId={roomId}
+              user={user}
+              messages={messages}
+              sendMessage={sendMessage}
+            />
+          </div>
+          <div className="word-board-container">
+            <WordBoard
+              submitWord={submitWord}
+              guesses={guesses}
+              roundWord={roundWord}
+              runningGame={runningGame}
+              runningRound={runningRound}
+              playerWonRound={playerWonRound}
+              solo={false}
+            />
+          </div>
+          <div className="score-container">
+            <Score
+              players={players}
+              username={username}
+              runningRound={runningRound}
+            />
+          </div>
+        </div>
+        <div className="chat-pop-button">
+          <Button variant="contained" onClick={handlePopClick}>
+            Chat
+          </Button>
+        </div>
+        <Popover
+          open={popOpen}
+          anchorEl={anchorEl}
+          onClose={handlePopClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+        >
+          <div className="chat-pop-container">
+            <IconButton
+              style={{ marginLeft: "auto", display: "block" }}
+              onClick={handlePopClose}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Chat
+              roomId={roomId}
+              user={user}
+              messages={messages}
+              sendMessage={sendMessage}
+            />
+          </div>
+        </Popover>
       </div>
     </ThemeProvider>
   );

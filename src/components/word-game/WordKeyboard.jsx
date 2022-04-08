@@ -52,7 +52,11 @@ function WordKeyBoard({ guessedLetters }) {
   }));
 
   return (
-    <Grid className="keyboard-container" container sx={{ width: "100%", flexGrow: 1, display: "flex" }}>
+    <Grid
+      className="keyboard-container"
+      container
+      sx={{ width: "100%", flexGrow: 1, display: "flex" }}
+    >
       <Grid sx={{ width: "100%", display: "flex" }} item>
         {firstRow.map((letter, index) => {
           return (
@@ -61,7 +65,7 @@ function WordKeyBoard({ guessedLetters }) {
               className={
                 guessedLetters[letter.toLowerCase()]
                   ? guessedLetters[letter.toLowerCase()]
-                  : ""
+                  : "letter"
               }
             >
               {letter}
@@ -77,7 +81,7 @@ function WordKeyBoard({ guessedLetters }) {
               className={
                 guessedLetters[letter.toLowerCase()]
                   ? guessedLetters[letter.toLowerCase()]
-                  : ""
+                  : "letter"
               }
             >
               {letter}
@@ -86,7 +90,7 @@ function WordKeyBoard({ guessedLetters }) {
         })}
       </Grid>
       <Grid sx={{ width: "100%", display: "flex" }} item>
-      <Item>delete</Item>
+        <Item className="letter">delete</Item>
         {thirdRow.map((letter, index) => {
           return (
             <Item
@@ -94,14 +98,14 @@ function WordKeyBoard({ guessedLetters }) {
               className={
                 guessedLetters[letter.toLowerCase()]
                   ? guessedLetters[letter.toLowerCase()]
-                  : ""
+                  : "letter"
               }
             >
               {letter}
             </Item>
           );
         })}
-        <Item>enter</Item>
+        <Item className="letter">enter</Item>
       </Grid>
     </Grid>
   );

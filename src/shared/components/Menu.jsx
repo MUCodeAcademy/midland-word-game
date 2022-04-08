@@ -12,7 +12,7 @@ import { clearUser } from "../../redux/actions";
 import {
   AppBar,
   Box,
-  SwipeableDrawer,
+  Drawer,
   IconButton,
   Divider,
   List,
@@ -54,7 +54,7 @@ export const Menu = ({ user, clearUser }) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <SwipeableDrawer
+      <Drawer
         anchor="left"
         open={drawerOpen}
         onOpen={() => setDrawerOpen(true)}
@@ -145,7 +145,7 @@ export const Menu = ({ user, clearUser }) => {
             )}
           </List>
         </Box>
-      </SwipeableDrawer>
+      </Drawer>
     </>
   );
 };
