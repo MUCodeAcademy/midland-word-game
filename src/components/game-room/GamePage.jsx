@@ -8,7 +8,6 @@ import Clock from "./Clock";
 import Score from "./Score";
 import { Button, ThemeProvider, Grid, Modal, Typography } from "@mui/material/";
 import { generalTheme } from "../../shared/mui-theme";
-import { Box } from "@mui/system";
 
 const style = {
   position: 'absolute',
@@ -56,6 +55,7 @@ export const GamePage = ({ user }) => {
   useEffect(() => {
     joinRoom(roomId);
   }, [joinRoom, roomId]);
+
 
   useEffect(() => {
     const winner = players.find(
@@ -133,7 +133,8 @@ export const GamePage = ({ user }) => {
                   )}
                 </>
               )}
-              {!runningRound && roundWord && !playerWonRound && (
+              {!runningGame && roundWord && !playerWonRound && (
+
                 <div className="padding-10">
                   <span>{`The word was ${roundWord}`}</span>
                 </div>
@@ -153,6 +154,31 @@ export const GamePage = ({ user }) => {
                 Leave Game
               </Button>
             </Grid>
+
+            <Grid item container justifyContent="space-between" spacing={12}>
+              <Grid item container xs={3} sm={4} sx={{ p: 5 }}>
+                <Grid item sx={{ pl: 5, mb: 5 }}>
+                  <div className="score-container">
+                    <Score
+                      players={players}
+                      username={username}
+                      runningRound={runningRound}
+                    />
+                  </div>
+                </Grid>
+                <Grid item sx={{ pl: 5 }}>
+                  <Chat
+                    roomId={roomId}
+                    user={user}
+                    messages={messages}
+                    sendMessage={sendMessage}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item sm={12} md={8} sx={{ p: 5 }}>
+                <div>
+
+
             <Grid item xs={12} style={{ paddingTop: "10px" }}>
               <div className="width-80pc">
                 <Box display="flex" justifyContent="center">
@@ -165,24 +191,9 @@ export const GamePage = ({ user }) => {
                     playerWonRound={playerWonRound}
                     solo={false}
                   />
-                </Box>
-              </div>
+                </div>
+              </Grid>
             </Grid>
-            <div className="game-page-footer">
-              <Chat
-                roomId={roomId}
-                user={user}
-                messages={messages}
-                sendMessage={sendMessage}
-              />
-              <div className="score-container">
-                <Score
-                  players={players}
-                  username={username}
-                  runningRound={runningRound}
-                />
-              </div>
-            </div>
           </Grid>
         </div>
       </div>

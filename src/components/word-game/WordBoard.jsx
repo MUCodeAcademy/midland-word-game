@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import WordKeyboard from "./WordKeyboard";
 import WordRow from "./WordRow";
 
-
 export const WordBoard = ({
   submitWord,
   guesses,
@@ -15,7 +14,6 @@ export const WordBoard = ({
 }) => {
   const [guessedLetters, setGuessedLetters] = useState({});
   const [guessesObjs, setGuessesObjs] = useState([]);
-
 
   const letterDistCheck = useCallback(
     (word) => {
@@ -67,14 +65,13 @@ export const WordBoard = ({
     });
   }, [guesses, setGuessesObjs, checkGuess]);
 
-useEffect(() => {
-  if(runningRound){
-    setGuessedLetters({})
-  }
-}, [runningRound])
+  useEffect(() => {
+    if (runningRound) {
+      setGuessedLetters({});
+    }
+  }, [runningRound]);
 
   return (
-
     <div className="border">
       <div className="padding-10">
         {
@@ -89,9 +86,8 @@ useEffect(() => {
         }
       </div>
       <div className="padding-10">
-          <WordKeyboard guessedLetters={guessedLetters} />
+        <WordKeyboard guessedLetters={guessedLetters} />
       </div>
-
     </div>
   );
 };
