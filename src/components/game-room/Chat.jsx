@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   IconButton,
   Divider,
@@ -12,12 +12,17 @@ import { Box } from "@mui/system";
 
 function Chat({ roomId, user, messages, sendMessage }) {
   const [message, setMessage] = useState("");
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [Chat, messages]);
 
   return (
-    <Paper
-      sx={{ width: 325, height: 365, p: 3, backgroundColor: "#FF934F" }}
-      elevation={7}
-    >
+    <Paper sx={{ height: 365, p: 3, backgroundColor: "#FF934F" }} elevation={7}>
       <div className="chatHeader">
         <ForumIcon color="primary" />
         <Typography sx={{ fontWeight: "bold", fontSize: 20, color: "primary" }}>
@@ -45,12 +50,15 @@ function Chat({ roomId, user, messages, sendMessage }) {
             >
               {msg.username}:{" "}
             </Typography>
-            <Typography paragraph>{msg.body}</Typography>
+            <Typography display="inline" paragraph>
+              {msg.body}
+            </Typography>
             <Divider />
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </Box>
-      <div className="messageInput">
+      <div className="messageInput padding-10">
         <TextField
           id="standard-text"
           label="New Message"

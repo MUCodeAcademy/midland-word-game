@@ -36,16 +36,6 @@ body {
   margin-top: 10px;
 }
 
-.score-container {
-  width: 30%;
-  min-width: 300px;
-}
-.score-page-container {
-  background-color: gray;
-  border-radius: 15px;
-  padding: 5px;
-  text-align: center;
-}
 .players-container-title {
   font-size: 17px;
   padding-left: 5px;
@@ -105,6 +95,9 @@ body {
   flex-direction: column;
 }
 .play-page-button {
+
+  margin-bottom: 10px;
+
   margin-top: 15px;
 }
 
@@ -118,6 +111,7 @@ body {
 .classic-header {
   margin: 10px;
   font-size: 20px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -138,12 +132,8 @@ body {
   padding: 5px;
 }
 .messageInput {
-  padding: 10px;
   display: flex;
   justify-content: space-evenly;
-}
-.messageDisplay {
-  padding: 10px;
 }
 
 .margin-10 {
@@ -170,6 +160,11 @@ body {
 
 .keyboard-container {
   background-color: #ee7017;
+}
+
+
+.gameWords {
+  height: 250px;
 }
 
 .active div,
@@ -218,7 +213,7 @@ body {
 
 .room-message {
   font-weight: bold;
-  height: 21.5px;
+  height: 25px;
   background-color: #ff934f;
   border-radius: 5px;
   max-width: 300px;

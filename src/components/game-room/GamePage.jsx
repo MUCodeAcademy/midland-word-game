@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useSocket from "../../shared/hooks/useSocket";
 import WordBoard from "../word-game/WordBoard";
 import Chat from "./Chat";
@@ -15,6 +15,7 @@ import {
   IconButton,
 } from "@mui/material/";
 import { generalTheme } from "../../shared/mui-theme";
+
 import { Box } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -65,10 +66,12 @@ export const GamePage = ({ user }) => {
     messages,
     sendMessage,
   } = useSocket();
+  const navigate = useNavigate();
 
   useEffect(() => {
     joinRoom(roomId);
   }, [joinRoom, roomId]);
+
 
   useEffect(() => {
     const winner = players.find(
@@ -117,6 +120,7 @@ export const GamePage = ({ user }) => {
         <div className="padding-10 room-message">
           {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
         </div>
+
         <div>
           <Grid container spacing={4} justifyContent="center" display="flex">
             <Grid item xs={4}>
@@ -134,6 +138,7 @@ export const GamePage = ({ user }) => {
                 </Button>
               </div>
             </Grid>
+
             <Grid item xs={4}>
               {isHost && (
                 <>
@@ -157,7 +162,8 @@ export const GamePage = ({ user }) => {
                   )}
                 </>
               )}
-              {!runningRound && roundWord && !playerWonRound && (
+              {!runningGame && roundWord && !playerWonRound && (
+
                 <div className="padding-10">
                   <span>{`The word was ${roundWord}`}</span>
                 </div>
@@ -168,7 +174,41 @@ export const GamePage = ({ user }) => {
                 <Clock roomTimer={roomTimer} />
               </div>
             </Grid>
-            <Grid item xs={12}>
+            <Grid style={{ paddingTop: "10px" }} item xs={12}>
+              <Button
+                variant="contained"
+                onClick={() => navigate("/play")}
+                size="small"
+              >
+                Leave Game
+              </Button>
+            </Grid>
+
+            <Grid item container justifyContent="space-between" spacing={12}>
+              <Grid item container xs={3} sm={4} sx={{ p: 5 }}>
+                <Grid item sx={{ pl: 5, mb: 5 }}>
+                  <div className="score-container">
+                    <Score
+                      players={players}
+                      username={username}
+                      runningRound={runningRound}
+                    />
+                  </div>
+                </Grid>
+                <Grid item sx={{ pl: 5 }}>
+                  <Chat
+                    roomId={roomId}
+                    user={user}
+                    messages={messages}
+                    sendMessage={sendMessage}
+                  />
+                </Grid>
+              </Grid>
+              <Grid item sm={12} md={8} sx={{ p: 5 }}>
+                <div>
+
+
+            <Grid item xs={12} style={{ paddingTop: "10px" }}>
               <div className="width-80pc">
                 <Box display="flex" justifyContent="center">
                   <WordBoard
@@ -180,24 +220,9 @@ export const GamePage = ({ user }) => {
                     playerWonRound={playerWonRound}
                     solo={false}
                   />
-                </Box>
-              </div>
+                </div>
+              </Grid>
             </Grid>
-            <div className="game-page-footer">
-              <Chat
-                roomId={roomId}
-                user={user}
-                messages={messages}
-                sendMessage={sendMessage}
-              />
-              <div className="score-container">
-                <Score
-                  players={players}
-                  username={username}
-                  runningRound={runningRound}
-                />
-              </div>
-            </div>
           </Grid>
         </div>
       </div>
