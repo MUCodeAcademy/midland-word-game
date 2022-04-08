@@ -7,7 +7,7 @@ function getRandomWord() {
 }
 
 function isValidWord(guess) {
-  return all.indexOf(guess) > -1;
+  return all.indexOf(guess.toLowerCase()) > -1;
 }
 
 module.exports = { getRandomWord, isValidWord };

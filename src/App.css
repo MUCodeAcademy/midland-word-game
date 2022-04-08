@@ -95,7 +95,6 @@ body {
   flex-direction: column;
 }
 .play-page-button {
-
   margin-bottom: 10px;
 
   margin-top: 15px;
@@ -157,11 +156,6 @@ body {
 .height {
   height: 50px;
 }
-
-.keyboard-container {
-  background-color: #ee7017;
-}
-
 
 .gameWords {
   height: 250px;
