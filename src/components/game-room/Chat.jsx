@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   IconButton,
   Divider,
@@ -12,6 +12,14 @@ import { Box } from "@mui/system";
 
 function Chat({ roomId, user, messages, sendMessage }) {
   const [message, setMessage] = useState("");
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [Chat, messages]);
 
   return (
     <Paper
@@ -49,6 +57,7 @@ function Chat({ roomId, user, messages, sendMessage }) {
             <Divider />
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </Box>
       <div className="messageInput">
         <TextField
