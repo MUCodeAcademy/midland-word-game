@@ -22,7 +22,6 @@ const useSocket = (socketParam = null) => {
   const [messages, setMessages] = useState([]);
 
   const [roomId, setRoomId] = useState(null)
-  const [wonRound, setWonRound] = useState(false)
   const [socketRoomIdError, setSocketRoomIdError] = useState("")
   const [checkedRoomId, setCheckedRoomId] = useState([])
 
@@ -31,7 +30,6 @@ const useSocket = (socketParam = null) => {
     if (player) {
       setPlayerWonRound(player.wonRound);
       setIsHost(player.isHost);
-      setWonRound(player.wonRound)
     }
   }, [player, setPlayerWonRound, setIsHost]);
 
@@ -51,12 +49,14 @@ const useSocket = (socketParam = null) => {
   useEffect(() => {
     socket.current.on("player data update", (data) => {
       setPlayers(data.players);
+      setPlayer(data.players.find(e => e.username === username))
     });
-  }, [socket, setPlayers]);
+  }, [socket, setPlayers, setPlayer , username]);
 
-  useEffect(() => {
-    setPlayer(players.find((e) => e.username === username));
-  }, [players, username]);
+  // useEffect(() => {
+  //   console.log(players)
+  //   setPlayer(players.find((e) => e.username === username));
+  // }, [players, username]);
 
   useEffect(() => {
 
@@ -73,7 +73,7 @@ const useSocket = (socketParam = null) => {
     socket.current.on("player data", (data) => {
       //this means successful join
       setPlayers(data.players);
-      //setPlayer(data.player);
+      setPlayer(data.player);
       setUsername(data.player.username);
       setRunningGame(data.isRunningGame);
       setRunningRound(data.isRunningRound);
@@ -119,13 +119,14 @@ const useSocket = (socketParam = null) => {
     socket.current.on("new guess", (data) => {
       if (data.player.username === username) {
         setGuesses((curr) => [...curr, data.player.lastGuess]);
+        setPlayer(data.player)
       }
       setPlayers((curr) => [
         ...curr.filter((e) => e.username !== data.player.username),
         data.player,
       ]);
     });
-  }, [socket, setPlayer, setGuesses, username]);
+  }, [socket, setPlayers, setGuesses, username]);
 
   //error events
   useEffect(() => {
@@ -208,6 +209,7 @@ const useSocket = (socketParam = null) => {
         };
       });
       setPlayers(data.players);
+      setPlayer(data.players.find(e => e.username === username))
       setRunningRound(false);
       setRoomMessage("Round Over");
     });
@@ -215,9 +217,11 @@ const useSocket = (socketParam = null) => {
       setRunningGame(false);
       setRoomMessage("Game Over");
       setPlayers(data.players)
+      setPlayer(data.players.find(e => e.username === username))
     });
   }, [
     socket,
+    username,
     setError,
     runningGame,
     setRunningGame,
@@ -369,7 +373,6 @@ const useSocket = (socketParam = null) => {
     username,
     messages,
     roomId,
-    wonRound,
     socketRoomIdError,
     checkedRoomId
   };
