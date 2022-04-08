@@ -58,23 +58,17 @@ export const ClassicPage = () => {
           </div>
         )}
       </div>
-      <Grid container spacing={4} justifyContent="center" display="flex">
-        <Grid item xs={12}>
-          <div className="width-80pc">
-            <Box display="flex" justifyContent="center">
-              <WordBoard
-                submitWord={submitWord}
-                guesses={guesses}
-                roundWord={roundWord}
-                runningGame={runningGame}
-                runningRound={runningRound}
-                playerWonRound={playerWonRound}
-                solo={true}
-              />
-            </Box>
-          </div>
-        </Grid>
-      </Grid>
+      <div className="word-board-container">
+        <WordBoard
+          submitWord={submitWord}
+          guesses={guesses}
+          roundWord={roundWord}
+          runningGame={runningGame}
+          runningRound={runningRound}
+          playerWonRound={playerWonRound}
+          solo={true}
+        />
+      </div>
     </div>
   );
 };
