@@ -3,8 +3,8 @@ import { Avatar, Box, Grid, IconButton, Typography } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TomAndOliver from "../shared/assets/TomAndOliver.jpeg";
-import HeadshotRussell from "../shared/assets/HeadshotRussell.jpg"
-
+import HeadshotRussell from "../shared/assets/HeadshotRussell.jpg";
+import HeadshotSophie from "../shared/assets/HeadshotSophie.jpg";
 import syd from "../shared/assets/syd.jpg";
 
 import HeadshotBrett from "../shared/assets/HeadshotBrett.jpg";
@@ -34,8 +34,8 @@ function AboutPage() {
             <Typography variant="body2">
               I did some self teaching for awhile then went to a coding boot
               camp to round out my knowledge. Now I have finished that boot camp
-              where I learned all the tools to become a full stack developer. So I
-              am currently looking to get my foot in the door to get a job in
+              where I learned all the tools to become a full stack developer. So
+              I am currently looking to get my foot in the door to get a job in
               software development.
             </Typography>
             <IconButton href="https://github.com/Melrov" target="_blank">
@@ -94,7 +94,7 @@ function AboutPage() {
               Academy. Due to the immersive nature of the program, I have gotten
               familiar with being uncomfortable and understand that is where
               growth is. I am eager to explore the immense possibilities that
-              tech presents and growing as a developer along the way.
+              tech presents and grow as a developer along the way.
             </Typography>
             <IconButton href="https://github.com/shavengar" target="_blank">
               <GitHubIcon />
@@ -110,14 +110,18 @@ function AboutPage() {
       </Grid>
       <Grid container item xs={12} sm={6}>
         <Grid item xs={3}>
-          <Avatar alt="Sophie" sx={{ width: 100, height: 100 }} />
+          <Avatar
+            alt="Sophie"
+            src={HeadshotSophie}
+            sx={{ width: 100, height: 100 }}
+          />
         </Grid>
         <Grid item xs={9}>
           <Box className="padding-10">
             <Typography variant="h5">Sophie Newell</Typography>
             <Typography variant="body2">
-              I am a junior developer with a background in art and design. I'm
-              drawn to the creative, yet logic driven, nature of coding and have
+              I'm a junior developer with a background in art and design. I'm
+              drawn to the creative but logic driven nature of coding and have
               been building my skill set over the past three months at Midland
               Code Academy. I'm excited to keep learning and growing!
             </Typography>
