@@ -38,16 +38,15 @@ export const GamePage = ({ user }) => {
   }, [joinRoom, roomId]);
 
   return (
-
     <ThemeProvider theme={generalTheme}>
       <div className="center">
-        <div className="padding-10">
+        <div className="padding-10 room-message">
           {(error || roomMessage) && <span>{error ? error : roomMessage}</span>}
         </div>
         <div>
           <Grid container spacing={4} justifyContent="center" display="flex">
             <Grid item xs={4}>
-              <div>
+              <div style={{ marginTop: "10px" }}>
                 <span className="margin-10">Room ID: {roomId}</span>
                 <Button
                   variant="contained"
@@ -65,18 +64,26 @@ export const GamePage = ({ user }) => {
               {isHost && (
                 <>
                   {!runningGame && (
-                    <Button variant="contained" onClick={() => startGame()}>
+                    <Button
+                      style={{ marginTop: "10px" }}
+                      variant="contained"
+                      onClick={() => startGame()}
+                    >
                       Start Game
                     </Button>
                   )}
                   {runningGame && !runningRound && (
-                    <Button variant="contained" onClick={() => startRound()}>
+                    <Button
+                      style={{ marginTop: "10px" }}
+                      variant="contained"
+                      onClick={() => startRound()}
+                    >
                       Start Round
                     </Button>
                   )}
                 </>
               )}
-              {!runningRound && roundWord && !playerWonRound &&(
+              {!runningRound && roundWord && !playerWonRound && (
                 <div className="padding-10">
                   <span>{`The word was ${roundWord}`}</span>
                 </div>

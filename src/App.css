@@ -206,3 +206,21 @@ body {
   min-height: 48px !important;
   flex-flow: row wrap;
 }
+
+.clock {
+  max-width: 140px;
+  padding: 2px;
+  border-radius: 5px;
+  background-color: #ff934f;
+  color: #2e4057;
+  margin-top: 5px;
+}
+
+.room-message {
+  font-weight: bold;
+  height: 21.5px;
+  background-color: #ff934f;
+  border-radius: 5px;
+  max-width: 300px;
+  margin: 5px auto;
+}
