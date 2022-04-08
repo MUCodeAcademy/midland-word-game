@@ -50,12 +50,6 @@ function WordRow({
       >
         {guesses &&
           guesses.map((val, i) => <WordRowDisplay key={i} val={val} />)}
-        {solo && (
-          <div>
-            {guessesFill &&
-              guessesFill.map((val, i) => <WordRowDisplay key={i} val={val} />)}
-          </div>
-        )}
         <div ref={messagesEndRef} />
       </Box>
       {!solo && (
@@ -70,6 +64,12 @@ function WordRow({
           )}
         </div>
       )}
+      {solo && (
+          <div>
+            {guessesFill &&
+              guessesFill.map((val, i) => <WordRowDisplay key={i} val={val} />)}
+          </div>
+        )}
     </div>
   );
 }
